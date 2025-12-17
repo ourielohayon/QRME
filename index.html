@@ -2,23 +2,705 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT WORKS!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>QRME</title>
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <style>
-        body {
-            background-color: #3b82f6; /* Blue background */
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: sans-serif;
-            font-size: 3rem;
-            margin: 0;
+        :root {
+            /* Theme Variables */
+            --theme-base: #1c3e7d; 
+            --bg-gradient: linear-gradient(180deg, var(--theme-base) 0%, #000000 100%);
+            
+            /* Brand Colors */
+            --linkedin-color: #0077B5; --telegram-color: #24A1DE; --whatsapp-color: #25D366;
+            --twitter-color: #000000; --instagram-color: #C13584; --youtube-color: #FF0000;
+            --discord-color: #5865F2; --github-color: #333333; --wifi-color: #5856D6;
+            --bitcoin-color: #F7931A; --vcard-color: #333333; --share-app-color: #4B0082;
+
+            --card-bg: rgba(255, 255, 255, 0.94); 
+            --text-primary: #000000;
+            --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
         }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { background-color: #000000; height: 100%; width: 100%; overflow: hidden; }
+        
+        body {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+            background: transparent; overflow: hidden;
+            display: flex; justify-content: center;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .app-background {
+            position: fixed; top: -10vh; left: -10vw; width: 120vw; height: 120vh;
+            background: var(--bg-gradient); z-index: -10; transition: background 0.6s ease;
+        }
+
+        #app { width: 100%; height: 100%; position: relative; display: flex; justify-content: center; align-items: center; }
+
+        /* Settings Icon */
+        .settings-icon {
+            position: absolute; top: 20px; right: 25px; z-index: 100;
+            color: rgba(255,255,255,0.6); padding: 10px; cursor: pointer;
+        }
+        .gear-svg { width: 24px; height: 24px; fill: currentColor; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+
+        /* Views */
+        .view {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transform: scale(0.95);
+            transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+        }
+        .view.active { opacity: 1; pointer-events: all; transform: scale(1); }
+
+        /* Profile */
+        .profile-container { margin-bottom: 15px; position: relative; }
+        .profile-pic {
+            width: 90px; height: 90px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2);
+            object-fit: cover; box-shadow: 0 8px 20px rgba(0,0,0,0.3); display: none; 
+        }
+        .profile-placeholder {
+            width: 90px; height: 90px; border-radius: 50%;
+            background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center;
+            font-size: 30px; color: rgba(255,255,255,0.8); border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        /* Copy Intro Button */
+        .copy-intro-btn {
+            background: rgba(255, 255, 255, 0.2); color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px;
+            padding: 12px 20px; width: 100%; max-width: 360px;
+            font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-bottom: 15px; cursor: pointer;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            transition: background 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .copy-intro-btn:active { background: rgba(255, 255, 255, 0.3); transform: scale(0.98); }
+        .copy-icon { width: 18px; height: 18px; }
+
+        /* Grid Layout */
+        .grid-container {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+            width: 100%; max-width: 360px; padding: 0 25px;
+            max-height: 60vh; overflow-y: auto;
+            -ms-overflow-style: none; scrollbar-width: none;
+        }
+        .grid-container::-webkit-scrollbar { display: none; }
+
+        .app-icon {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 18px; padding: 16px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer;
+            transition: transform 0.1s; height: 90px; 
+        }
+        .app-icon:active { transform: scale(0.96); opacity: 0.9; }
+
+        .icon-svg { width: 30px; height: 30px; display: block; }
+        .icon-label { font-size: 13px; font-weight: 600; text-align: center; color: #000; }
+
+        .linkedin .icon-svg { fill: var(--linkedin-color); }
+        .telegram .icon-svg { fill: var(--telegram-color); }
+        .whatsapp .icon-svg { fill: var(--whatsapp-color); }
+        .twitter .icon-svg { fill: var(--twitter-color); }
+        .instagram .icon-svg { fill: var(--instagram-color); }
+        .youtube .icon-svg { fill: var(--youtube-color); }
+        .discord .icon-svg { fill: var(--discord-color); }
+        .github .icon-svg { fill: var(--github-color); }
+        .wifi .icon-svg { fill: var(--wifi-color); }
+        .bitcoin .icon-svg { fill: var(--bitcoin-color); }
+        .vcard .icon-svg { fill: var(--vcard-color); }
+        .share-app .icon-svg { fill: var(--share-app-color); }
+
+        /* QR View */
+        #qr-view { gap: 25px; }
+        .qr-card {
+            background: rgba(255,255,255,0.95); padding: 25px; border-radius: 24px;
+            display: flex; flex-direction: column; align-items: center; gap: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5); width: 260px;
+        }
+        #qrcode { width: 180px; height: 180px; background: white; border-radius: 4px; overflow: hidden; }
+        #qrcode img { width: 100%; height: 100%; display: block; }
+        .qr-label { font-size: 20px; font-weight: 700; text-align: center; margin: 0; }
+
+        .share-btn {
+            background: #007AFF; color: white; border: none; padding: 10px;
+            font-size: 14px; font-weight: 600; border-radius: 10px; width: 100%;
+            display: flex; justify-content: center; align-items: center; gap: 6px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.15); color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.15); padding: 8px 24px;
+            font-size: 15px; font-weight: 500; border-radius: 50px;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        }
+
+        /* Settings Form */
+        .setup-form {
+            background: #fff; padding: 16px; border-radius: 20px;
+            width: 95%; max-width: 400px;
+            max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .setup-form h2 { margin: 0 0 10px; color: #000; font-size: 20px; }
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+        .input-group { margin-bottom: 0; }
+        .full-width { grid-column: span 2; }
+
+        .input-group label { display: block; font-size: 10px; color: #888; margin-bottom: 2px; font-weight: 700; text-transform: uppercase; }
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%; padding: 8px; background: #f2f2f7; border: none; border-radius: 8px; font-size: 14px; -webkit-appearance: none;
+        }
+        
+        .intro-section { background: #f0f9ff; padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #e0f2fe; }
+        .intro-title { font-size: 12px; font-weight: 700; color: #007AFF; margin-bottom: 6px; }
+        .loc-row { display: flex; gap: 5px; }
+        .loc-btn { width: 35px; background: #007AFF; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        
+        .file-btn { background: #e5e5ea; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; text-align: center; width: 100%; display:block; }
+        .save-btn { width: 100%; padding: 12px; background: #000; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; margin-top: 5px; transition: background 0.3s; }
+
+        /* Theme Selector */
+        .theme-section { margin-bottom: 10px; }
+        .theme-grid { display: flex; gap: 8px; justify-content: space-between; flex-wrap: wrap; }
+        .theme-swatch {
+            width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+            border: 2px solid transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .theme-swatch.active { border-color: #000; transform: scale(1.1); }
+        .color-picker-wrapper {
+            width: 32px; height: 32px; border-radius: 50%; overflow: hidden; position: relative; cursor: pointer; border: 2px solid #ddd; background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
+        }
+        .color-picker-input { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; opacity: 0; cursor: pointer; }
+
+        /* Greeting Editor */
+        #greeting-editor { display: none; margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px; }
+        .greeting-btn { background: #e0f2fe; color: #007AFF; margin-top: 5px; width: 100%; font-size: 12px; font-weight: 600; border-radius: 8px; padding: 8px; border:none; cursor: pointer; }
+        .regen-btn { background: #eee; color: #555; font-size: 11px; padding: 6px 12px; border-radius: 6px; border: none; margin-top: 6px; cursor: pointer; width: 100%; }
+
+        /* Footnote - Pure White */
+        .footnote { position: absolute; bottom: 15px; width: 100%; text-align: center; color: #ffffff; font-size: 11px; font-weight: 500; pointer-events: none; }
     </style>
 </head>
 <body>
-    <h1>IT WORKS!</h1>
+
+    <div class="app-background" id="bg-layer"></div>
+
+    <div id="app">
+        <div id="settings-btn" class="settings-icon" onclick="showSetup()">
+            <svg class="gear-svg" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+        </div>
+
+        <!-- Setup View -->
+        <div id="setup-view" class="view">
+            <div class="setup-form">
+                <h2>Set Up QRME</h2>
+                
+                <div class="theme-section">
+                    <div class="input-group"><label>App Theme</label></div>
+                    <div class="theme-grid">
+                        <div class="theme-swatch" style="background:#1c3e7d" onclick="setTheme('#1c3e7d')"></div>
+                        <div class="theme-swatch" style="background:#0077B5" onclick="setTheme('#0077B5')"></div>
+                        <div class="theme-swatch" style="background:#25D366" onclick="setTheme('#25D366')"></div>
+                        <div class="theme-swatch" style="background:#8E24AA" onclick="setTheme('#8E24AA')"></div>
+                        <div class="theme-swatch" style="background:#D32F2F" onclick="setTheme('#D32F2F')"></div>
+                        <div class="theme-swatch" style="background:#F7931A" onclick="setTheme('#F7931A')"></div>
+                        <div class="theme-swatch" style="background:#111111" onclick="setTheme('#111111')"></div>
+                        <div class="color-picker-wrapper"><input type="color" class="color-picker-input" onchange="setTheme(this.value)"></div>
+                    </div>
+                </div>
+
+                <div class="intro-section">
+                    <div class="intro-title">Context & Greeting</div>
+                    <div class="form-grid">
+                        <div class="input-group"><label>Event</label><input type="text" id="in-event" placeholder="Event Name"></div>
+                        <div class="input-group"><label>Date</label><input type="date" id="in-date"></div>
+                        <div class="input-group full-width">
+                            <label>Location</label>
+                            <div class="loc-row">
+                                <input type="text" id="in-location" placeholder="City, Country">
+                                <button class="loc-btn" onclick="fetchLocation()">📍</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="greeting-btn" onclick="toggleGreetingEditor()">Edit Greeting Message</button>
+                    <div id="greeting-editor">
+                        <label style="font-size:10px; color:#666; margin-bottom:4px; display:block;">CUSTOM MESSAGE</label>
+                        <textarea id="in-greeting" rows="4" style="width:100%; border-radius:8px; padding:8px; border:1px solid #ccc; font-family:sans-serif; font-size:13px;"></textarea>
+                        <button class="regen-btn" onclick="generateDefaultGreeting()">↺ Revert to Default Template</button>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="input-group full-width">
+                        <label>Profile Photo</label>
+                        <label class="file-btn">Choose Photo<input type="file" id="in-photo" accept="image/*" style="display: none;" onchange="handlePhotoUpload(this)"></label>
+                    </div>
+                    <div class="input-group"><label>Name</label><input type="text" id="in-name" placeholder="John Doe"></div>
+                    <div class="input-group"><label>Company</label><input type="text" id="in-company" placeholder="Acme Inc"></div>
+                    <div class="input-group full-width"><label>Website</label><input type="url" id="in-website" placeholder="https://example.com"></div>
+                    <div class="input-group full-width"><label>Email (for vCard)</label><input type="email" id="in-email" placeholder="john@example.com"></div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="input-group"><label>LinkedIn (URL)</label><input type="url" id="in-linkedin"></div>
+                    <div class="input-group"><label>WhatsApp (Tel)</label><input type="tel" id="in-whatsapp"></div>
+                    <div class="input-group"><label>Telegram (User)</label><input type="text" id="in-telegram"></div>
+                    <div class="input-group"><label>X / Twitter (@)</label><input type="text" id="in-twitter"></div>
+                    <div class="input-group"><label>Instagram (User)</label><input type="text" id="in-instagram"></div>
+                    <div class="input-group"><label>Youtube</label><input type="text" id="in-youtube" placeholder="channel"></div>
+                    <div class="input-group"><label>Discord (Link)</label><input type="url" id="in-discord" placeholder="invite"></div>
+                    <div class="input-group"><label>GitHub (User)</label><input type="text" id="in-github" placeholder="username"></div>
+                    <div class="input-group"><label>WiFi Name</label><input type="text" id="in-wifi-ssid"></div>
+                    <div class="input-group"><label>WiFi Pass</label><input type="text" id="in-wifi-pass"></div>
+                    <div class="input-group full-width"><label>Bitcoin Wallet</label><input type="text" id="in-btc"></div>
+                </div>
+                <button id="save-btn" class="save-btn" onclick="saveData()">Save & Launch</button>
+            </div>
+        </div>
+
+        <div id="home-view" class="view">
+            <div class="profile-container">
+                <img id="display-photo" class="profile-pic" alt="Profile">
+                <div id="display-placeholder" class="profile-placeholder">Q</div>
+            </div>
+
+            <button id="btn-copy-greeting" class="copy-intro-btn" onclick="copyGreeting()">
+                <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Copy Intro</span>
+            </button>
+
+            <div class="grid-container">
+                <!-- vCard First -->
+                <div id="btn-vcard" class="app-icon vcard" onclick="openQR('vcard')">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <span class="icon-label">Get vCard</span>
+                </div>
+                
+                <div id="btn-linkedin" class="app-icon linkedin" onclick="openQR('linkedin')">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    <span class="icon-label">LinkedIn</span>
+                </div>
+                <div id="btn-whatsapp" class="app-icon whatsapp" onclick="openQR('whatsapp')">
+                    <svg class="icon-svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-26.6l-6.7-4.2-69.8 18.3 18.6-68.1-4.4-6.9c-18.3-29.4-28-63.6-28-99.4 0-101.9 82.8-184.6 184.6-184.6 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+                    <span class="icon-label">WhatsApp</span>
+                </div>
+                <div id="btn-telegram" class="app-icon telegram" onclick="openQR('telegram')">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.97 9.288c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.293-.605.293l.213-3.053 5.56-5.022c.242-.213-.054-.334-.373-.121l-6.869 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.553-4.458c.538-.196 1.006.128.847.932z"/></svg>
+                    <span class="icon-label">Telegram</span>
+                </div>
+                <div id="btn-twitter" class="app-icon twitter" onclick="openQR('twitter')">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    <span class="icon-label">X</span>
+                </div>
+                <div id="btn-instagram" class="app-icon instagram" onclick="openQR('instagram')">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    <span class="icon-label">Instagram</span>
+                </div>
+                <div id="btn-youtube" class="app-icon youtube" onclick="openQR('youtube')">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                    <span class="icon-label">YouTube</span>
+                </div>
+                <div id="btn-discord" class="app-icon discord" onclick="openQR('discord')">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z"/></svg>
+                    <span class="icon-label">Discord</span>
+                </div>
+                <div id="btn-github" class="app-icon github" onclick="openQR('github')">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <span class="icon-label">GitHub</span>
+                </div>
+                <div id="btn-wifi" class="app-icon wifi" onclick="openQR('wifi')">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12.01 6c-3.19 0-6.22 1.17-8.66 3.32l1.45 1.76C6.54 9.63 9.17 8.5 12 8.5c2.8 0 5.48 1.1 7.23 2.58l1.43-1.78C18.2 7.15 15.19 6 12.01 6zm0 5c-1.89 0-3.69.73-5.07 2.05L12 19l5.06-5.96C15.68 11.74 13.9 11 12.01 11z"/></svg>
+                    <span class="icon-label">WiFi</span>
+                </div>
+                <div id="btn-bitcoin" class="app-icon bitcoin" onclick="openQR('bitcoin')">
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 10.5C16.5 9.12 15.38 8 14 8H10V6H8V8H6V10H8V16H6V18H8V20H10V18H13.5C15.43 18 17 16.43 17 14.5C17 13.1 16.18 11.9 15 11.3C15.9 10.9 16.5 10.1 16.5 9.25V10.5M10 10H13.5C14.05 10 14.5 10.45 14.5 11C14.5 11.55 14.05 12 13.5 12H10V10M10 16V14H13.5C14.05 14 14.5 14.45 14.5 15C14.5 15.55 14.05 16 13.5 16H10Z" /></svg>
+                    <span class="icon-label">Bitcoin Wallet</span>
+                </div>
+                <!-- MOVED TO LAST -->
+                <div id="btn-share-app" class="app-icon share-app" onclick="openQR('share-app')">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+                    <span class="icon-label">Get QRME</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="qr-view" class="view">
+            <div class="qr-card">
+                <div id="qrcode"></div>
+                <div class="qr-label" id="qr-title">Title</div>
+                <button class="share-btn" onclick="shareProfile()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                    Share Link
+                </button>
+            </div>
+            <button class="back-btn" onclick="showHome()">&lt; Back</button>
+        </div>
+    </div>
+
+    <div class="footnote">created with ❤️ by Ouriel</div>
+
+    <script>
+        const views = { setup: document.getElementById('setup-view'), home: document.getElementById('home-view'), qr: document.getElementById('qr-view') };
+        const bgLayer = document.getElementById('bg-layer');
+        const settingsBtn = document.getElementById('settings-btn');
+        const saveBtn = document.getElementById('save-btn');
+        const greetingEditor = document.getElementById('greeting-editor');
+        const greetingInput = document.getElementById('in-greeting');
+        const inputs = {
+            name: document.getElementById('in-name'),
+            company: document.getElementById('in-company'),
+            website: document.getElementById('in-website'),
+            email: document.getElementById('in-email'),
+            event: document.getElementById('in-event'),
+            location: document.getElementById('in-location'),
+            date: document.getElementById('in-date'),
+            linkedin: document.getElementById('in-linkedin'),
+            telegram: document.getElementById('in-telegram'),
+            whatsapp: document.getElementById('in-whatsapp'),
+            twitter: document.getElementById('in-twitter'),
+            instagram: document.getElementById('in-instagram'),
+            youtube: document.getElementById('in-youtube'),
+            discord: document.getElementById('in-discord'),
+            github: document.getElementById('in-github'),
+            wifiSSID: document.getElementById('in-wifi-ssid'),
+            wifiPass: document.getElementById('in-wifi-pass'),
+            btc: document.getElementById('in-btc')
+        };
+        let qrCodeObj = null;
+        let currentUrl = '';
+        let profilePhotoData = null;
+        let selectedTheme = '#1c3e7d'; 
+
+        // 1. Defined Brand Color Map for JS Logic
+        const brandColors = {
+            linkedin: '#0077B5',
+            telegram: '#24A1DE',
+            whatsapp: '#25D366',
+            twitter: '#000000',
+            instagram: '#C13584',
+            youtube: '#FF0000',
+            discord: '#5865F2',
+            github: '#333333',
+            wifi: '#5856D6',
+            bitcoin: '#F7931A',
+            vcard: '#333333',
+            'share-app': '#4B0082'
+        };
+
+        function init() {
+            if (!inputs.date.value) inputs.date.valueAsDate = new Date();
+
+            const data = localStorage.getItem('qrme_data');
+            if (data) {
+                const parsed = JSON.parse(data);
+                
+                if (parsed.theme) { selectedTheme = parsed.theme; updateTheme(selectedTheme); }
+
+                inputs.name.value = parsed.name || '';
+                inputs.company.value = parsed.company || '';
+                inputs.website.value = parsed.website || '';
+                inputs.email.value = parsed.email || '';
+                inputs.event.value = parsed.event || '';
+                inputs.location.value = parsed.location || '';
+                if(parsed.date) inputs.date.value = parsed.date;
+                
+                greetingInput.value = parsed.greeting || generateGreetingText(parsed);
+
+                inputs.linkedin.value = parsed.linkedin || '';
+                inputs.telegram.value = parsed.telegram || '';
+                inputs.whatsapp.value = parsed.whatsapp || '';
+                inputs.twitter.value = parsed.twitter || '';
+                inputs.instagram.value = parsed.instagram || '';
+                inputs.youtube.value = parsed.youtube || '';
+                inputs.discord.value = parsed.discord || '';
+                inputs.github.value = parsed.github || '';
+                inputs.wifiSSID.value = parsed.wifiSSID || '';
+                inputs.wifiPass.value = parsed.wifiPass || '';
+                inputs.btc.value = parsed.btc || '';
+                
+                if (parsed.photo) {
+                    profilePhotoData = parsed.photo;
+                    document.getElementById('display-photo').src = profilePhotoData;
+                    document.getElementById('display-photo').style.display = 'block';
+                    document.getElementById('display-placeholder').style.display = 'none';
+                }
+                
+                document.getElementById('btn-linkedin').style.display = parsed.linkedin ? 'flex' : 'none';
+                document.getElementById('btn-telegram').style.display = parsed.telegram ? 'flex' : 'none';
+                document.getElementById('btn-whatsapp').style.display = parsed.whatsapp ? 'flex' : 'none';
+                document.getElementById('btn-twitter').style.display = parsed.twitter ? 'flex' : 'none';
+                document.getElementById('btn-instagram').style.display = parsed.instagram ? 'flex' : 'none';
+                document.getElementById('btn-youtube').style.display = parsed.youtube ? 'flex' : 'none';
+                document.getElementById('btn-discord').style.display = parsed.discord ? 'flex' : 'none';
+                document.getElementById('btn-github').style.display = parsed.github ? 'flex' : 'none';
+                document.getElementById('btn-wifi').style.display = parsed.wifiSSID ? 'flex' : 'none';
+                document.getElementById('btn-bitcoin').style.display = parsed.btc ? 'flex' : 'none';
+
+                document.getElementById('btn-copy-greeting').style.display = parsed.name ? 'flex' : 'none';
+
+                switchView('home');
+            } else {
+                switchView('setup');
+            }
+        }
+
+        function setTheme(color) {
+            selectedTheme = color;
+            updateTheme(color);
+            document.querySelectorAll('.theme-swatch').forEach(el => el.classList.remove('active'));
+            const swatches = document.querySelectorAll('.theme-swatch');
+            for (let s of swatches) { if (s.style.backgroundColor === color) s.classList.add('active'); }
+        }
+
+        function updateTheme(color) {
+            document.documentElement.style.setProperty('--theme-base', color);
+            // Apply only if NOT in QR View (which has brand colors)
+            if (!views.qr.classList.contains('active')) {
+                bgLayer.style.background = `linear-gradient(180deg, ${color} 0%, #000000 100%)`;
+            }
+        }
+
+        function toggleGreetingEditor() {
+            greetingEditor.style.display = greetingEditor.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function generateGreetingText(data) {
+            const name = data.name || inputs.name.value || '...';
+            const company = data.company || inputs.company.value || '...';
+            const website = data.website || inputs.website.value || '';
+            const event = data.event || inputs.event.value || '...';
+            const location = data.location || inputs.location.value || '...';
+            const date = data.date || inputs.date.value || '';
+            const appLink = window.location.href;
+            return `Hi, This is ${name}, from ${company} (${website}). We met on ${date} at ${event} in ${location}.\n\nGet your own digital card: ${appLink}`;
+        }
+
+        function generateDefaultGreeting() {
+            greetingInput.value = generateGreetingText({});
+        }
+
+        function fetchLocation() {
+            if (!navigator.geolocation) { alert('Geolocation not supported'); return; }
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const { latitude, longitude } = pos.coords;
+                try {
+                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                    const data = await response.json();
+                    const addr = data.address;
+                    const city = addr.city || addr.town || addr.village || addr.municipality || addr.county || '';
+                    const country = addr.country || '';
+                    if (city && country) inputs.location.value = `${city}, ${country}`;
+                    else if (country) inputs.location.value = country;
+                } catch (e) { alert('Manual entry required.'); }
+            }, () => alert('Permission denied.'));
+        }
+
+        function copyGreeting() {
+            const text = greetingInput.value;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(showCopyFeedback).catch(() => tryFallbackCopy(text));
+            } else {
+                tryFallbackCopy(text);
+            }
+        }
+
+        function tryFallbackCopy(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed"; textArea.style.left = "-9999px";
+            document.body.appendChild(textArea);
+            textArea.focus(); textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) showCopyFeedback();
+            } catch (err) {}
+            document.body.removeChild(textArea);
+        }
+
+        function showCopyFeedback() {
+            if (navigator.vibrate) navigator.vibrate(50);
+            const btn = document.getElementById('btn-copy-greeting');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<span>Copied!</span>';
+            btn.style.background = '#25D366'; 
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.style.background = 'rgba(255, 255, 255, 0.2)';
+            }, 1500);
+        }
+
+        function handlePhotoUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const size = 150; 
+                        canvas.width = size; canvas.height = size;
+                        const minScale = Math.max(size/img.width, size/img.height);
+                        const w = img.width * minScale; const h = img.height * minScale;
+                        const x = (size - w) / 2; const y = (size - h) / 2;
+                        ctx.drawImage(img, x, y, w, h);
+                        profilePhotoData = canvas.toDataURL('image/jpeg', 0.8);
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function saveData() {
+            const data = {
+                theme: selectedTheme,
+                name: inputs.name.value.trim(),
+                company: inputs.company.value.trim(),
+                website: inputs.website.value.trim(),
+                email: inputs.email.value.trim(),
+                event: inputs.event.value.trim(),
+                location: inputs.location.value.trim(),
+                date: inputs.date.value.trim(),
+                greeting: greetingInput.value,
+                linkedin: inputs.linkedin.value.trim(),
+                telegram: inputs.telegram.value.trim(),
+                whatsapp: inputs.whatsapp.value.trim(),
+                twitter: inputs.twitter.value.trim(),
+                instagram: inputs.instagram.value.trim(),
+                youtube: inputs.youtube.value.trim(),
+                discord: inputs.discord.value.trim(),
+                github: inputs.github.value.trim(),
+                wifiSSID: inputs.wifiSSID.value.trim(),
+                wifiPass: inputs.wifiPass.value.trim(),
+                btc: inputs.btc.value.trim(),
+                photo: profilePhotoData
+            };
+            try {
+                localStorage.setItem('qrme_data', JSON.stringify(data));
+                
+                const originalText = saveBtn.innerText;
+                saveBtn.innerText = "Settings Saved!";
+                saveBtn.style.background = "#25D366";
+                setTimeout(() => {
+                    saveBtn.innerText = originalText;
+                    saveBtn.style.background = "#000";
+                    init();
+                }, 1000);
+            } catch (e) {
+                alert("Photo too large! Use a smaller one.");
+            }
+        }
+
+        function switchView(viewName) {
+            Object.values(views).forEach(el => el.classList.remove('active'));
+            views[viewName].classList.add('active');
+            
+            if (viewName === 'home') {
+                settingsBtn.style.display = 'block';
+                updateBackground('default'); // Reset on Home
+            } else {
+                settingsBtn.style.display = 'none';
+            }
+        }
+
+        function updateBackground(type) {
+            let color = selectedTheme;
+            if (type !== 'default' && brandColors[type]) {
+                color = brandColors[type];
+            }
+            bgLayer.style.background = `linear-gradient(180deg, ${color} 0%, #000000 100%)`;
+        }
+
+        function openQR(platform) {
+            const dataStr = localStorage.getItem('qrme_data');
+            if (!dataStr) {
+                alert("Please set up your profile first.");
+                showSetup();
+                return;
+            }
+            const data = JSON.parse(dataStr);
+            let url = '', title = '', color = '';
+
+            updateBackground(platform);
+
+            if (platform === 'share-app') {
+                url = window.location.href;
+                title = 'Get QRME'; color = '#4B0082';
+            }
+            else if (platform === 'vcard') {
+                // vCard Logic: TEXT ONLY (No Photo) for 100% stability
+                let links = [];
+                if(data.linkedin) links.push(`LinkedIn: ${data.linkedin}`);
+                if(data.whatsapp) links.push(`WhatsApp: ${data.whatsapp}`);
+                if(data.telegram) links.push(`Telegram: ${data.telegram}`);
+                if(data.twitter) links.push(`Twitter: https://x.com/${data.twitter.replace('@','')}`);
+                if(data.instagram) links.push(`Instagram: https://instagram.com/${data.instagram}`);
+                if(data.youtube) links.push(`Youtube: https://youtube.com/${data.youtube}`);
+                if(data.github) links.push(`GitHub: https://github.com/${data.github}`);
+                if(data.discord) links.push(`Discord: ${data.discord}`);
+                if(data.wifiSSID) links.push(`WiFi: ${data.wifiSSID}`);
+                if(data.btc) links.push(`BTC: ${data.btc}`);
+                
+                const socialBlock = links.join('\\n');
+                const cleanGreeting = (data.greeting || '').replace(/\n/g, '\\n');
+                const note = `${cleanGreeting}\\n\\n-- Links --\\n${socialBlock}\\n\\nGet QRME: ${window.location.href}`;
+                
+                // Simple vCard 3.0 structure
+                let vcard = `BEGIN:VCARD\nVERSION:3.0\nN:;${data.name};;;\nFN:${data.name}\nORG:${data.company}\nEMAIL:${data.email}\nURL:${data.website}\nNOTE:${note}\nEND:VCARD`;
+
+                url = vcard;
+                title = 'Get vCard'; color = '#333';
+            }
+            else if (platform === 'linkedin') { url = data.linkedin; title = 'LinkedIn'; color = '#0077B5'; }
+            else if (platform === 'telegram') { url = `https://t.me/${data.telegram}`; title = 'Telegram'; color = '#24A1DE'; }
+            else if (platform === 'whatsapp') { const cleanNum = data.whatsapp.replace(/\D/g,''); url = `https://wa.me/${cleanNum}`; title = 'WhatsApp'; color = '#25D366'; }
+            else if (platform === 'twitter') { let handle = data.twitter.replace('@',''); url = `https://x.com/${handle}`; title = 'X / Twitter'; color = '#000000'; }
+            else if (platform === 'instagram') { url = `https://instagram.com/${data.instagram}`; title = 'Instagram'; color = '#C13584'; }
+            else if (platform === 'youtube') { url = `https://youtube.com/${data.youtube}`; title = 'YouTube'; color = '#FF0000'; }
+            else if (platform === 'discord') { url = data.discord; title = 'Discord'; color = '#5865F2'; }
+            else if (platform === 'github') { url = `https://github.com/${data.github}`; title = 'GitHub'; color = '#181717'; }
+            else if (platform === 'wifi') { url = `WIFI:T:WPA;S:${data.wifiSSID};P:${data.wifiPass};;`; title = 'Join WiFi'; color = '#5856D6'; }
+            else if (platform === 'bitcoin') { url = `bitcoin:${data.btc}`; title = 'Bitcoin Wallet'; color = '#F7931A'; }
+
+            currentUrl = url;
+            document.getElementById('qrcode').innerHTML = '';
+            document.getElementById('qr-title').innerText = title;
+            document.getElementById('qr-title').style.color = color;
+
+            qrCodeObj = new QRCode(document.getElementById("qrcode"), {
+                text: url, width: 180, height: 180,
+                colorDark : color, colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.L
+            });
+
+            switchView('qr');
+        }
+
+        function showHome() { switchView('home'); }
+        function showSetup() { switchView('setup'); }
+        async function shareProfile() {
+            if (navigator.share) {
+                try { await navigator.share({ title: 'My Profile', url: currentUrl }); } catch (err) {}
+            } else { alert('Sharing not supported'); }
+        }
+
+        window.addEventListener('load', init);
+    </script>
 </body>
 </html>
