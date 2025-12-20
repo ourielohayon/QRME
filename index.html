@@ -8,7 +8,6 @@
     <meta name="theme-color" content="#000000">
     <title>QRME</title>
 
-    <!-- FIXED: Added '/' for absolute path and '?v=3' to force phone to refresh image -->
     <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=3">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
     
@@ -128,7 +127,7 @@
         .share-app .icon-svg { fill: var(--share-app-color); }
 
         /* QR View */
-        #qr-view { gap: 25px; }
+        #qr-view { gap: 15px; }
         .qr-card {
             background: rgba(255,255,255,0.95); padding: 25px; border-radius: 24px;
             display: flex; flex-direction: column; align-items: center; gap: 15px;
@@ -143,6 +142,16 @@
             font-size: 14px; font-weight: 600; border-radius: 10px; width: 100%;
             display: flex; justify-content: center; align-items: center; gap: 6px;
         }
+
+        /* Open App Button (New Feature) */
+        .open-app-btn {
+            background: transparent; color: #007AFF; 
+            border: 2px solid #007AFF; padding: 10px;
+            font-size: 14px; font-weight: 600; border-radius: 10px; width: 100%;
+            display: flex; justify-content: center; align-items: center; gap: 6px;
+            margin-top: -5px; cursor: pointer;
+        }
+        .open-app-btn:active { background: rgba(0,122,255,0.1); }
 
         .back-btn {
             background: rgba(255, 255, 255, 0.15); color: #fff;
@@ -196,7 +205,14 @@
         .regen-btn { background: #eee; color: #555; font-size: 11px; padding: 6px 12px; border-radius: 6px; border: none; margin-top: 6px; cursor: pointer; width: 100%; }
 
         /* Footnote - Pure White */
-        .footnote { position: absolute; bottom: 15px; width: 100%; text-align: center; color: #ffffff; font-size: 11px; font-weight: 500; pointer-events: none; }
+        .footnote { 
+            position: absolute; bottom: 15px; width: 100%; 
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            color: #ffffff; font-size: 11px; font-weight: 500; pointer-events: auto; /* Changed to auto so link is clickable */
+        }
+        .footnote a { color: white; text-decoration: none; display: flex; align-items: center; }
+        .github-footer-icon { width: 14px; height: 14px; fill: white; opacity: 0.8; transition: opacity 0.2s; }
+        .github-footer-icon:hover { opacity: 1; }
     </style>
 </head>
 <body>
@@ -312,7 +328,7 @@
                     <span class="icon-label">X</span>
                 </div>
                 <div id="btn-instagram" class="app-icon instagram" onclick="openQR('instagram')">
-                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                     <span class="icon-label">Instagram</span>
                 </div>
                 <div id="btn-youtube" class="app-icon youtube" onclick="openQR('youtube')">
@@ -351,12 +367,21 @@
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
                     Share Link
                 </button>
+                <button id="open-app-btn" class="open-app-btn" onclick="openNativeApp()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    <span id="open-app-text">Open App</span>
+                </button>
             </div>
             <button class="back-btn" onclick="showHome()">&lt; Back</button>
         </div>
     </div>
 
-    <div class="footnote">created with ❤️ by Ouriel</div>
+    <div class="footnote">
+        created with ❤️ by Ouriel
+        <a href="https://github.com/ourielohayon/QRME" target="_blank" rel="noopener noreferrer">
+            <svg class="github-footer-icon" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+    </div>
 
     <script>
         const views = { setup: document.getElementById('setup-view'), home: document.getElementById('home-view'), qr: document.getElementById('qr-view') };
@@ -365,6 +390,9 @@
         const saveBtn = document.getElementById('save-btn');
         const greetingEditor = document.getElementById('greeting-editor');
         const greetingInput = document.getElementById('in-greeting');
+        const openAppBtn = document.getElementById('open-app-btn');
+        const openAppText = document.getElementById('open-app-text');
+        
         const inputs = {
             name: document.getElementById('in-name'),
             company: document.getElementById('in-company'),
@@ -387,6 +415,7 @@
         };
         let qrCodeObj = null;
         let currentUrl = '';
+        let currentDeepLink = '';
         let profilePhotoData = null;
         let selectedTheme = '#1c3e7d'; 
 
@@ -639,15 +668,22 @@
             }
             const data = JSON.parse(dataStr);
             let url = '', title = '', color = '';
+            
+            // Reset Button visibility
+            openAppBtn.style.display = 'flex';
+            openAppBtn.style.color = '#007AFF';
+            openAppBtn.style.borderColor = '#007AFF';
+            openAppText.innerText = 'Open App';
 
             updateBackground(platform);
 
             if (platform === 'share-app') {
                 url = window.location.href;
                 title = 'Get QRME'; color = '#4B0082';
+                openAppBtn.style.display = 'none'; // Hide for Share App
             }
             else if (platform === 'vcard') {
-                // vCard Logic: TEXT ONLY (No Photo) for 100% stability
+                // vCard Logic
                 let links = [];
                 if(data.linkedin) links.push(`LinkedIn: ${data.linkedin}`);
                 if(data.whatsapp) links.push(`WhatsApp: ${data.whatsapp}`);
@@ -664,22 +700,71 @@
                 const cleanGreeting = (data.greeting || '').replace(/\n/g, '\\n');
                 const note = `${cleanGreeting}\\n\\n-- Links --\\n${socialBlock}\\n\\nGet QRME: ${window.location.href}`;
                 
-                // Simple vCard 3.0 structure
                 let vcard = `BEGIN:VCARD\nVERSION:3.0\nN:;${data.name};;;\nFN:${data.name}\nORG:${data.company}\nEMAIL:${data.email}\nURL:${data.website}\nNOTE:${note}\nEND:VCARD`;
 
                 url = vcard;
                 title = 'Get vCard'; color = '#333';
+                openAppBtn.style.display = 'none'; // Hide for vCard
             }
-            else if (platform === 'linkedin') { url = data.linkedin; title = 'LinkedIn'; color = '#0077B5'; }
-            else if (platform === 'telegram') { url = `https://t.me/${data.telegram}`; title = 'Telegram'; color = '#24A1DE'; }
-            else if (platform === 'whatsapp') { const cleanNum = data.whatsapp.replace(/\D/g,''); url = `https://wa.me/${cleanNum}`; title = 'WhatsApp'; color = '#25D366'; }
-            else if (platform === 'twitter') { let handle = data.twitter.replace('@',''); url = `https://x.com/${handle}`; title = 'X / Twitter'; color = '#000000'; }
-            else if (platform === 'instagram') { url = `https://instagram.com/${data.instagram}`; title = 'Instagram'; color = '#C13584'; }
-            else if (platform === 'youtube') { url = `https://youtube.com/${data.youtube}`; title = 'YouTube'; color = '#FF0000'; }
-            else if (platform === 'discord') { url = data.discord; title = 'Discord'; color = '#5865F2'; }
-            else if (platform === 'github') { url = `https://github.com/${data.github}`; title = 'GitHub'; color = '#181717'; }
-            else if (platform === 'wifi') { url = `WIFI:T:WPA;S:${data.wifiSSID};P:${data.wifiPass};;`; title = 'Join WiFi'; color = '#5856D6'; }
-            else if (platform === 'bitcoin') { url = `bitcoin:${data.btc}`; title = 'Bitcoin Wallet'; color = '#F7931A'; }
+            else if (platform === 'linkedin') { 
+                url = data.linkedin; 
+                title = 'LinkedIn'; color = '#0077B5'; 
+                currentDeepLink = url; // LinkedIn usually handles https links
+            }
+            else if (platform === 'telegram') { 
+                url = `https://t.me/${data.telegram}`; 
+                title = 'Telegram'; color = '#24A1DE'; 
+                currentDeepLink = `tg://resolve?domain=${data.telegram}`;
+            }
+            else if (platform === 'whatsapp') { 
+                const cleanNum = data.whatsapp.replace(/\D/g,''); 
+                url = `https://wa.me/${cleanNum}`; 
+                title = 'WhatsApp'; color = '#25D366'; 
+                currentDeepLink = `whatsapp://send?phone=${cleanNum}`;
+            }
+            else if (platform === 'twitter') { 
+                let handle = data.twitter.replace('@',''); 
+                url = `https://x.com/${handle}`; 
+                title = 'X / Twitter'; color = '#000000'; 
+                currentDeepLink = `twitter://user?screen_name=${handle}`;
+            }
+            else if (platform === 'instagram') { 
+                url = `https://instagram.com/${data.instagram}`; 
+                title = 'Instagram'; color = '#C13584'; 
+                currentDeepLink = `instagram://user?username=${data.instagram}`;
+            }
+            else if (platform === 'youtube') { 
+                url = `https://youtube.com/${data.youtube}`; 
+                title = 'YouTube'; color = '#FF0000'; 
+                currentDeepLink = url; // YouTube app catches https links
+            }
+            else if (platform === 'discord') { 
+                url = data.discord; 
+                title = 'Discord'; color = '#5865F2'; 
+                currentDeepLink = url; // Discord app catches https invites
+            }
+            else if (platform === 'github') { 
+                url = `https://github.com/${data.github}`; 
+                title = 'GitHub'; color = '#181717'; 
+                openAppBtn.style.display = 'none'; // Hide for GitHub
+            }
+            else if (platform === 'wifi') { 
+                url = `WIFI:T:WPA;S:${data.wifiSSID};P:${data.wifiPass};;`; 
+                title = 'Join WiFi'; color = '#5856D6'; 
+                openAppBtn.style.display = 'none'; // Hide for WiFi
+            }
+            else if (platform === 'bitcoin') { 
+                url = `bitcoin:${data.btc}`; 
+                title = 'Bitcoin Wallet'; color = '#F7931A'; 
+                currentDeepLink = url; // Try generic bitcoin scheme
+                openAppText.innerText = 'Open Zengo'; // Explicit label
+            }
+
+            // Update Open App Button Style to match Brand
+            if (openAppBtn.style.display !== 'none') {
+                openAppBtn.style.color = color;
+                openAppBtn.style.borderColor = color;
+            }
 
             currentUrl = url;
             document.getElementById('qrcode').innerHTML = '';
@@ -693,6 +778,12 @@
             });
 
             switchView('qr');
+        }
+
+        function openNativeApp() {
+            if (currentDeepLink) {
+                window.location.href = currentDeepLink;
+            }
         }
 
         function showHome() { switchView('home'); }
