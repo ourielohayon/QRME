@@ -1,3 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>QRME</title>
+
+    <!-- App Icons -->
+    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=3">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        :root {
+            /* Theme Variables */
+            --theme-base: #1c3e7d; 
+            --bg-gradient: linear-gradient(180deg, var(--theme-base) 0%, #000000 100%);
+            
+            /* Brand Colors */
+            --linkedin-color: #0077B5; --telegram-color: #24A1DE; --whatsapp-color: #25D366;
+            --twitter-color: #000000; --instagram-color: #C13584; --youtube-color: #FF0000;
+            --discord-color: #5865F2; --github-color: #333333; --wifi-color: #5856D6;
+            --bitcoin-color: #F7931A; --vcard-color: #333333; --share-app-color: #4B0082;
+            --calendly-color: #006BFF; --custom-color: #FF9500;
+
+            --card-bg: rgba(255, 255, 255, 0.94); 
+            --text-primary: #000000;
+            --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { background-color: #000000; height: 100%; width: 100%; overflow: hidden; }
+        
+        body {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+            background: transparent; overflow: hidden;
+            display: flex; justify-content: center;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .app-background {
+            position: fixed; top: -10vh; left: -10vw; width: 120vw; height: 120vh;
+            background: var(--bg-gradient); z-index: -10; transition: background 0.6s ease;
+        }
+
+        #app { width: 100%; height: 100%; position: relative; display: flex; justify-content: center; align-items: center; }
+
+        /* Settings Icon */
+        .settings-icon {
+            position: absolute; top: 20px; right: 25px; z-index: 100;
+            color: rgba(255,255,255,0.6); padding: 10px; cursor: pointer;
+        }
+        .gear-svg { width: 24px; height: 24px; fill: currentColor; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+
+        /* Views */
+        .view {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transform: scale(0.95);
+            transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+        }
+        .view.active { opacity: 1; pointer-events: all; transform: scale(1); }
+
+        /* Profile */
+        .profile-container { margin-bottom: 15px; position: relative; }
+        .profile-pic {
+            width: 90px; height: 90px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2);
+            object-fit: cover; box-shadow: 0 8px 20px rgba(0,0,0,0.3); display: none; 
+        }
+        .profile-placeholder {
+            width: 90px; height: 90px; border-radius: 50%;
+            background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center;
+            font-size: 30px; color: rgba(255,255,255,0.8); border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        /* Copy Intro Button */
+        .copy-intro-btn {
+            background: rgba(255, 255, 255, 0.2); color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px;
+            padding: 12px 20px; width: 100%; max-width: 360px;
+            font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-bottom: 15px; cursor: pointer;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            transition: background 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .copy-intro-btn:active { background: rgba(255, 255, 255, 0.3); transform: scale(0.98); }
+        .copy-icon { width: 18px; height: 18px; }
+
+        /* Grid Layout */
+        .grid-container {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+            width: 100%; max-width: 360px; padding: 0 25px;
+            max-height: 60vh; overflow-y: auto;
+            -ms-overflow-style: none; scrollbar-width: none;
+        }
+        .grid-container::-webkit-scrollbar { display: none; }
+
+        .app-icon {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 18px; padding: 16px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer;
+            transition: transform 0.1s; height: 90px; 
+        }
+        .app-icon:active { transform: scale(0.96); opacity: 0.9; }
+
+        .icon-svg { width: 30px; height: 30px; display: block; }
+        .icon-label { font-size: 13px; font-weight: 600; text-align: center; color: #000; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+
+        .linkedin .icon-svg { fill: var(--linkedin-color); }
+        .telegram .icon-svg { fill: var(--telegram-color); }
+        .whatsapp .icon-svg { fill: var(--whatsapp-color); }
+        .twitter .icon-svg { fill: var(--twitter-color); }
+        .instagram .icon-svg { fill: var(--instagram-color); }
+        .youtube .icon-svg { fill: var(--youtube-color); }
+        .discord .icon-svg { fill: var(--discord-color); }
+        .github .icon-svg { fill: var(--github-color); }
+        .wifi .icon-svg { fill: var(--wifi-color); }
+        .bitcoin .icon-svg { fill: var(--bitcoin-color); }
+        .vcard .icon-svg { fill: var(--vcard-color); }
+        .share-app .icon-svg { fill: var(--share-app-color); }
+        .calendly .icon-svg { fill: var(--calendly-color); }
+        .custom .icon-svg { fill: var(--custom-color); }
+
+        /* QR View */
+        #qr-view { gap: 15px; }
+        .qr-card {
+            background: rgba(255,255,255,0.95); padding: 25px; border-radius: 24px;
+            display: flex; flex-direction: column; align-items: center; gap: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5); width: 260px;
+        }
+        #qrcode { width: 180px; height: 180px; background: white; border-radius: 4px; overflow: hidden; }
+        #qrcode img { width: 100%; height: 100%; display: block; }
+        .qr-label { font-size: 20px; font-weight: 700; text-align: center; margin: 0; }
+
+        .action-btn {
+            background: #007AFF; color: white; border: none; padding: 10px;
+            font-size: 14px; font-weight: 600; border-radius: 10px; width: 100%;
+            display: flex; justify-content: center; align-items: center; gap: 6px;
+            cursor: pointer;
+        }
+        
+        .open-app-btn {
+            background: transparent; color: #007AFF; 
+            border: 2px solid #007AFF; 
+            margin-top: -5px; 
+        }
+        .open-app-btn:active { background: rgba(0,122,255,0.1); }
+
+        .vcard-dl-btn {
+            background: #333; color: white;
+            margin-top: -5px; 
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.15); color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.15); padding: 8px 24px;
+            font-size: 15px; font-weight: 500; border-radius: 50px;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        }
+
+        /* Settings Form */
+        .setup-form {
+            background: #fff; padding: 16px; border-radius: 20px;
+            width: 95%; max-width: 400px;
+            max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .setup-form h2 { margin: 0 0 10px; color: #000; font-size: 20px; }
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+        .input-group { margin-bottom: 0; }
+        .full-width { grid-column: span 2; }
+
+        .input-group label { display: block; font-size: 10px; color: #888; margin-bottom: 2px; font-weight: 700; text-transform: uppercase; }
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%; padding: 8px; background: #f2f2f7; border: none; border-radius: 8px; font-size: 14px; -webkit-appearance: none;
+        }
+        
+        .intro-section { background: #f0f9ff; padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #e0f2fe; }
+        .intro-title { font-size: 12px; font-weight: 700; color: #007AFF; margin-bottom: 6px; }
+        .loc-row { display: flex; gap: 5px; }
+        .loc-btn { width: 35px; background: #007AFF; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        
+        .file-btn { background: #e5e5ea; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; text-align: center; width: 100%; display:block; }
+        .save-btn { width: 100%; padding: 12px; background: #000; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; margin-top: 5px; transition: background 0.3s; }
+
+        /* Data Section in Settings */
+        .data-section {
+            background: #f8f8f8; padding: 10px; border-radius: 10px; margin-top: 15px; border: 1px solid #eee;
+        }
+        .data-btns { display: flex; gap: 10px; margin-top: 5px; }
+        .data-btn { flex: 1; padding: 8px; background: #ddd; color: #333; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
+
+        /* Theme Selector */
+        .theme-section { margin-bottom: 10px; }
+        .theme-grid { display: flex; gap: 8px; justify-content: space-between; flex-wrap: wrap; }
+        .theme-swatch {
+            width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+            border: 2px solid transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .theme-swatch.active { border-color: #000; transform: scale(1.1); }
+        .color-picker-wrapper {
+            width: 32px; height: 32px; border-radius: 50%; overflow: hidden; position: relative; cursor: pointer; border: 2px solid #ddd; background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
+        }
+        .color-picker-input { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; opacity: 0; cursor: pointer; }
+
+        /* Greeting Editor */
+        #greeting-editor { display: none; margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px; }
+        .greeting-btn { background: #e0f2fe; color: #007AFF; margin-top: 5px; width: 100%; font-size: 12px; font-weight: 600; border-radius: 8px; padding: 8px; border:none; cursor: pointer; }
+        .regen-btn { background: #eee; color: #555; font-size: 11px; padding: 6px 12px; border-radius: 6px; border: none; margin-top: 6px; cursor: pointer; width: 100%; }
+
+        /* Footnote - Pure White */
+        .footnote { 
+            position: absolute; bottom: 15px; width: 100%; 
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            color: #ffffff; font-size: 11px; font-weight: 500; pointer-events: auto; 
+        }
+        .footnote a { color: white; text-decoration: none; display: flex; align-items: center; }
+        .github-footer-icon { width: 16px; height: 16px; fill: white; opacity: 0.8; transition: opacity 0.2s; }
+        .github-footer-icon:hover { opacity: 1; }
+
+        /* Dynamic Custom Links Styling */
+        .custom-link-row {
+            display: flex; gap: 5px; margin-bottom: 8px; align-items: center;
+        }
+        .add-link-btn {
+            background: #e0f2fe; color: #007AFF; border: 1px dashed #007AFF;
+            padding: 8px; border-radius: 8px; width: 100%; cursor: pointer; font-size: 12px; font-weight: 600;
+        }
+    </style>
+</head>
 <body>
 
     <div class="app-background" id="bg-layer"></div>
@@ -62,15 +302,15 @@
                 <!-- Custom Links Section -->
                 <div class="intro-section" style="margin-bottom: 10px; border-color: #eee;">
                     <div class="intro-title" style="color:#000;">Custom Links</div>
-                    <div class="form-grid">
-                        <div class="input-group full-width"><label>Calendly URL</label><input type="url" id="in-calendly" placeholder="https://calendly.com/your-name"></div>
-                        <div class="input-group"><label>Custom Label</label><input type="text" id="in-custom-label" placeholder="My Portfolio"></div>
-                        <div class="input-group"><label>Custom URL</label><input type="url" id="in-custom-url" placeholder="https://..."></div>
+                    <div id="custom-links-container">
+                        <!-- Dynamic Custom Links go here -->
                     </div>
+                    <button class="add-link-btn" onclick="addCustomField()">+ Add Another Link</button>
                 </div>
 
                 <div class="form-grid">
                     <div class="input-group"><label>LinkedIn (URL)</label><input type="url" id="in-linkedin"></div>
+                    <div class="input-group"><label>Calendly (URL)</label><input type="url" id="in-calendly" placeholder="calendly.com/..."></div>
                     <div class="input-group"><label>WhatsApp (Tel)</label><input type="tel" id="in-whatsapp"></div>
                     <div class="input-group"><label>Telegram (User)</label><input type="text" id="in-telegram"></div>
                     <div class="input-group"><label>X / Twitter (@)</label><input type="text" id="in-twitter"></div>
@@ -107,21 +347,20 @@
                 <span>Copy Intro</span>
             </button>
 
-            <div class="grid-container">
+            <div class="grid-container" id="main-grid">
                 <!-- vCard First -->
                 <div id="btn-vcard" class="app-icon vcard" onclick="openQR('vcard')">
                     <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                     <span class="icon-label">Get vCard</span>
                 </div>
                 
-                <div id="btn-calendly" class="app-icon calendly" onclick="openQR('calendly')">
-                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
-                    <span class="icon-label">Calendly</span>
-                </div>
-
                 <div id="btn-linkedin" class="app-icon linkedin" onclick="openQR('linkedin')">
                     <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
                     <span class="icon-label">LinkedIn</span>
+                </div>
+                <div id="btn-calendly" class="app-icon calendly" onclick="openQR('calendly')">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+                    <span class="icon-label">Calendly</span>
                 </div>
                 <div id="btn-whatsapp" class="app-icon whatsapp" onclick="openQR('whatsapp')">
                     <svg class="icon-svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-26.6l-6.7-4.2-69.8 18.3 18.6-68.1-4.4-6.9c-18.3-29.4-28-63.6-28-99.4 0-101.9 82.8-184.6 184.6-184.6 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
@@ -136,7 +375,7 @@
                     <span class="icon-label">X</span>
                 </div>
                 <div id="btn-instagram" class="app-icon instagram" onclick="openQR('instagram')">
-                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                     <span class="icon-label">Instagram</span>
                 </div>
                 <div id="btn-youtube" class="app-icon youtube" onclick="openQR('youtube')">
@@ -150,10 +389,6 @@
                 <div id="btn-github" class="app-icon github" onclick="openQR('github')">
                     <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                     <span class="icon-label">GitHub</span>
-                </div>
-                <div id="btn-custom" class="app-icon custom" onclick="openQR('custom')">
-                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
-                    <span id="label-custom" class="icon-label">Links</span>
                 </div>
                 <div id="btn-wifi" class="app-icon wifi" onclick="openQR('wifi')">
                     <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12.01 6c-3.19 0-6.22 1.17-8.66 3.32l1.45 1.76C6.54 9.63 9.17 8.5 12 8.5c2.8 0 5.48 1.1 7.23 2.58l1.43-1.78C18.2 7.15 15.19 6 12.01 6zm0 5c-1.89 0-3.69.73-5.07 2.05L12 19l5.06-5.96C15.68 11.74 13.9 11 12.01 11z"/></svg>
@@ -175,18 +410,20 @@
             <div class="qr-card">
                 <div id="qrcode"></div>
                 <div class="qr-label" id="qr-title">Title</div>
-                <button class="share-btn" onclick="shareProfile()">
+                
+                <button class="action-btn share-btn" onclick="shareProfile()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
                     Share Link
                 </button>
-                <button id="open-app-btn" class="open-app-btn" onclick="openNativeApp()">
+                
+                <button id="open-app-btn" class="action-btn open-app-btn" onclick="openNativeApp()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                     <span id="open-app-text">Open App</span>
                 </button>
-                <!-- NEW: Download vCard Button -->
-                <button id="vcard-dl-btn" class="vcard-dl-btn" onclick="downloadVCard()" style="display:none;">
+                
+                <button id="vcard-dl-btn" class="action-btn vcard-dl-btn" onclick="downloadVCard()" style="display:none;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    Save Contact / Share File
+                    Save Contact
                 </button>
             </div>
             <button class="back-btn" onclick="showHome()">&lt; Back</button>
@@ -239,9 +476,7 @@
             wifiSSID: document.getElementById('in-wifi-ssid'),
             wifiPass: document.getElementById('in-wifi-pass'),
             btc: document.getElementById('in-btc'),
-            calendly: document.getElementById('in-calendly'),
-            customLabel: document.getElementById('in-custom-label'),
-            customUrl: document.getElementById('in-custom-url')
+            calendly: document.getElementById('in-calendly')
         };
         let qrCodeObj = null;
         let currentUrl = '';
@@ -249,6 +484,7 @@
         let currentVCardBlob = null;
         let profilePhotoData = null;
         let selectedTheme = '#1c3e7d'; 
+        let customLinks = []; // Array to hold {label, url}
 
         const brandColors = {
             linkedin: '#0077B5',
@@ -298,9 +534,24 @@
                 inputs.wifiPass.value = parsed.wifiPass || '';
                 inputs.btc.value = parsed.btc || '';
                 inputs.calendly.value = parsed.calendly || '';
-                inputs.customLabel.value = parsed.customLabel || '';
-                inputs.customUrl.value = parsed.customUrl || '';
                 
+                // Handle Custom Links Array
+                if(parsed.customLinks && Array.isArray(parsed.customLinks)) {
+                    customLinks = parsed.customLinks;
+                } else if (parsed.customUrl) {
+                    // Backward compatibility
+                    customLinks = [{label: parsed.customLabel || 'Link', url: parsed.customUrl}];
+                } else {
+                    customLinks = [];
+                }
+                
+                // If no custom links, add 1 default empty one for the setup form
+                if (customLinks.length === 0) {
+                    addCustomField("", ""); 
+                } else {
+                    customLinks.forEach(link => addCustomField(link.label, link.url));
+                }
+
                 if (parsed.photo) {
                     profilePhotoData = parsed.photo;
                     document.getElementById('display-photo').src = profilePhotoData;
@@ -320,16 +571,58 @@
                 document.getElementById('btn-wifi').style.display = parsed.wifiSSID ? 'flex' : 'none';
                 document.getElementById('btn-bitcoin').style.display = parsed.btc ? 'flex' : 'none';
                 document.getElementById('btn-calendly').style.display = parsed.calendly ? 'flex' : 'none';
-                document.getElementById('btn-custom').style.display = parsed.customUrl ? 'flex' : 'none';
                 
-                if(parsed.customLabel) document.getElementById('label-custom').innerText = parsed.customLabel;
+                // Render Custom Links in Grid
+                renderCustomGridIcons();
 
                 document.getElementById('btn-copy-greeting').style.display = parsed.name ? 'flex' : 'none';
 
                 switchView('home');
             } else {
+                // If fresh start, show 1 empty custom link field
+                addCustomField();
                 switchView('setup');
             }
+        }
+
+        // Add a new custom link input row in Setup
+        function addCustomField(label = "", url = "") {
+            const container = document.getElementById('custom-links-container');
+            const div = document.createElement('div');
+            div.className = "custom-link-row";
+            div.innerHTML = `
+                <div style="flex:1;"><input type="text" placeholder="Label (e.g. Portfolio)" class="custom-label input-group" value="${label}" style="width:100%;margin:0;"></div>
+                <div style="flex:2;"><input type="url" placeholder="URL (https://...)" class="custom-url input-group" value="${url}" style="width:100%;margin:0;"></div>
+                <button onclick="this.parentElement.remove()" style="background:#ef4444; color:white; border:none; border-radius:6px; width:30px; height:30px; display:flex; align-items:center; justify-content:center; cursor:pointer;">×</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function renderCustomGridIcons() {
+            // Remove any existing dynamic custom icons
+            const oldIcons = document.querySelectorAll('.custom-dynamic');
+            oldIcons.forEach(el => el.remove());
+
+            const grid = document.getElementById('main-grid');
+            // Insert before the last item (Share App) or append
+            const shareAppBtn = document.getElementById('btn-share-app');
+            const wifiBtn = document.getElementById('btn-wifi'); // Insert before Wifi/Bitcoin usually nice
+
+            customLinks.forEach((link, index) => {
+                if(link.url) {
+                    const div = document.createElement('div');
+                    div.className = "app-icon custom-dynamic";
+                    // Custom Icon SVG
+                    div.innerHTML = `
+                        <svg class="icon-svg" viewBox="0 0 24 24" style="fill: #FF9500;"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+                        <span class="icon-label">${link.label || 'Link'}</span>
+                    `;
+                    div.onclick = function() { openQR('custom', index); };
+                    
+                    // Insert before the wifi button to keep utilities at bottom
+                    grid.insertBefore(div, wifiBtn);
+                }
+            });
         }
 
         function setTheme(color) {
@@ -342,7 +635,6 @@
 
         function updateTheme(color) {
             document.documentElement.style.setProperty('--theme-base', color);
-            // Apply only if NOT in QR View (which has brand colors)
             if (!views.qr.classList.contains('active')) {
                 bgLayer.style.background = `linear-gradient(180deg, ${color} 0%, #000000 100%)`;
             }
@@ -440,6 +732,15 @@
         }
 
         function saveData() {
+            // Collect Custom Links
+            const linkRows = document.querySelectorAll('.custom-link-row');
+            customLinks = [];
+            linkRows.forEach(row => {
+                const l = row.querySelector('.custom-label').value.trim();
+                const u = row.querySelector('.custom-url').value.trim();
+                if(u) customLinks.push({label: l, url: u});
+            });
+
             const data = {
                 theme: selectedTheme,
                 name: inputs.name.value.trim(),
@@ -462,8 +763,7 @@
                 wifiPass: inputs.wifiPass.value.trim(),
                 btc: inputs.btc.value.trim(),
                 calendly: inputs.calendly.value.trim(),
-                customLabel: inputs.customLabel.value.trim(),
-                customUrl: inputs.customUrl.value.trim(),
+                customLinks: customLinks,
                 photo: profilePhotoData
             };
             try {
@@ -538,7 +838,7 @@
             bgLayer.style.background = `linear-gradient(180deg, ${color} 0%, #000000 100%)`;
         }
 
-        function openQR(platform) {
+        function openQR(platform, extraData) {
             const dataStr = localStorage.getItem('qrme_data');
             if (!dataStr) {
                 alert("Please set up your profile first.");
@@ -564,13 +864,8 @@
             }
             else if (platform === 'vcard') {
                 // --- DUAL MODE VCARD LOGIC ---
-                
-                // 1. SIMPLE PAYLOAD FOR QR CODE (Scannable)
-                // Keeps the QR density low so cameras can read it easily
                 let simpleVCard = `BEGIN:VCARD\nVERSION:3.0\nN:;${data.name};;;\nFN:${data.name}\nORG:${data.company}\nEMAIL:${data.email}\nURL:${data.website}\nEND:VCARD`;
                 
-                // 2. RICH PAYLOAD FOR DOWNLOAD FILE (Complete)
-                // Includes Base64 Photo + All Links (except WiFi)
                 let noteContent = `${data.greeting || ''}\n\n-- Social Links --\n`;
                 if(data.linkedin) noteContent += `LinkedIn: ${data.linkedin}\n`;
                 if(data.whatsapp) noteContent += `WhatsApp: ${data.whatsapp}\n`;
@@ -582,13 +877,17 @@
                 if(data.github) noteContent += `GitHub: https://github.com/${data.github}\n`;
                 if(data.btc) noteContent += `BTC: ${data.btc}\n`;
                 if(data.calendly) noteContent += `Calendly: ${data.calendly}\n`;
-                if(data.customUrl) noteContent += `${data.customLabel || 'Link'}: ${data.customUrl}\n`;
+                // Add all custom links to vCard note
+                if(data.customLinks) {
+                    data.customLinks.forEach(cl => {
+                        noteContent += `${cl.label || 'Link'}: ${cl.url}\n`;
+                    });
+                }
                 
                 noteContent += `\nGet QRME: ${window.location.href}`;
                 
                 let richVCard = `BEGIN:VCARD\nVERSION:3.0\nN:;${data.name};;;\nFN:${data.name}\nORG:${data.company}\nEMAIL:${data.email}\nURL:${data.website}\nNOTE:${noteContent.replace(/\n/g, '\\n')}`;
                 
-                // Add Photo if exists (Strip header for standard VCF format)
                 if (data.photo) {
                     const base64Img = data.photo.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
                     richVCard += `\nPHOTO;ENCODING=b;TYPE=JPEG:${base64Img}`;
@@ -596,14 +895,19 @@
                 
                 richVCard += `\nEND:VCARD`;
 
-                url = simpleVCard; // QR gets simple version
+                url = simpleVCard; 
                 title = 'Get vCard'; color = '#333';
                 openAppBtn.style.display = 'none'; 
-                
-                // Show Download Button
                 vcardDlBtn.style.display = 'flex';
-                // Store rich vCard data for download function
                 currentVCardBlob = new Blob([richVCard], { type: 'text/vcard' });
+            }
+            else if (platform === 'custom') {
+                // extraData is the INDEX of the custom link
+                const link = customLinks[extraData];
+                url = link.url;
+                title = link.label || 'Link';
+                color = '#FF9500';
+                currentDeepLink = url; 
             }
             else if (platform === 'linkedin') { 
                 url = data.linkedin; 
@@ -613,11 +917,6 @@
             else if (platform === 'calendly') {
                 url = data.calendly;
                 title = 'Calendly'; color = '#006BFF';
-                currentDeepLink = url;
-            }
-            else if (platform === 'custom') {
-                url = data.customUrl;
-                title = data.customLabel || 'Link'; color = '#FF9500';
                 currentDeepLink = url;
             }
             else if (platform === 'telegram') { 
@@ -698,7 +997,6 @@
         function downloadVCard() {
             if (!currentVCardBlob) return;
             
-            // Native Share API (Mobile) - "Share File" behavior
             if (navigator.share && navigator.canShare) {
                 const file = new File([currentVCardBlob], "contact.vcf", { type: "text/vcard" });
                 if (navigator.canShare({ files: [file] })) {
@@ -711,7 +1009,6 @@
                 }
             }
 
-            // Fallback: Direct Download
             const url = URL.createObjectURL(currentVCardBlob);
             const a = document.createElement('a');
             a.href = url;
