@@ -756,8 +756,8 @@
             else if (platform === 'bitcoin') { 
                 url = `bitcoin:${data.btc}`; 
                 title = 'Bitcoin Wallet'; color = '#F7931A'; 
-                currentDeepLink = url; // Try generic bitcoin scheme
-                openAppText.innerText = 'Open Zengo'; // Explicit label
+                currentDeepLink = 'zengo://'; // Changed per user request
+                openAppText.innerText = 'Open Zengo'; 
             }
 
             // Update Open App Button Style to match Brand
