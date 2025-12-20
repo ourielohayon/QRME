@@ -173,12 +173,10 @@
             width: 95%; max-width: 400px;
             max-height: 90vh; overflow-y: auto;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            display: flex; flex-direction: column; gap: 10px; /* Space between sections */
+            display: flex; flex-direction: column; gap: 10px;
         }
-        /* Updated Title */
         .setup-form h2 { margin: 0 0 10px; color: #000; font-size: 20px; text-align: center; }
         
-        /* New Section Styling */
         .settings-section {
             background: linear-gradient(180deg, #f0f9ff 0%, #e0f7fa 100%);
             border-radius: 12px;
@@ -208,11 +206,9 @@
         .file-btn { background: #fff; border: 1px solid #cbd5e1; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; text-align: center; width: 100%; display:block; border: 1px solid #d1d5db; }
         .save-btn { width: 100%; padding: 12px; background: #000; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; margin-top: 5px; transition: background 0.3s; }
 
-        /* Data Section */
         .data-btns { display: flex; gap: 10px; margin-top: 5px; }
         .data-btn { flex: 1; padding: 8px; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
 
-        /* Theme Selector */
         .theme-grid { display: flex; gap: 8px; justify-content: space-between; flex-wrap: wrap; margin-top: 5px; }
         .theme-swatch {
             width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
@@ -224,12 +220,10 @@
         }
         .color-picker-input { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; opacity: 0; cursor: pointer; }
 
-        /* Greeting Editor */
         #greeting-editor { display: none; margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px; }
         .greeting-btn { background: #fff; color: #007AFF; margin-top: 5px; width: 100%; font-size: 12px; font-weight: 600; border-radius: 8px; padding: 8px; border: 1px solid #bae6fd; cursor: pointer; }
         .regen-btn { background: #f1f5f9; color: #64748b; font-size: 11px; padding: 6px 12px; border-radius: 6px; border: none; margin-top: 6px; cursor: pointer; width: 100%; }
 
-        /* Custom Links */
         .custom-link-row { display: flex; gap: 5px; margin-bottom: 8px; align-items: center; }
         .add-link-btn { background: #fff; color: #007AFF; border: 1px dashed #007AFF; padding: 8px; border-radius: 8px; width: 100%; cursor: pointer; font-size: 12px; font-weight: 600; }
 
@@ -257,7 +251,7 @@
             <div class="setup-form">
                 <h2>Set up my QRME</h2>
                 
-                <!-- Section 0: App Theme (Top as requested) -->
+                <!-- Section 0: App Theme -->
                 <div class="settings-section">
                     <div class="section-title">App Theme</div>
                     <div class="theme-grid">
@@ -474,119 +468,110 @@
             });
         }
 
-        const views = { setup: document.getElementById('setup-view'), home: document.getElementById('home-view'), qr: document.getElementById('qr-view') };
-        const bgLayer = document.getElementById('bg-layer');
-        const settingsBtn = document.getElementById('settings-btn');
-        const saveBtn = document.getElementById('save-btn');
-        const greetingEditor = document.getElementById('greeting-editor');
-        const greetingInput = document.getElementById('in-greeting');
-        const openAppBtn = document.getElementById('open-app-btn');
-        const openAppText = document.getElementById('open-app-text');
-        const vcardDlBtn = document.getElementById('vcard-dl-btn');
-        
-        const inputs = {
-            name: document.getElementById('in-name'),
-            company: document.getElementById('in-company'),
-            website: document.getElementById('in-website'),
-            email: document.getElementById('in-email'),
-            event: document.getElementById('in-event'),
-            location: document.getElementById('in-location'),
-            date: document.getElementById('in-date'),
-            linkedin: document.getElementById('in-linkedin'),
-            telegram: document.getElementById('in-telegram'),
-            whatsapp: document.getElementById('in-whatsapp'),
-            twitter: document.getElementById('in-twitter'),
-            instagram: document.getElementById('in-instagram'),
-            youtube: document.getElementById('in-youtube'),
-            discord: document.getElementById('in-discord'),
-            github: document.getElementById('in-github'),
-            wifiSSID: document.getElementById('in-wifi-ssid'),
-            wifiPass: document.getElementById('in-wifi-pass'),
-            btc: document.getElementById('in-btc'),
-            calendly: document.getElementById('in-calendly')
-        };
-        let qrCodeObj = null;
-        let currentUrl = '';
-        let currentDeepLink = '';
-        let currentVCardBlob = null;
-        let profilePhotoData = null;
-        let selectedTheme = '#1c3e7d'; 
-        let customLinks = []; // Array to hold {label, url}
+        // Global functions to prevent ReferenceError
+        window.qrCodeObj = null;
+        window.currentUrl = '';
+        window.currentDeepLink = '';
+        window.currentVCardBlob = null;
+        window.profilePhotoData = null;
+        window.selectedTheme = '#1c3e7d'; 
+        window.customLinks = [];
 
-        const brandColors = {
-            linkedin: '#0077B5',
-            telegram: '#24A1DE',
-            whatsapp: '#25D366',
-            twitter: '#000000',
-            instagram: '#C13584',
-            youtube: '#FF0000',
-            discord: '#5865F2',
-            github: '#333333',
-            wifi: '#5856D6',
-            bitcoin: '#F7931A',
-            vcard: '#333333',
-            'share-app': '#4B0082',
-            calendly: '#006BFF',
-            custom: '#FF9500'
+        window.inputs = {
+            name: null, company: null, website: null, email: null,
+            event: null, location: null, date: null,
+            linkedin: null, telegram: null, whatsapp: null,
+            twitter: null, instagram: null, youtube: null,
+            discord: null, github: null, wifiSSID: null, wifiPass: null,
+            btc: null, calendly: null
         };
 
-        // Make showSetup globally accessible
-        window.showSetup = function() {
-            switchView('setup');
+        window.brandColors = {
+            linkedin: '#0077B5', telegram: '#24A1DE', whatsapp: '#25D366',
+            twitter: '#000000', instagram: '#C13584', youtube: '#FF0000',
+            discord: '#5865F2', github: '#333333', wifi: '#5856D6',
+            bitcoin: '#F7931A', vcard: '#333333', 'share-app': '#4B0082',
+            calendly: '#006BFF', custom: '#FF9500'
         };
 
-        function init() {
-            if (!inputs.date.value) inputs.date.valueAsDate = new Date();
+        window.getInputs = function() {
+            // Helper to get fresh references
+            window.inputs.name = document.getElementById('in-name');
+            window.inputs.company = document.getElementById('in-company');
+            window.inputs.website = document.getElementById('in-website');
+            window.inputs.email = document.getElementById('in-email');
+            window.inputs.event = document.getElementById('in-event');
+            window.inputs.location = document.getElementById('in-location');
+            window.inputs.date = document.getElementById('in-date');
+            window.inputs.linkedin = document.getElementById('in-linkedin');
+            window.inputs.telegram = document.getElementById('in-telegram');
+            window.inputs.whatsapp = document.getElementById('in-whatsapp');
+            window.inputs.twitter = document.getElementById('in-twitter');
+            window.inputs.instagram = document.getElementById('in-instagram');
+            window.inputs.youtube = document.getElementById('in-youtube');
+            window.inputs.discord = document.getElementById('in-discord');
+            window.inputs.github = document.getElementById('in-github');
+            window.inputs.wifiSSID = document.getElementById('in-wifi-ssid');
+            window.inputs.wifiPass = document.getElementById('in-wifi-pass');
+            window.inputs.btc = document.getElementById('in-btc');
+            window.inputs.calendly = document.getElementById('in-calendly');
+            
+            return window.inputs;
+        }
+
+        window.init = function() {
+            window.getInputs();
+            if (!window.inputs.date.value) window.inputs.date.valueAsDate = new Date();
 
             const data = localStorage.getItem('qrme_data');
             if (data) {
                 const parsed = JSON.parse(data);
                 
-                if (parsed.theme) { selectedTheme = parsed.theme; updateTheme(selectedTheme); }
+                if (parsed.theme) { window.selectedTheme = parsed.theme; window.updateTheme(window.selectedTheme); }
 
-                inputs.name.value = parsed.name || '';
-                inputs.company.value = parsed.company || '';
-                inputs.website.value = parsed.website || '';
-                inputs.email.value = parsed.email || '';
-                inputs.event.value = parsed.event || '';
-                inputs.location.value = parsed.location || '';
-                if(parsed.date) inputs.date.value = parsed.date;
+                if (parsed.name) window.inputs.name.value = parsed.name;
+                if (parsed.company) window.inputs.company.value = parsed.company;
+                if (parsed.website) window.inputs.website.value = parsed.website;
+                if (parsed.email) window.inputs.email.value = parsed.email;
+                if (parsed.event) window.inputs.event.value = parsed.event;
+                if (parsed.location) window.inputs.location.value = parsed.location;
+                if (parsed.date) window.inputs.date.value = parsed.date;
                 
-                greetingInput.value = parsed.greeting || generateGreetingText(parsed);
+                // Set greeting
+                document.getElementById('in-greeting').value = parsed.greeting || window.generateGreetingText(parsed);
 
-                inputs.linkedin.value = parsed.linkedin || '';
-                inputs.telegram.value = parsed.telegram || '';
-                inputs.whatsapp.value = parsed.whatsapp || '';
-                inputs.twitter.value = parsed.twitter || '';
-                inputs.instagram.value = parsed.instagram || '';
-                inputs.youtube.value = parsed.youtube || '';
-                inputs.discord.value = parsed.discord || '';
-                inputs.github.value = parsed.github || '';
-                inputs.wifiSSID.value = parsed.wifiSSID || '';
-                inputs.wifiPass.value = parsed.wifiPass || '';
-                inputs.btc.value = parsed.btc || '';
-                inputs.calendly.value = parsed.calendly || '';
+                if (parsed.linkedin) window.inputs.linkedin.value = parsed.linkedin;
+                if (parsed.telegram) window.inputs.telegram.value = parsed.telegram;
+                if (parsed.whatsapp) window.inputs.whatsapp.value = parsed.whatsapp;
+                if (parsed.twitter) window.inputs.twitter.value = parsed.twitter;
+                if (parsed.instagram) window.inputs.instagram.value = parsed.instagram;
+                if (parsed.youtube) window.inputs.youtube.value = parsed.youtube;
+                if (parsed.discord) window.inputs.discord.value = parsed.discord;
+                if (parsed.github) window.inputs.github.value = parsed.github;
+                if (parsed.wifiSSID) window.inputs.wifiSSID.value = parsed.wifiSSID;
+                if (parsed.wifiPass) window.inputs.wifiPass.value = parsed.wifiPass;
+                if (parsed.btc) window.inputs.btc.value = parsed.btc;
+                if (parsed.calendly) window.inputs.calendly.value = parsed.calendly;
                 
-                // Handle Custom Links Array
+                // Handle Custom Links
                 if(parsed.customLinks && Array.isArray(parsed.customLinks)) {
-                    customLinks = parsed.customLinks;
+                    window.customLinks = parsed.customLinks;
                 } else if (parsed.customUrl) {
-                    // Backward compatibility
-                    customLinks = [{label: parsed.customLabel || 'Link', url: parsed.customUrl}];
+                    window.customLinks = [{label: parsed.customLabel || 'Link', url: parsed.customUrl}];
                 } else {
-                    customLinks = [];
+                    window.customLinks = [];
                 }
                 
-                // Render Custom Links inputs in Setup (only if they exist)
+                // Only render existing links. DO NOT add empty one.
                 const container = document.getElementById('custom-links-container');
-                container.innerHTML = ''; // Clear first
-                if (customLinks.length > 0) {
-                    customLinks.forEach(link => addCustomField(link.label, link.url));
+                container.innerHTML = '';
+                if (window.customLinks.length > 0) {
+                    window.customLinks.forEach(link => window.addCustomField(link.label, link.url));
                 }
 
                 if (parsed.photo) {
-                    profilePhotoData = parsed.photo;
-                    document.getElementById('display-photo').src = profilePhotoData;
+                    window.profilePhotoData = parsed.photo;
+                    document.getElementById('display-photo').src = window.profilePhotoData;
                     document.getElementById('display-photo').style.display = 'block';
                     document.getElementById('display-placeholder').style.display = 'none';
                 }
@@ -605,85 +590,106 @@
                 document.getElementById('btn-calendly').style.display = parsed.calendly ? 'flex' : 'none';
                 
                 // Render Custom Links in Grid
-                renderCustomGridIcons();
+                window.renderCustomGridIcons();
 
                 document.getElementById('btn-copy-greeting').style.display = parsed.name ? 'flex' : 'none';
 
-                switchView('home');
+                window.switchView('home');
             } else {
-                // If fresh start, show empty state
-                switchView('setup');
+                window.switchView('setup');
             }
         }
 
-        // Add a new custom link input row in Setup - Made global
+        window.showSetup = function() {
+            window.switchView('setup');
+        };
+
+        window.switchView = function(viewName) {
+            const views = { 
+                setup: document.getElementById('setup-view'), 
+                home: document.getElementById('home-view'), 
+                qr: document.getElementById('qr-view') 
+            };
+            Object.values(views).forEach(el => el.classList.remove('active'));
+            views[viewName].classList.add('active');
+            
+            const settingsBtn = document.getElementById('settings-btn');
+            if (viewName === 'home') {
+                settingsBtn.style.display = 'block';
+                window.updateTheme(window.selectedTheme); // Reset
+            } else {
+                settingsBtn.style.display = 'none';
+            }
+        }
+
+        // Add a new custom link input row in Setup
         window.addCustomField = function(label = "", url = "") {
             const container = document.getElementById('custom-links-container');
             const div = document.createElement('div');
             div.className = "custom-link-row";
             div.innerHTML = `
-                <div style="flex:1;"><input type="text" placeholder="Label (e.g. Portfolio)" class="custom-label input-group" value="${label.replace(/"/g, '&quot;')}" style="width:100%;margin:0;"></div>
-                <div style="flex:2;"><input type="url" placeholder="URL (https://...)" class="custom-url input-group" value="${url.replace(/"/g, '&quot;')}" style="width:100%;margin:0;"></div>
+                <div style="flex:1;"><input type="text" placeholder="Label" class="custom-label input-group" value="${label.replace(/"/g, '&quot;')}" style="width:100%;margin:0;"></div>
+                <div style="flex:2;"><input type="url" placeholder="URL" class="custom-url input-group" value="${url.replace(/"/g, '&quot;')}" style="width:100%;margin:0;"></div>
                 <button onclick="this.parentElement.remove()" style="background:#ef4444; color:white; border:none; border-radius:6px; width:30px; height:30px; display:flex; align-items:center; justify-content:center; cursor:pointer;">×</button>
             `;
             container.appendChild(div);
         }
 
-        function renderCustomGridIcons() {
-            // Remove any existing dynamic custom icons
+        window.renderCustomGridIcons = function() {
             const oldIcons = document.querySelectorAll('.custom-dynamic');
             oldIcons.forEach(el => el.remove());
 
             const grid = document.getElementById('main-grid');
-            // Insert before the last item (Share App) or append
             const wifiBtn = document.getElementById('btn-wifi'); 
 
-            customLinks.forEach((link, index) => {
+            window.customLinks.forEach((link, index) => {
                 if(link.url) {
                     const div = document.createElement('div');
                     div.className = "app-icon custom-dynamic";
-                    // Custom Icon SVG
                     div.innerHTML = `
                         <svg class="icon-svg" viewBox="0 0 24 24" style="fill: #FF9500;"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
                         <span class="icon-label">${link.label || 'Link'}</span>
                     `;
-                    div.onclick = function() { openQR('custom', index); };
-                    
-                    // Insert before the wifi button to keep utilities at bottom
+                    div.onclick = function() { window.openQR('custom', index); };
                     grid.insertBefore(div, wifiBtn);
                 }
             });
         }
 
         window.setTheme = function(color) {
-            selectedTheme = color;
-            updateTheme(color);
+            window.selectedTheme = color;
+            window.updateTheme(color);
             document.querySelectorAll('.theme-swatch').forEach(el => el.classList.remove('active'));
             const swatches = document.querySelectorAll('.theme-swatch');
             for (let s of swatches) { if (s.style.backgroundColor === color) s.classList.add('active'); }
         }
 
-        function updateTheme(color) {
+        window.updateTheme = function(color) {
             document.documentElement.style.setProperty('--theme-base', color);
-            if (!views.qr.classList.contains('active')) {
+            const bgLayer = document.getElementById('bg-layer');
+            const qrView = document.getElementById('qr-view');
+            // If NOT in QR view, update BG
+            if (!qrView.classList.contains('active')) {
                 bgLayer.style.background = `linear-gradient(180deg, ${color} 0%, #000000 100%)`;
             }
         }
 
         window.toggleGreetingEditor = function() {
-            greetingEditor.style.display = greetingEditor.style.display === 'block' ? 'none' : 'block';
+            const editor = document.getElementById('greeting-editor');
+            editor.style.display = editor.style.display === 'block' ? 'none' : 'block';
         }
 
         // Smart Greeting Generation - Updated Logic
-        function generateGreetingText(data) {
-            const name = data.name || inputs.name.value;
-            const company = data.company || inputs.company.value;
-            const website = data.website || inputs.website.value;
-            const event = data.event || inputs.event.value;
-            const location = data.location || inputs.location.value;
+        window.generateGreetingText = function(data) {
+            window.getInputs();
+            const name = data.name || window.inputs.name.value;
+            const company = data.company || window.inputs.company.value;
+            const website = data.website || window.inputs.website.value;
+            const event = data.event || window.inputs.event.value;
+            const location = data.location || window.inputs.location.value;
             
             // Reformat Date from YYYY-MM-DD to DD/MM/YYYY
-            let dateRaw = data.date || inputs.date.value;
+            let dateRaw = data.date || window.inputs.date.value;
             let dateFormatted = "";
             if(dateRaw) {
                 const parts = dateRaw.split('-');
@@ -709,20 +715,24 @@
 
             const appLink = "https://tryqrme.vercel.app/";
             
-            return `${parts.join(", ")}\n\nGet your own QRME at ${appLink}`;
+            // Only join non-empty parts
+            let mainText = parts.length > 0 ? parts.join(", ") : "";
+            if (mainText && !mainText.endsWith('.')) mainText += ".";
+
+            return `${mainText}\n\nGet your own QRME at ${appLink}`;
         }
 
         window.generateDefaultGreeting = function() {
-            // Need to pass current input values as 'data'
+            window.getInputs();
             const currentData = {
-                name: inputs.name.value,
-                company: inputs.company.value,
-                website: inputs.website.value,
-                event: inputs.event.value,
-                location: inputs.location.value,
-                date: inputs.date.value
+                name: window.inputs.name.value,
+                company: window.inputs.company.value,
+                website: window.inputs.website.value,
+                event: window.inputs.event.value,
+                location: window.inputs.location.value,
+                date: window.inputs.date.value
             };
-            greetingInput.value = generateGreetingText(currentData);
+            document.getElementById('in-greeting').value = window.generateGreetingText(currentData);
         }
 
         window.fetchLocation = function() {
@@ -735,14 +745,14 @@
                     const addr = data.address;
                     const city = addr.city || addr.town || addr.village || addr.municipality || addr.county || '';
                     const country = addr.country || '';
-                    if (city && country) inputs.location.value = `${city}, ${country}`;
-                    else if (country) inputs.location.value = country;
+                    if (city && country) document.getElementById('in-location').value = `${city}, ${country}`;
+                    else if (country) document.getElementById('in-location').value = country;
                 } catch (e) { alert('Manual entry required.'); }
             }, () => alert('Permission denied.'));
         }
 
         window.copyGreeting = function() {
-            const text = greetingInput.value;
+            const text = document.getElementById('in-greeting').value;
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).then(showCopyFeedback).catch(() => tryFallbackCopy(text));
             } else {
@@ -789,7 +799,7 @@
                         const w = img.width * minScale; const h = img.height * minScale;
                         const x = (size - w) / 2; const y = (size - h) / 2;
                         ctx.drawImage(img, x, y, w, h);
-                        profilePhotoData = canvas.toDataURL('image/jpeg', 0.8);
+                        window.profilePhotoData = canvas.toDataURL('image/jpeg', 0.8);
                     };
                     img.src = e.target.result;
                 };
@@ -798,57 +808,75 @@
         }
 
         window.saveData = function() {
+            window.getInputs();
             // Collect Custom Links
             const linkRows = document.querySelectorAll('.custom-link-row');
-            customLinks = [];
+            window.customLinks = [];
             linkRows.forEach(row => {
                 const l = row.querySelector('.custom-label').value.trim();
                 const u = row.querySelector('.custom-url').value.trim();
-                if(u) customLinks.push({label: l, url: u});
+                if(u) window.customLinks.push({label: l, url: u});
             });
+            
+            // Auto-update greeting if editor is hidden
+            const editor = document.getElementById('greeting-editor');
+            let greetingVal = document.getElementById('in-greeting').value;
+            if (editor.style.display === 'none' || editor.style.display === '') {
+                 // Regenerate based on latest inputs
+                 const currentData = {
+                    name: window.inputs.name.value,
+                    company: window.inputs.company.value,
+                    website: window.inputs.website.value,
+                    event: window.inputs.event.value,
+                    location: window.inputs.location.value,
+                    date: window.inputs.date.value
+                };
+                greetingVal = window.generateGreetingText(currentData);
+                document.getElementById('in-greeting').value = greetingVal;
+            }
 
             const data = {
-                theme: selectedTheme,
-                name: inputs.name.value.trim(),
-                company: inputs.company.value.trim(),
-                website: inputs.website.value.trim(),
-                email: inputs.email.value.trim(),
-                event: inputs.event.value.trim(),
-                location: inputs.location.value.trim(),
-                date: inputs.date.value.trim(),
-                greeting: greetingInput.value,
-                linkedin: inputs.linkedin.value.trim(),
-                telegram: inputs.telegram.value.trim(),
-                whatsapp: inputs.whatsapp.value.trim(),
-                twitter: inputs.twitter.value.trim(),
-                instagram: inputs.instagram.value.trim(),
-                youtube: inputs.youtube.value.trim(),
-                discord: inputs.discord.value.trim(),
-                github: inputs.github.value.trim(),
-                wifiSSID: inputs.wifiSSID.value.trim(),
-                wifiPass: inputs.wifiPass.value.trim(),
-                btc: inputs.btc.value.trim(),
-                calendly: inputs.calendly.value.trim(),
-                customLinks: customLinks,
-                photo: profilePhotoData
+                theme: window.selectedTheme,
+                name: window.inputs.name.value.trim(),
+                company: window.inputs.company.value.trim(),
+                website: window.inputs.website.value.trim(),
+                email: window.inputs.email.value.trim(),
+                event: window.inputs.event.value.trim(),
+                location: window.inputs.location.value.trim(),
+                date: window.inputs.date.value.trim(),
+                greeting: greetingVal,
+                linkedin: window.inputs.linkedin.value.trim(),
+                telegram: window.inputs.telegram.value.trim(),
+                whatsapp: window.inputs.whatsapp.value.trim(),
+                twitter: window.inputs.twitter.value.trim(),
+                instagram: window.inputs.instagram.value.trim(),
+                youtube: window.inputs.youtube.value.trim(),
+                discord: window.inputs.discord.value.trim(),
+                github: window.inputs.github.value.trim(),
+                wifiSSID: window.inputs.wifiSSID.value.trim(),
+                wifiPass: window.inputs.wifiPass.value.trim(),
+                btc: window.inputs.btc.value.trim(),
+                calendly: window.inputs.calendly.value.trim(),
+                customLinks: window.customLinks,
+                photo: window.profilePhotoData
             };
             try {
                 localStorage.setItem('qrme_data', JSON.stringify(data));
                 
+                const saveBtn = document.getElementById('save-btn');
                 const originalText = saveBtn.innerText;
                 saveBtn.innerText = "Settings Saved!";
                 saveBtn.style.background = "#25D366";
                 setTimeout(() => {
                     saveBtn.innerText = originalText;
                     saveBtn.style.background = "#000";
-                    init();
-                }, 1000);
+                    window.init(); // Refresh Home View
+                }, 800);
             } catch (e) {
                 alert("Photo too large! Use a smaller one.");
             }
         }
 
-        // Export Data to JSON File
         window.exportData = function() {
             const data = localStorage.getItem('qrme_data');
             if (!data) { alert("No data to export"); return; }
@@ -861,7 +889,6 @@
             URL.revokeObjectURL(url);
         }
 
-        // Import Data from JSON File
         window.importData = function(input) {
             const file = input.files[0];
             if (!file) return;
@@ -883,36 +910,20 @@
             reader.readAsText(file);
         }
 
-        function switchView(viewName) {
-            Object.values(views).forEach(el => el.classList.remove('active'));
-            views[viewName].classList.add('active');
-            
-            if (viewName === 'home') {
-                settingsBtn.style.display = 'block';
-                updateBackground('default'); 
-            } else {
-                settingsBtn.style.display = 'none';
-            }
-        }
-
-        function updateBackground(type) {
-            let color = selectedTheme;
-            if (type !== 'default' && brandColors[type]) {
-                color = brandColors[type];
-            }
-            bgLayer.style.background = `linear-gradient(180deg, ${color} 0%, #000000 100%)`;
-        }
-
         window.openQR = function(platform, extraData) {
             const dataStr = localStorage.getItem('qrme_data');
             if (!dataStr) {
                 alert("Please set up your profile first.");
-                showSetup();
+                window.showSetup();
                 return;
             }
             const data = JSON.parse(dataStr);
             let url = '', title = '', color = '';
             
+            const openAppBtn = document.getElementById('open-app-btn');
+            const openAppText = document.getElementById('open-app-text');
+            const vcardDlBtn = document.getElementById('vcard-dl-btn');
+
             // Reset UI
             openAppBtn.style.display = 'flex';
             openAppBtn.style.color = '#007AFF';
@@ -920,7 +931,7 @@
             openAppText.innerText = 'Open App';
             vcardDlBtn.style.display = 'none'; 
 
-            updateBackground(platform);
+            window.updateTheme(platform);
 
             if (platform === 'share-app') {
                 url = window.location.href;
@@ -963,24 +974,24 @@
                 title = 'Get vCard'; color = '#333';
                 openAppBtn.style.display = 'none'; 
                 vcardDlBtn.style.display = 'flex';
-                currentVCardBlob = new Blob([richVCard], { type: 'text/vcard' });
+                window.currentVCardBlob = new Blob([richVCard], { type: 'text/vcard' });
             }
             else if (platform === 'custom') {
-                const link = customLinks[extraData];
+                const link = window.customLinks[extraData];
                 url = link.url;
                 title = link.label || 'Link';
                 color = '#FF9500';
-                currentDeepLink = url; 
+                window.currentDeepLink = url; 
             }
             else if (platform === 'linkedin') { 
                 url = data.linkedin; 
                 title = 'LinkedIn'; color = '#0077B5'; 
-                currentDeepLink = url;
+                window.currentDeepLink = url;
             }
             else if (platform === 'calendly') {
                 url = data.calendly;
                 title = 'Calendly'; color = '#006BFF';
-                currentDeepLink = url;
+                window.currentDeepLink = url;
             }
             else if (platform === 'custom') {
                // Legacy fallback
@@ -988,34 +999,34 @@
             else if (platform === 'telegram') { 
                 url = `https://t.me/${data.telegram}`; 
                 title = 'Telegram'; color = '#24A1DE'; 
-                currentDeepLink = `tg://resolve?domain=${data.telegram}`;
+                window.currentDeepLink = `tg://resolve?domain=${data.telegram}`;
             }
             else if (platform === 'whatsapp') { 
                 const cleanNum = data.whatsapp.replace(/\D/g,''); 
                 url = `https://wa.me/${cleanNum}`; 
                 title = 'WhatsApp'; color = '#25D366'; 
-                currentDeepLink = `whatsapp://send?phone=${cleanNum}`;
+                window.currentDeepLink = `whatsapp://send?phone=${cleanNum}`;
             }
             else if (platform === 'twitter') { 
                 let handle = data.twitter.replace('@',''); 
                 url = `https://x.com/${handle}`; 
                 title = 'X / Twitter'; color = '#000000'; 
-                currentDeepLink = `twitter://user?screen_name=${handle}`;
+                window.currentDeepLink = `twitter://user?screen_name=${handle}`;
             }
             else if (platform === 'instagram') { 
                 url = `https://instagram.com/${data.instagram}`; 
                 title = 'Instagram'; color = '#C13584'; 
-                currentDeepLink = `instagram://user?username=${data.instagram}`;
+                window.currentDeepLink = `instagram://user?username=${data.instagram}`;
             }
             else if (platform === 'youtube') { 
                 url = `https://youtube.com/${data.youtube}`; 
                 title = 'YouTube'; color = '#FF0000'; 
-                currentDeepLink = url;
+                window.currentDeepLink = url;
             }
             else if (platform === 'discord') { 
                 url = data.discord; 
                 title = 'Discord'; color = '#5865F2'; 
-                currentDeepLink = url;
+                window.currentDeepLink = url;
             }
             else if (platform === 'github') { 
                 url = `https://github.com/${data.github}`; 
@@ -1030,8 +1041,8 @@
             else if (platform === 'bitcoin') { 
                 url = `bitcoin:${data.btc}`; 
                 title = 'Bitcoin Wallet'; color = '#F7931A'; 
-                currentDeepLink = 'zengo://'; 
-                openAppText.innerText = 'Open Zengo'; 
+                window.currentDeepLink = 'zengo://'; 
+                document.getElementById('open-app-text').innerText = 'Open Zengo'; 
             }
 
             // Update Open App Button Style
@@ -1040,31 +1051,31 @@
                 openAppBtn.style.borderColor = color;
             }
 
-            currentUrl = url;
+            window.currentUrl = url;
             document.getElementById('qrcode').innerHTML = '';
             document.getElementById('qr-title').innerText = title;
             document.getElementById('qr-title').style.color = color;
 
-            qrCodeObj = new QRCode(document.getElementById("qrcode"), {
+            window.qrCodeObj = new QRCode(document.getElementById("qrcode"), {
                 text: url, width: 180, height: 180,
                 colorDark : color, colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.L
             });
 
-            switchView('qr');
+            window.switchView('qr');
         }
 
         window.openNativeApp = function() {
-            if (currentDeepLink) {
-                window.location.href = currentDeepLink;
+            if (window.currentDeepLink) {
+                window.location.href = window.currentDeepLink;
             }
         }
 
         window.downloadVCard = function() {
-            if (!currentVCardBlob) return;
+            if (!window.currentVCardBlob) return;
             
             if (navigator.share && navigator.canShare) {
-                const file = new File([currentVCardBlob], "contact.vcf", { type: "text/vcard" });
+                const file = new File([window.currentVCardBlob], "contact.vcf", { type: "text/vcard" });
                 if (navigator.canShare({ files: [file] })) {
                     navigator.share({
                         files: [file],
@@ -1075,7 +1086,7 @@
                 }
             }
 
-            const url = URL.createObjectURL(currentVCardBlob);
+            const url = URL.createObjectURL(window.currentVCardBlob);
             const a = document.createElement('a');
             a.href = url;
             a.download = "contact.vcf";
@@ -1083,17 +1094,15 @@
             URL.revokeObjectURL(url);
         }
 
-        function showHome() { switchView('home'); }
-        // Ensure showSetup is globally accessible 
-        // (It was already assigned to window above, keeping this consistent)
+        window.showHome = function() { window.switchView('home'); }
         
-        async function shareProfile() {
+        window.shareProfile = async function() {
             if (navigator.share) {
-                try { await navigator.share({ title: 'My Profile', url: currentUrl }); } catch (err) {}
+                try { await navigator.share({ title: 'My Profile', url: window.currentUrl }); } catch (err) {}
             } else { alert('Sharing not supported'); }
         }
 
-        window.addEventListener('load', init);
+        window.addEventListener('load', window.init);
     </script>
 </body>
 </html>
