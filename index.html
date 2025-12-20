@@ -8,8 +8,8 @@
     <meta name="theme-color" content="#000000">
     <title>QRME</title>
 
-    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=4">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4">
+    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=5">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=5">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -58,10 +58,10 @@
 
         .camera-icon {
             position: absolute; top: 20px; right: 25px; z-index: 100;
-            color: rgba(255,255,255,0.8); padding: 10px; cursor: pointer;
-            display: none;
+            color: rgba(255,255,255,0.9); padding: 10px; cursor: pointer;
+            display: none; /* Hidden by default */
         }
-        .camera-svg { width: 26px; height: 26px; fill: currentColor; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+        .camera-svg { width: 28px; height: 28px; fill: currentColor; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
         #camera-input { display: none; }
 
         /* Views */
@@ -230,6 +230,7 @@
 
         /* Greeting Editor */
         #greeting-editor { display: none; margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px; width: 100%; }
+        /* Fix Width */
         #in-greeting { width: 100%; box-sizing: border-box; font-family: sans-serif; min-height: 80px; }
         
         .greeting-btn { background: #fff; color: #007AFF; margin-top: 5px; width: 100%; font-size: 12px; font-weight: 600; border-radius: 8px; padding: 10px; border: 1px solid #bae6fd; cursor: pointer; }
@@ -259,7 +260,7 @@
             <svg class="gear-svg" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
         </div>
 
-        <!-- Camera Icon (Solid style) -->
+        <!-- Camera Icon (Shown in QR View) -->
         <div id="camera-btn" class="camera-icon" onclick="document.getElementById('camera-input').click()">
             <svg class="camera-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm8-12H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H4V4h5l2-2h4l2 2h3v12z"/></svg>
         </div>
@@ -409,13 +410,28 @@
                 </button>
             </div>
             <button class="back-btn" onclick="window.showHome()">&lt; Back</button>
+            
+            <!-- Camera Button Top Right -->
+            <div id="camera-btn" class="camera-icon" onclick="document.getElementById('camera-input').click()">
+                <svg class="camera-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm8-12H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H4V4h5l2-2h4l2 2h3v12z"/></svg>
+            </div>
+            <input type="file" id="camera-input" accept="image/*" capture="environment">
         </div>
     </div>
 
     <div class="footnote">created with ❤️ by Ouriel</div>
 
     <script>
-        // Define global functions first
+        // Offline Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('SW registered'))
+                    .catch(err => console.log('SW failed', err));
+            });
+        }
+
+        // Global State
         window.greetingDirty = false;
         window.inputs = {};
         window.qrCodeObj = null;
@@ -426,7 +442,8 @@
         window.selectedTheme = '#1c3e7d'; 
         window.customLinks = [];
 
-        function getInputs() {
+        // Global DOM Elements Reference (populated in init)
+        window.getInputs = function() {
             window.inputs = {
                 name: document.getElementById('in-name'),
                 company: document.getElementById('in-company'),
@@ -452,7 +469,7 @@
         }
 
         window.init = function() {
-            getInputs();
+            window.getInputs();
             if (window.inputs.date && !window.inputs.date.value) {
                 window.inputs.date.valueAsDate = new Date();
             }
@@ -553,38 +570,25 @@
             container.appendChild(div);
         }
 
-        window.renderHomeGrid = function(data) {
+        window.renderCustomGridIcons = function() {
+            const oldIcons = document.querySelectorAll('.custom-dynamic');
+            oldIcons.forEach(el => el.remove());
+
             const grid = document.getElementById('main-grid');
-            grid.innerHTML = ''; 
+            const wifiBtn = document.getElementById('btn-wifi'); 
 
-            const createIcon = (id, label, iconPath, onClick) => {
-                const div = document.createElement('div');
-                div.className = `app-icon ${id}`;
-                div.innerHTML = `<svg class="icon-svg" viewBox="0 0 24 24" style="fill:var(--${id}-color, #333)">${iconPath}</svg><span class="icon-label">${label}</span>`;
-                div.onclick = onClick;
-                return div;
-            };
-
-            grid.appendChild(createIcon('vcard', 'Get vCard', '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>', () => window.openQR('vcard')));
-            
-            if(data.linkedin) grid.appendChild(createIcon('linkedin', 'LinkedIn', '<path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>', () => window.openQR('linkedin')));
-            if(data.calendly) grid.appendChild(createIcon('calendly', 'Calendly', '<path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>', () => window.openQR('calendly')));
-            if(data.whatsapp) grid.appendChild(createIcon('whatsapp', 'WhatsApp', '<path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-26.6l-6.7-4.2-69.8 18.3 18.6-68.1-4.4-6.9c-18.3-29.4-28-63.6-28-99.4 0-101.9 82.8-184.6 184.6-184.6 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" transform="scale(0.045) translate(0,0)"/>', () => window.openQR('whatsapp')));
-            if(data.telegram) grid.appendChild(createIcon('telegram', 'Telegram', '<path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.97 9.288c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.293-.605.293l.213-3.053 5.56-5.022c.242-.213-.054-.334-.373-.121l-6.869 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.553-4.458c.538-.196 1.006.128.847.932z"/>', () => window.openQR('telegram')));
-            if(data.twitter) grid.appendChild(createIcon('twitter', 'X / Twitter', '<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>', () => window.openQR('twitter')));
-            if(data.instagram) grid.appendChild(createIcon('instagram', 'Instagram', '<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>', () => window.openQR('instagram')));
-            if(data.youtube) grid.appendChild(createIcon('youtube', 'YouTube', '<path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>', () => window.openQR('youtube')));
-            if(data.discord) grid.appendChild(createIcon('discord', 'Discord', '<path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z"/>', () => window.openQR('discord')));
-            if(data.github) grid.appendChild(createIcon('github', 'GitHub', '<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>', () => window.openQR('github')));
-            
             window.customLinks.forEach((link, index) => {
-                grid.appendChild(createIcon('custom', link.label || 'Link', '<path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>', () => window.openQR('custom', index)));
+                if(link.url) {
+                    const div = document.createElement('div');
+                    div.className = "app-icon custom-dynamic";
+                    div.innerHTML = `
+                        <svg class="icon-svg" viewBox="0 0 24 24" style="fill: #FF9500;"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+                        <span class="icon-label">${link.label || 'Link'}</span>
+                    `;
+                    div.onclick = function() { window.openQR('custom', index); };
+                    grid.insertBefore(div, wifiBtn);
+                }
             });
-
-            if(data.wifiSSID) grid.appendChild(createIcon('wifi', 'WiFi', '<path d="M12.01 6c-3.19 0-6.22 1.17-8.66 3.32l1.45 1.76C6.54 9.63 9.17 8.5 12 8.5c2.8 0 5.48 1.1 7.23 2.58l1.43-1.78C18.2 7.15 15.19 6 12.01 6zm0 5c-1.89 0-3.69.73-5.07 2.05L12 19l5.06-5.96C15.68 11.74 13.9 11 12.01 11z"/>', () => window.openQR('wifi')));
-            if(data.btc) grid.appendChild(createIcon('bitcoin', 'Bitcoin Wallet', '<path d="M16.5 10.5C16.5 9.12 15.38 8 14 8H10V6H8V8H6V10H8V16H6V18H8V20H10V18H13.5C15.43 18 17 16.43 17 14.5C17 13.1 16.18 11.9 15 11.3C15.9 10.9 16.5 10.1 16.5 9.25V10.5M10 10H13.5C14.05 10 14.5 10.45 14.5 11C14.5 11.55 14.05 12 13.5 12H10V10M10 16V14H13.5C14.05 14 14.5 14.45 14.5 15C14.5 15.55 14.05 16 13.5 16H10Z"/>', () => window.openQR('bitcoin')));
-            
-            grid.appendChild(createIcon('share-app', 'Get QRME', '<path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>', () => window.openQR('share-app')));
         }
 
         window.setTheme = function(color) {
