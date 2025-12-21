@@ -8,8 +8,8 @@
     <meta name="theme-color" content="#000000">
     <title>QRME</title>
 
-    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=120">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=120">
+    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=135">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=135">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -68,7 +68,6 @@
         }
         .view.active { opacity: 1; pointer-events: all; transform: scale(1); }
 
-        /* Profile Area */
         .profile-container { margin-bottom: 5px; position: relative; cursor: pointer; transition: transform 0.2s; }
         .profile-container:active { transform: scale(0.92); }
         .profile-pic {
@@ -83,7 +82,6 @@
         }
         .profile-placeholder svg { width: 40px; height: 40px; fill: rgba(255,255,255,0.6); }
 
-        /* Profile Text Area */
         .profile-info { text-align: center; color: white; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
         .display-name { font-size: 20px; font-weight: 800; margin: 0; }
         .display-job-company { font-size: 13px; opacity: 0.8; margin: 2px 0 0; font-weight: 500; }
@@ -140,11 +138,7 @@
         }
         .action-btn:active { background: #0056b3; }
         
-        .open-app-btn {
-            background: transparent; color: #007AFF; 
-            border: 2px solid #007AFF; 
-            margin-top: -5px; 
-        }
+        .open-app-btn { background: transparent; color: #007AFF; border: 2px solid #007AFF; margin-top: -5px; }
 
         .back-btn {
             background: rgba(255, 255, 255, 0.15); color: #fff;
@@ -166,7 +160,7 @@
         .settings-section {
             background: linear-gradient(180deg, #f0f9ff 0%, #e0f7fa 100%);
             border-radius: 12px; padding: 0; border: 1px solid #e0e7ff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 5px; overflow: visible;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 10px; overflow: visible;
         }
         
         .section-header { padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
@@ -198,6 +192,9 @@
 
         .save-btn { width: 100%; padding: 14px; background: #000; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; margin-top: 10px; cursor: pointer; }
 
+        .data-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 5px; }
+        .data-btn { width: 100%; padding: 16px; background: #f2f2f7; color: #000; border: 1px solid #ddd; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; text-align: center; }
+
         .footnote { 
             position: absolute; bottom: 15px; width: 100%; 
             display: flex; justify-content: center; align-items: center; gap: 8px;
@@ -225,13 +222,9 @@
             <div class="setup-form">
                 <h2>Set up my QRME</h2>
                 
-                <!-- 1. App Theme -->
                 <div class="settings-section static visible">
                     <div class="section-header">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9s1.5.67 1.5 1.5S7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/></svg>
-                            App Theme
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z"/></svg> App Theme</div>
                     </div>
                     <div class="section-content">
                         <div class="theme-grid">
@@ -247,13 +240,9 @@
                     </div>
                 </div>
 
-                <!-- 2. Social Links -->
                 <div class="settings-section static visible">
                     <div class="section-header">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/></svg>
-                            Social Links
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/></svg> Social Links</div>
                     </div>
                     <div class="section-content">
                         <div class="form-grid">
@@ -270,13 +259,9 @@
                     </div>
                 </div>
 
-                <!-- 3. Custom Link -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-custom-link', this)">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
-                            Custom Link
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg> Custom Link</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-custom-link" class="section-content">
@@ -287,19 +272,16 @@
                     </div>
                 </div>
 
-                <!-- 4. Context & Greeting -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-context', this)">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg>
-                            Context & Greeting
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg> Context & Greeting</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-context" class="section-content">
                          <div class="form-grid">
                             <div class="input-group"><label>Event Name</label><input type="text" id="in-event"></div>
-                            <div class="input-group">
+                            <div class="input-group"><label>Date</label><input type="date" id="in-date"></div>
+                            <div class="input-group full-width">
                                 <label>Location</label>
                                 <div style="display:flex;gap:4px;">
                                     <input type="text" id="in-location" style="flex:1;">
@@ -307,17 +289,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="input-group" style="margin-top:10px;"><label>Greeting Text</label><textarea id="in-greeting" rows="3"></textarea></div>
+                        <div class="input-group" style="margin-top:10px;">
+                            <label>Greeting Text</label>
+                            <textarea id="in-greeting" rows="4"></textarea>
+                            <button onclick="window.generateDefaultGreeting()" style="background: #f1f5f9; border: none; font-size: 10px; color: #64748b; padding: 5px; width: 100%; border-radius: 4px; margin-top: 5px; cursor: pointer;">↺ Re-generate from Context</button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 5. Personal Details -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-personal', this)">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                            Personal Details
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg> Personal Details</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-personal" class="section-content">
@@ -335,13 +317,9 @@
                     </div>
                 </div>
 
-                <!-- 6. Utilities -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-utils', this)">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                            Utilities
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> Utilities</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-utils" class="section-content">
@@ -353,20 +331,16 @@
                     </div>
                 </div>
 
-                <!-- 7. Backup -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-backup', this)">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                            Data Backup
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Data Backup</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-backup" class="section-content">
                         <div class="data-btns">
-                            <button class="data-btn" onclick="window.exportData()">Export File</button>
-                            <button class="data-btn" onclick="document.getElementById('file-import').click()">Restore File</button>
-                            <input type="file" id="file-import" style="display:none" onchange="window.importData(this)">
+                            <button class="data-btn" onclick="window.exportData()">⬇ EXPORT BACKUP FILE</button>
+                            <button class="data-btn" onclick="document.getElementById('file-import').click()">⬆ RESTORE FROM FILE</button>
+                            <input type="file" id="file-import" accept=".json" style="display:none" onchange="window.importData(this)">
                         </div>
                     </div>
                 </div>
@@ -384,7 +358,6 @@
                 </div>
             </div>
 
-            <!-- Profile Info Box -->
             <div id="profile-info-box" class="profile-info">
                 <p id="display-name" class="display-name"></p>
                 <p id="display-job-company" class="display-job-company"></p>
@@ -407,13 +380,10 @@
             <div class="qr-card">
                 <div id="qrcode"></div>
                 <div class="qr-label" id="qr-title">Title</div>
-                
                 <button id="qr-action-btn" class="action-btn" onclick="window.shareProfile()">Share Link</button>
-                
                 <button id="open-app-btn" class="action-btn open-app-btn" onclick="window.openNativeApp()">
                     <span id="open-app-text">Open App</span>
                 </button>
-                
                 <button id="vcard-dl-btn" class="action-btn" onclick="window.downloadVCard()" style="display:none;background:#333;">Save Contact</button>
             </div>
             <button class="back-btn" onclick="window.showHome()" style="margin-top:20px;">&lt; Back</button>
@@ -430,20 +400,27 @@
     <script>
         // --- 1. GLOBAL HELPERS DEFINED AT TOP ---
         window.brandColors = {
-            linkedin: '#0077B5',
-            telegram: '#24A1DE',
-            whatsapp: '#25D366',
-            twitter: '#000000',
-            instagram: '#C13584',
-            youtube: '#FF0000',
-            discord: '#5865F2',
-            github: '#333333',
-            wifi: '#5856D6',
-            bitcoin: '#F7931A',
-            vcard: '#333333',
-            'share-app': '#4B0082',
-            calendly: '#006BFF',
-            custom: '#FF9500'
+            linkedin: '#0077B5', telegram: '#24A1DE', whatsapp: '#25D366', twitter: '#000000',
+            instagram: '#C13584', youtube: '#FF0000', discord: '#5865F2', github: '#333333',
+            wifi: '#5856D6', bitcoin: '#F7931A', vcard: '#333333', 'share-app': '#4B0082',
+            calendly: '#006BFF', custom: '#FF9500'
+        };
+
+        window.ICON_PATHS = {
+            whatsapp: '<path d="M12.031 21.496c-1.556 0-3.076-.416-4.403-1.202L4 21.5l1.233-4.502a9.42 9.42 0 0 1-1.328-4.832c.003-5.214 4.248-9.458 9.466-9.458a9.407 9.407 0 0 1 6.697 2.769 9.408 9.408 0 0 1 2.764 6.697c-.003 5.214-4.248-9.458-9.466 9.458zm5.17-6.571c-.284-.144-1.682-.83-1.944-.925-.262-.096-.453-.144-.643.144-.19.288-.737.925-.904 1.115-.166.19-.333.214-.617.072-.284-.144-1.198-.442-2.283-1.411-.843-.752-1.411-1.682-1.577-1.969-.166-.288-.018-.444.125-.586.128-.128.284-.333.427-.5.144-.166.19-.284.284-.476.096-.192.048-.36-.024-.5-.072-.144-.643-1.549-.881-2.126-.232-.558-.468-.481-.643-.49-.166-.007-.357-.01-.547-.01s-.499.072-.76.357c-.262.288-1.002.973-1.002 2.373s1.026 2.748 1.17 2.938c.144.19 2.019 3.082 4.891 4.322.684.296 1.217.472 1.632.604.686.218 1.311.187 1.805.114.551-.082 1.682-.688 1.92-1.352.238-.664.238-1.234.166-1.352-.072-.119-.262-.19-.547-.334z"/>',
+            telegram: '<path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.97 9.288c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.293-.605.293l.213-3.053 5.56-5.022c.242-.213-.054-.334-.373-.121l-6.869 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.553-4.458c.538-.196 1.006.128.847.932z"/>',
+            linkedin: '<path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>',
+            instagram: '<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>',
+            share: '<path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>'
+        };
+
+        window.updateBackground = function(type) {
+            const bgLayer = document.getElementById('bg-layer');
+            let color = window.selectedTheme || '#1c3e7d';
+            if (type !== 'home' && window.brandColors[type]) {
+                color = window.brandColors[type];
+            }
+            bgLayer.style.background = `linear-gradient(180deg, ${color} 0%, #000000 100%)`;
         };
 
         window.getInputs = function() {
@@ -455,6 +432,7 @@
                 email: document.getElementById('in-email'),
                 event: document.getElementById('in-event'),
                 location: document.getElementById('in-location'),
+                date: document.getElementById('in-date'),
                 linkedin: document.getElementById('in-linkedin'),
                 whatsapp: document.getElementById('in-whatsapp'),
                 telegram: document.getElementById('in-telegram'),
@@ -474,33 +452,54 @@
             return window.inputs;
         };
 
-        window.ICON_PATHS = {
-            whatsapp: '<path d="M12.031 21.496c-1.556 0-3.076-.416-4.403-1.202L4 21.5l1.233-4.502a9.42 9.42 0 0 1-1.328-4.832c.003-5.214 4.248-9.458 9.466-9.458a9.407 9.407 0 0 1 6.697 2.769 9.408 9.408 0 0 1 2.764 6.697c-.003 5.214-4.248 9.458-9.466 9.458zm5.17-6.571c-.284-.144-1.682-.83-1.944-.925-.262-.096-.453-.144-.643.144-.19.288-.737.925-.904 1.115-.166.19-.333.214-.617.072-.284-.144-1.198-.442-2.283-1.411-.843-.752-1.411-1.682-1.577-1.969-.166-.288-.018-.444.125-.586.128-.128.284-.333.427-.5.144-.166.19-.284.284-.476.096-.192.048-.36-.024-.5-.072-.144-.643-1.549-.881-2.126-.232-.558-.468-.481-.643-.49-.166-.007-.357-.01-.547-.01s-.499.072-.76.357c-.262.288-1.002.973-1.002 2.373s1.026 2.748 1.17 2.938c.144.19 2.019 3.082 4.891 4.322.684.296 1.217.472 1.632.604.686.218 1.311.187 1.805.114.551-.082 1.682-.688 1.92-1.352.238-.664.238-1.234.166-1.352-.072-.119-.262-.19-.547-.334z"/>',
-            telegram: '<path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.97 9.288c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.293-.605.293l.213-3.053 5.56-5.022c.242-.213-.054-.334-.373-.121l-6.869 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.553-4.458c.538-.196 1.006.128.847.932z"/>',
-            linkedin: '<path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>',
-            instagram: '<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>',
-            share: '<path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>'
+        window.generateGreetingText = function(data) {
+            const name = data.name || window.inputs.name.value || '...';
+            const company = data.company || window.inputs.company.value || '...';
+            const event = data.event || window.inputs.event.value || '...';
+            const location = data.location || window.inputs.location.value || '...';
+            const date = data.date || window.inputs.date.value || '...';
+            return `Hi, I'm ${name} from ${company}. We met on ${date} at ${event} in ${location}.\n\nConnect with me: ${window.location.href}`;
         };
 
-        window.updateBackground = function(type) {
-            const bgLayer = document.getElementById('bg-layer');
-            let color = window.selectedTheme || '#1c3e7d';
-            if (type !== 'home' && window.brandColors[type]) {
-                color = window.brandColors[type];
-            }
-            bgLayer.style.background = `linear-gradient(180deg, ${color} 0%, #000000 100%)`;
+        window.generateDefaultGreeting = function() {
+            window.inputs.greeting.value = window.generateGreetingText({});
+        };
+
+        window.fetchLocation = function() {
+            if (!navigator.geolocation) return;
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const { latitude, longitude } = pos.coords;
+                try {
+                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                    const data = await response.json();
+                    const addr = data.address;
+                    const city = addr.city || addr.town || addr.village || '';
+                    const country = addr.country || '';
+                    document.getElementById('in-location').value = `${city}, ${country}`;
+                } catch (e) {}
+            });
         };
 
         window.init = function() {
             window.getInputs();
             const dataStr = localStorage.getItem('qrme_data');
+            
+            // CONTEXT AUTO-REFRESH
+            const today = new Date().toISOString().split('T')[0];
+            window.inputs.date.value = today;
+            window.fetchLocation();
+
             window.switchView('home'); 
 
             if (dataStr) {
                 try {
                     const parsed = JSON.parse(dataStr);
                     if (parsed.theme) { window.selectedTheme = parsed.theme; }
-                    for (const key in window.inputs) { if (parsed[key] && window.inputs[key]) window.inputs[key].value = parsed[key]; }
+                    for (const key in window.inputs) { 
+                        if (key !== 'date' && key !== 'location' && parsed[key] && window.inputs[key]) {
+                            window.inputs[key].value = parsed[key]; 
+                        }
+                    }
                     
                     document.getElementById('display-name').innerText = parsed.name || '';
                     let jobComp = [parsed.jobTitle, parsed.company].filter(Boolean).join(' @ ');
@@ -517,9 +516,6 @@
                 } catch(e) { window.renderHomeGrid(null); }
             } else {
                 window.renderHomeGrid(null);
-                document.getElementById('display-name').innerText = '';
-                document.getElementById('display-job-company').innerText = '';
-                document.getElementById('btn-copy-greeting').style.display = 'none';
             }
             window.updateBackground('home');
         };
@@ -564,6 +560,31 @@
             }
         };
 
+        window.exportData = function() {
+            const dataStr = localStorage.getItem('qrme_data');
+            if (!dataStr) return;
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = "qrme_backup.json"; a.click();
+            URL.revokeObjectURL(url);
+        };
+
+        window.importData = function(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    localStorage.setItem('qrme_data', JSON.stringify(data));
+                    window.init();
+                    location.reload(); 
+                } catch (err) { alert('Error: Invalid file.'); }
+            };
+            reader.readAsText(file);
+        };
+
         window.saveData = function() {
             window.getInputs();
             const data = {
@@ -575,6 +596,7 @@
                 email: window.inputs.email.value.trim(),
                 event: window.inputs.event.value.trim(),
                 location: window.inputs.location.value.trim(),
+                date: window.inputs.date.value.trim(),
                 greeting: window.inputs.greeting.value,
                 linkedin: window.inputs.linkedin.value.trim(),
                 whatsapp: window.inputs.whatsapp.value.trim(),
@@ -647,21 +669,6 @@
                 content.style.display = 'block';
                 header.parentElement.classList.add('open');
             }
-        };
-
-        window.fetchLocation = function() {
-            if (!navigator.geolocation) return;
-            navigator.geolocation.getCurrentPosition(async (pos) => {
-                const { latitude, longitude } = pos.coords;
-                try {
-                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
-                    const data = await response.json();
-                    const addr = data.address;
-                    const city = addr.city || addr.town || addr.village || '';
-                    const country = addr.country || '';
-                    document.getElementById('in-location').value = `${city}, ${country}`;
-                } catch (e) {}
-            });
         };
 
         window.openQR = function(p) {
