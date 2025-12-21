@@ -8,8 +8,8 @@
     <meta name="theme-color" content="#000000">
     <title>QRME</title>
 
-    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=40">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=40">
+    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=42">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=42">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -18,7 +18,6 @@
             --theme-base: #1c3e7d; 
             --bg-gradient: linear-gradient(180deg, var(--theme-base) 0%, #000000 100%);
             
-            /* Brand Colors */
             --linkedin-color: #0077B5; --telegram-color: #24A1DE; --whatsapp-color: #25D366;
             --twitter-color: #000000; --instagram-color: #C13584; --youtube-color: #FF0000;
             --discord-color: #5865F2; --github-color: #333333; --wifi-color: #5856D6;
@@ -49,7 +48,6 @@
 
         #app { width: 100%; height: 100%; position: relative; display: flex; justify-content: center; align-items: center; }
 
-        /* Icons */
         .settings-icon {
             position: absolute; top: 20px; right: 25px; z-index: 100;
             color: rgba(255,255,255,0.6); padding: 10px; cursor: pointer;
@@ -64,7 +62,6 @@
         .camera-svg { width: 28px; height: 28px; fill: currentColor; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
         #camera-input { display: none; }
 
-        /* Views */
         .view {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -118,7 +115,22 @@
         .icon-svg { width: 30px; height: 30px; display: block; }
         .icon-label { font-size: 13px; font-weight: 600; text-align: center; color: #000; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
 
-        /* QR View */
+        /* Icon Colors */
+        .linkedin .icon-svg { fill: var(--linkedin-color); }
+        .telegram .icon-svg { fill: var(--telegram-color); }
+        .whatsapp .icon-svg { fill: var(--whatsapp-color); }
+        .twitter .icon-svg { fill: var(--twitter-color); }
+        .instagram .icon-svg { fill: var(--instagram-color); }
+        .youtube .icon-svg { fill: var(--youtube-color); }
+        .discord .icon-svg { fill: var(--discord-color); }
+        .github .icon-svg { fill: var(--github-color); }
+        .wifi .icon-svg { fill: var(--wifi-color); }
+        .bitcoin .icon-svg { fill: var(--bitcoin-color); }
+        .vcard .icon-svg { fill: var(--vcard-color); }
+        .share-app .icon-svg { fill: var(--share-app-color); }
+        .calendly .icon-svg { fill: var(--calendly-color); }
+        .custom .icon-svg { fill: var(--custom-color); }
+
         #qr-view { gap: 15px; position: relative; }
         .qr-card {
             background: rgba(255,255,255,0.95); padding: 25px; border-radius: 24px;
@@ -157,7 +169,7 @@
 
         /* Settings Form */
         .setup-form {
-            background: #fff; padding: 16px; border-radius: 20px;
+            background: #fff; padding: 20px; border-radius: 20px;
             width: 95%; max-width: 400px;
             max-height: 90vh; overflow-y: auto;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
@@ -172,9 +184,9 @@
             border-radius: 12px;
             padding: 0;
             border: 1px solid #e0e7ff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             margin-bottom: 5px;
-            overflow: visible; /* Prevent cut-off */
+            overflow: visible; /* Prevents cut-off shadows */
         }
         
         .section-header {
@@ -191,14 +203,13 @@
         }
         .chevron { transition: transform 0.3s ease; width: 16px; height: 16px; fill: #0369a1; }
         
-        /* Collapsible Logic */
         .section-content { display: none; padding: 0 15px 15px 15px; border-top: 1px solid rgba(0,0,0,0.05); margin-top: 0; }
         .settings-section.open .section-content { display: block; padding-top: 15px; }
         .settings-section.open .chevron { transform: rotate(180deg); }
 
         /* Static Visible Logic */
-        .settings-section.static .section-content { display: block; border-top: 1px solid rgba(0,0,0,0.05); margin-top: 5px; padding-top: 10px; }
-        .settings-section.static .section-header { cursor: default; }
+        .settings-section.static .section-content { display: block; padding-top: 5px; border-top: none; }
+        .settings-section.static .section-header { cursor: default; padding-bottom: 5px; }
         .settings-section.static .chevron { display: none; }
 
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 4px; }
@@ -207,7 +218,7 @@
 
         .input-group label { display: block; font-size: 10px; color: #555; margin-bottom: 4px; font-weight: 700; text-transform: uppercase; }
         .input-group input, .input-group select, .input-group textarea {
-            width: 100%; padding: 12px; background: #fff; border: 1px solid #ccc; 
+            width: 100%; padding: 10px; background: #fff; border: 1px solid #ccc; 
             border-radius: 8px; font-size: 14px; -webkit-appearance: none;
             box-sizing: border-box;
         }
@@ -222,25 +233,25 @@
         .data-btns { display: flex; gap: 10px; margin-top: 5px; }
         .data-btn { flex: 1; padding: 10px; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
 
-        /* Theme Grid */
+        /* Theme Grid: Tighter spacing, no scroll needed for standard phones */
         .theme-grid { 
-            display: flex; gap: 12px; 
-            overflow-x: auto; 
+            display: flex; gap: 8px; 
+            justify-content: space-between;
             flex-wrap: nowrap; 
             padding: 5px 2px;
-            -ms-overflow-style: none; 
-            scrollbar-width: none; 
             width: 100%;
+            overflow-x: auto;
+            -ms-overflow-style: none; scrollbar-width: none;
         }
         .theme-grid::-webkit-scrollbar { display: none; }
         
         .theme-swatch {
-            width: 40px; height: 40px; border-radius: 50%; cursor: pointer; flex-shrink: 0;
+            width: 32px; height: 32px; border-radius: 50%; cursor: pointer; flex-shrink: 0;
             border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         .theme-swatch.active { border-color: #000; transform: scale(1.1); }
         .color-picker-wrapper {
-            width: 40px; height: 40px; border-radius: 50%; overflow: hidden; position: relative; cursor: pointer; border: 2px solid #ddd; background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); flex-shrink: 0;
+            width: 32px; height: 32px; border-radius: 50%; overflow: hidden; position: relative; cursor: pointer; border: 2px solid #ddd; background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); flex-shrink: 0;
         }
         .color-picker-input { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; opacity: 0; cursor: pointer; }
 
@@ -273,7 +284,7 @@
             <svg class="gear-svg" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
         </div>
 
-        <!-- Camera Icon (Top Right) -->
+        <!-- Camera Icon (Solid Style) -->
         <div id="camera-btn" class="camera-icon" onclick="document.getElementById('camera-input').click()">
             <svg class="camera-svg" viewBox="0 0 512 512"><path d="M149.1 64.8L138.7 96H64C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H373.3L362.9 64.8C356.4 45.2 338.1 32 317.4 32H194.6c-20.7 0-39 13.2-45.5 32.8zM256 192a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/></svg>
         </div>
@@ -591,8 +602,7 @@
 
                 window.switchView('home');
             } catch (e) {
-                console.error("Init failed:", e);
-                alert("Error loading data: " + e.message);
+                console.error(e);
                 window.switchView('setup');
             }
         };
@@ -600,7 +610,7 @@
         window.showSetup = function() {
             window.switchView('setup');
             window.getInputs(); 
-            if(window.inputs.date && !window.inputs.date.value) window.inputs.date.valueAsDate = new Date();
+            if(window.inputs.date) window.inputs.date.valueAsDate = new Date();
             window.fetchLocation();
         };
 
@@ -900,13 +910,11 @@
                 setTimeout(() => {
                     saveBtn.innerText = originalText;
                     saveBtn.style.background = "#000";
-                    
-                    // RE-INIT INSTEAD OF RELOAD FOR STABILITY
+                    // DO NOT RELOAD. CALL INIT INSTEAD.
                     window.init(); 
-                    
-                }, 500);
+                }, 800);
             } catch (e) {
-                alert("Error saving data: " + e.message);
+                alert("Photo too large! Use a smaller one.");
             }
         }
 
@@ -932,7 +940,7 @@
                     if (data && typeof data === 'object') {
                         localStorage.setItem('qrme_data', JSON.stringify(data));
                         alert('Data restored successfully!');
-                        window.init();
+                        location.reload();
                     } else {
                         alert('Invalid file format.');
                     }
@@ -976,12 +984,23 @@
                 
                 let noteContent = `${data.greeting || ''}\n\n-- Social Links --\n`;
                 if(data.linkedin) noteContent += `LinkedIn: ${data.linkedin}\n`;
-                // Add other links...
+                if(data.whatsapp) noteContent += `WhatsApp: ${data.whatsapp}\n`;
+                if(data.telegram) noteContent += `Telegram: ${data.telegram}\n`;
+                if(data.twitter) noteContent += `Twitter: https://x.com/${data.twitter.replace('@','')}\n`;
+                if(data.instagram) noteContent += `Instagram: https://instagram.com/${data.instagram}\n`;
+                if(data.youtube) noteContent += `Youtube: https://youtube.com/${data.youtube}\n`;
+                if(data.github) noteContent += `GitHub: https://github.com/${data.github}\n`;
+                if(data.discord) noteContent += `Discord: ${data.discord}\n`;
+                if(data.wifiSSID) noteContent += `WiFi: ${data.wifiSSID}\n`;
+                if(data.btc) noteContent += `BTC: ${data.btc}\n`;
+                if(data.calendly) noteContent += `Calendly: ${data.calendly}\n`;
+                
                 if(data.customLinks) {
                     data.customLinks.forEach(cl => {
                         noteContent += `${cl.label || 'Link'}: ${cl.url}\n`;
                     });
                 }
+                
                 noteContent += `\nGet QRME: ${window.location.href}`;
                 
                 let richVCard = `BEGIN:VCARD\nVERSION:3.0\nN:;${data.name};;;\nFN:${data.name}\nORG:${data.company}\nEMAIL:${data.email}\nURL:${data.website}\nNOTE:${noteContent.replace(/\n/g, '\\n')}`;
@@ -1006,20 +1025,70 @@
                 color = '#FF9500';
                 window.currentDeepLink = url; 
             }
-            // ... (Other platforms follow standard pattern)
-            else if (platform === 'linkedin') { url = data.linkedin; title = 'LinkedIn'; color = '#0077B5'; window.currentDeepLink = url; }
-            else if (platform === 'calendly') { url = data.calendly; title = 'Calendly'; color = '#006BFF'; window.currentDeepLink = url; }
-            else if (platform === 'whatsapp') { const cleanNum = data.whatsapp.replace(/\D/g,''); url = `https://wa.me/${cleanNum}`; title = 'WhatsApp'; color = '#25D366'; window.currentDeepLink = `whatsapp://send?phone=${cleanNum}`; }
-            else if (platform === 'telegram') { url = `https://t.me/${data.telegram}`; title = 'Telegram'; color = '#24A1DE'; window.currentDeepLink = `tg://resolve?domain=${data.telegram}`; }
-            else if (platform === 'twitter') { let handle = data.twitter.replace('@',''); url = `https://x.com/${handle}`; title = 'X / Twitter'; color = '#000000'; window.currentDeepLink = `twitter://user?screen_name=${handle}`; }
-            else if (platform === 'instagram') { url = `https://instagram.com/${data.instagram}`; title = 'Instagram'; color = '#C13584'; window.currentDeepLink = `instagram://user?username=${data.instagram}`; }
-            else if (platform === 'youtube') { url = `https://youtube.com/${data.youtube}`; title = 'YouTube'; color = '#FF0000'; window.currentDeepLink = url; }
-            else if (platform === 'discord') { url = data.discord; title = 'Discord'; color = '#5865F2'; window.currentDeepLink = url; }
-            else if (platform === 'github') { url = `https://github.com/${data.github}`; title = 'GitHub'; color = '#181717'; window.currentDeepLink = url; }
-            else if (platform === 'wifi') { url = `WIFI:T:WPA;S:${data.wifiSSID};P:${data.wifiPass};;`; title = 'Join WiFi'; color = '#5856D6'; window.openAppBtn.style.display = 'none'; }
-            else if (platform === 'bitcoin') { url = `bitcoin:${data.btc}`; title = 'Bitcoin Wallet'; color = '#F7931A'; window.currentDeepLink = 'zengo://'; openAppText.innerText = 'Open Zengo'; }
-            else if (platform === 'share-app') { url = window.location.href; title = 'Get QRME'; color = '#4B0082'; openAppBtn.style.display = 'none'; }
+            else if (platform === 'linkedin') { 
+                url = data.linkedin; 
+                title = 'LinkedIn'; color = '#0077B5'; 
+                window.currentDeepLink = url;
+            }
+            else if (platform === 'calendly') {
+                url = data.calendly;
+                title = 'Calendly'; color = '#006BFF';
+                window.currentDeepLink = url;
+            }
+            else if (platform === 'telegram') { 
+                url = `https://t.me/${data.telegram}`; 
+                title = 'Telegram'; color = '#24A1DE'; 
+                window.currentDeepLink = `tg://resolve?domain=${data.telegram}`;
+            }
+            else if (platform === 'whatsapp') { 
+                const cleanNum = data.whatsapp.replace(/\D/g,''); 
+                url = `https://wa.me/${cleanNum}`; 
+                title = 'WhatsApp'; color = '#25D366'; 
+                window.currentDeepLink = `whatsapp://send?phone=${cleanNum}`;
+            }
+            else if (platform === 'twitter') { 
+                let handle = data.twitter.replace('@',''); 
+                url = `https://x.com/${handle}`; 
+                title = 'X / Twitter'; color = '#000000'; 
+                window.currentDeepLink = `twitter://user?screen_name=${handle}`;
+            }
+            else if (platform === 'instagram') { 
+                url = `https://instagram.com/${data.instagram}`; 
+                title = 'Instagram'; color = '#C13584'; 
+                window.currentDeepLink = `instagram://user?username=${data.instagram}`;
+            }
+            else if (platform === 'youtube') { 
+                url = `https://youtube.com/${data.youtube}`; 
+                title = 'YouTube'; color = '#FF0000'; 
+                window.currentDeepLink = url;
+            }
+            else if (platform === 'discord') { 
+                url = data.discord; 
+                title = 'Discord'; color = '#5865F2'; 
+                window.currentDeepLink = url;
+            }
+            else if (platform === 'github') { 
+                url = `https://github.com/${data.github}`; 
+                title = 'GitHub'; color = '#181717'; 
+                openAppBtn.style.display = 'none'; 
+            }
+            else if (platform === 'wifi') { 
+                url = `WIFI:T:WPA;S:${data.wifiSSID};P:${data.wifiPass};;`; 
+                title = 'Join WiFi'; color = '#5856D6'; 
+                openAppBtn.style.display = 'none'; 
+            }
+            else if (platform === 'bitcoin') { 
+                url = `bitcoin:${data.btc}`; 
+                title = 'Bitcoin Wallet'; color = '#F7931A'; 
+                window.currentDeepLink = 'zengo://'; 
+                document.getElementById('open-app-text').innerText = 'Open Zengo'; 
+            }
 
+            // Update Open App Button Style
+            if (openAppBtn.style.display !== 'none') {
+                openAppBtn.style.color = color;
+                openAppBtn.style.borderColor = color;
+            }
 
             window.currentUrl = url;
             document.getElementById('qrcode').innerHTML = '';
@@ -1043,6 +1112,19 @@
 
         window.downloadVCard = function() {
             if (!window.currentVCardBlob) return;
+            
+            if (navigator.share && navigator.canShare) {
+                const file = new File([window.currentVCardBlob], "contact.vcf", { type: "text/vcard" });
+                if (navigator.canShare({ files: [file] })) {
+                    navigator.share({
+                        files: [file],
+                        title: 'Save Contact',
+                        text: 'Add to contacts'
+                    }).catch(console.error);
+                    return;
+                }
+            }
+
             const url = URL.createObjectURL(window.currentVCardBlob);
             const a = document.createElement('a');
             a.href = url;
@@ -1059,15 +1141,8 @@
             } else { alert('Sharing not supported'); }
         }
 
-        window.addEventListener('load', function() {
-            const greetingArea = document.getElementById('in-greeting');
-            if(greetingArea) {
-                greetingArea.addEventListener('input', function() {
-                    window.greetingDirty = true;
-                });
-            }
-            window.init();
-        });
+        // INIT LOAD
+        window.addEventListener('load', window.init);
     </script>
 </body>
 </html>
