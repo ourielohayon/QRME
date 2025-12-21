@@ -192,6 +192,8 @@
         .footnote a { color: white; text-decoration: none; display: flex; align-items: center; }
         .github-footer-icon { width: 16px; height: 16px; fill: white; opacity: 0.8; transition: opacity 0.2s; }
         .github-footer-icon:hover { opacity: 1; }
+
+        .file-btn { background: #fff; border: 1px solid #ccc; padding: 12px; border-radius: 8px; font-size: 14px; cursor: pointer; text-align: center; width: 100%; display:block; }
     </style>
 </head>
 <body>
@@ -203,7 +205,7 @@
             <svg class="gear-svg" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
         </div>
 
-        <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;" onchange="window.handlePhotoUpload(this)">
+        <input type="file" id="camera-input" accept="image/*" style="display:none;" onchange="window.handlePhotoUpload(this)">
 
         <!-- Setup View -->
         <div id="setup-view" class="view">
@@ -245,7 +247,7 @@
                     </div>
                 </div>
 
-                <!-- 3. Custom Link (Collapsed, Separate Section) -->
+                <!-- 3. Custom Link (Collapsed) -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-custom-link', this)">
                         <div class="section-title">Custom Link</div>
@@ -288,6 +290,11 @@
                     </div>
                     <div id="sec-personal" class="section-content">
                         <div class="form-grid">
+                            <!-- RESTORED: Photo upload field -->
+                            <div class="input-group full-width">
+                                <label>Profile Photo</label>
+                                <label class="file-btn">Choose Photo<input type="file" id="in-photo-settings" accept="image/*" style="display: none;" onchange="window.handlePhotoUpload(this)"></label>
+                            </div>
                             <div class="input-group"><label>Full Name</label><input type="text" id="in-name"></div>
                             <div class="input-group"><label>Job Title</label><input type="text" id="in-job-title" placeholder="CEO / Designer"></div>
                             <div class="input-group full-width"><label>Company</label><input type="text" id="in-company"></div>
@@ -333,6 +340,7 @@
 
         <!-- Home View -->
         <div id="home-view" class="view">
+            <!-- Interactive Profile Picker -->
             <div class="profile-container" onclick="document.getElementById('camera-input').click()">
                 <img id="display-photo" class="profile-pic" alt="Profile">
                 <div id="display-placeholder" class="profile-placeholder">
@@ -367,12 +375,12 @@
     </div>
 
     <script>
-        // --- 1. GLOBAL HELPERS DEFINED IMMEDIATELY ---
+        // --- 1. DEFINE HELPERS AT TOP ---
         window.getInputs = function() {
             window.inputs = {
                 name: document.getElementById('in-name'),
-                jobTitle: document.getElementById('in-job-title'),
                 company: document.getElementById('in-company'),
+                jobTitle: document.getElementById('in-job-title'),
                 website: document.getElementById('in-website'),
                 email: document.getElementById('in-email'),
                 event: document.getElementById('in-event'),
@@ -407,7 +415,7 @@
         window.init = function() {
             window.getInputs();
             const dataStr = localStorage.getItem('qrme_data');
-            window.switchView('home'); 
+            window.switchView('home'); // ALWAYS START ON HOME
 
             if (dataStr) {
                 try {
@@ -426,7 +434,7 @@
             } else {
                 window.renderHomeGrid(null);
                 document.getElementById('btn-copy-greeting').style.display = 'none';
-                window.updateTheme('#1c3e7d'); 
+                window.updateTheme('#1c3e7d'); // Default Deep Blue
             }
         };
 
@@ -454,6 +462,7 @@
             };
 
             if (!data) {
+                // "Get QRME" Left, "+ Add QR" Right
                 grid.appendChild(createBlock('share-app', 'Get QRME', window.ICON_PATHS.share, () => window.openQR('share-app')));
                 grid.appendChild(createBlock('add-qr', '+ Add QR', '', () => window.showSetup(), true));
             } else {
@@ -472,8 +481,8 @@
             const data = {
                 theme: window.selectedTheme,
                 name: window.inputs.name.value.trim(),
-                jobTitle: window.inputs.jobTitle.value.trim(),
                 company: window.inputs.company.value.trim(),
+                jobTitle: window.inputs.jobTitle.value.trim(),
                 website: window.inputs.website.value.trim(),
                 email: window.inputs.email.value.trim(),
                 event: window.inputs.event.value.trim(),
