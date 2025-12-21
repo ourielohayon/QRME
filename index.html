@@ -8,8 +8,8 @@
     <meta name="theme-color" content="#000000">
     <title>QRME</title>
 
-    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=99">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=99">
+    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=101">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=101">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -183,7 +183,7 @@
         }
         .full-width { grid-column: span 2; }
         
-        /* Fixed Theme Grid */
+        /* Fixed Theme Grid: Fit All in Block */
         .theme-grid { 
             display: flex; gap: 4px; 
             justify-content: space-between;
@@ -398,7 +398,7 @@
     </div>
 
     <script>
-        // --- 1. DEFINE HELPERS AT TOP ---
+        // --- 1. GLOBAL HELPERS DEFINED AT TOP ---
         window.getInputs = function() {
             window.inputs = {
                 name: document.getElementById('in-name'),
@@ -484,7 +484,7 @@
                 return div;
             };
 
-            // Order: "Get QRME" Left, then primary action Right
+            // Order Logic: "Get QRME" Left, then next action Right
             if (!data) {
                 grid.appendChild(createBlock('share-app', 'Get QRME', window.ICON_PATHS.share, () => window.openQR('share-app')));
                 grid.appendChild(createBlock('add-qr', '+ Add QR', '', () => window.showSetup(), true));
@@ -497,6 +497,9 @@
                 if(data.telegram) grid.appendChild(createBlock('telegram', 'Telegram', window.ICON_PATHS.telegram, () => window.openQR('telegram')));
                 if(data.instagram) grid.appendChild(createBlock('instagram', 'Instagram', window.ICON_PATHS.instagram, () => window.openQR('instagram')));
                 if(data.calendly) grid.appendChild(createBlock('calendly', 'Calendly', '<path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>', () => window.openQR('calendly')));
+                if(data.wifiSSID) grid.appendChild(createBlock('wifi', 'WiFi', '<path d="M12.01 6c-3.19 0-6.22 1.17-8.66 3.32l1.45 1.76C6.54 9.63 9.17 8.5 12 8.5c2.8 0 5.48 1.1 7.23 2.58l1.43-1.78C18.2 7.15 15.19 6 12.01 6zm0 5c-1.89 0-3.69.73-5.07 2.05L12 19l5.06-5.96C15.68 11.74 13.9 11 12.01 11z"/>', () => window.openQR('wifi')));
+                if(data.btc) grid.appendChild(createBlock('bitcoin', 'Bitcoin Wallet', '<path d="M16.5 10.5C16.5 9.12 15.38 8 14 8H10V6H8V8H6V10H8V16H6V18H8V20H10V18H13.5C15.43 18 17 16.43 17 14.5C17 13.1 16.18 11.9 15 11.3C15.9 10.9 16.5 10.1 16.5 9.25V10.5M10 10H13.5C14.05 10 14.5 10.45 14.5 11C14.5 11.55 14.05 12 13.5 12H10V10M10 16V14H13.5C14.05 14 14.5 14.45 14.5 15C14.5 15.55 14.05 16 13.5 16H10Z" />', () => window.openQR('bitcoin')));
+                if(data.customUrl) grid.appendChild(createBlock('custom', data.customLabel || 'Link', '<path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>', () => window.openQR('custom')));
             }
         };
 
@@ -617,16 +620,16 @@
             if (p === 'instagram') { url = `https://instagram.com/${data.instagram}`; deepLink = `instagram://user?username=${data.instagram}`; }
             if (p === 'linkedin') { url = `https://linkedin.com/in/${data.linkedin}`; deepLink = url; }
             if (p === 'calendly') { url = data.calendly; deepLink = url; }
-            
-            window.currentUrl = url;
-            window.currentDeepLink = deepLink;
+            if (p === 'bitcoin') { url = `bitcoin:${data.btc}`; deepLink = 'bitcoin:'; }
+            if (p === 'wifi') { url = `WIFI:T:WPA;S:${data.wifiSSID};P:${data.wifiPass};;`; }
+            if (p === 'custom') { url = data.customUrl; }
 
             const qrBtn = document.getElementById('qr-action-btn');
             const qrTitle = document.getElementById('qr-title');
             const openBtn = document.getElementById('open-app-btn');
             const vcardBtn = document.getElementById('vcard-dl-btn');
 
-            openBtn.style.display = deepLink ? 'block' : 'none';
+            openBtn.style.display = (deepLink && p !== 'bitcoin') ? 'block' : 'none';
             vcardBtn.style.display = (p === 'vcard') ? 'block' : 'none';
             
             if (p === 'share-app') {
@@ -670,7 +673,7 @@
         window.showHome = function() { window.switchView('home'); };
         window.shareProfile = async function() {
             if (navigator.share) {
-                try { await navigator.share({ title: 'My Profile', url: window.currentUrl || window.location.href }); } catch (err) {}
+                try { await navigator.share({ title: 'My Profile', url: window.location.href }); } catch (err) {}
             } else { alert('Sharing not supported'); }
         };
 
