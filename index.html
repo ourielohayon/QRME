@@ -8,8 +8,8 @@
     <meta name="theme-color" content="#000000">
     <title>QRME</title>
 
-    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=101">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=101">
+    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=110">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=110">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -69,7 +69,7 @@
         .view.active { opacity: 1; pointer-events: all; transform: scale(1); }
 
         /* Profile Area */
-        .profile-container { margin-bottom: 15px; position: relative; cursor: pointer; transition: transform 0.2s; }
+        .profile-container { margin-bottom: 5px; position: relative; cursor: pointer; transition: transform 0.2s; }
         .profile-container:active { transform: scale(0.92); }
         .profile-pic {
             width: 100px; height: 100px; border-radius: 50%;
@@ -83,18 +83,24 @@
         }
         .profile-placeholder svg { width: 40px; height: 40px; fill: rgba(255,255,255,0.6); }
 
+        /* Profile Info */
+        .profile-info { text-align: center; color: white; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .display-name { font-size: 20px; font-weight: 800; margin: 0; }
+        .display-job-company { font-size: 13px; opacity: 0.8; margin: 2px 0 0; font-weight: 500; }
+
         .copy-intro-btn {
             background: rgba(255, 255, 255, 0.2); color: #fff;
             border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px;
             padding: 12px 20px; width: 100%; max-width: 360px;
             font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;
             margin-bottom: 15px; cursor: pointer; backdrop-filter: blur(10px);
+            transition: all 0.2s ease;
         }
 
         .grid-container {
             display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
             width: 100%; max-width: 360px; padding: 0 25px;
-            max-height: 60vh; overflow-y: auto;
+            max-height: 55vh; overflow-y: auto;
         }
 
         .app-icon {
@@ -112,8 +118,8 @@
         /* Onboarding Add QR Block Styling */
         .add-qr-block { border: 2px dashed rgba(0,122,255,0.3); background: rgba(255,255,255,0.85); }
         .add-qr-label { font-size: 22px; font-weight: 400; color: #000; }
-        .mini-icons { display: flex; gap: 6px; margin-top: 4px; }
-        .mini-icons svg { width: 14px; height: 14px; }
+        .mini-icons { display: flex; gap: 8px; margin-top: 4px; }
+        .mini-icons svg { width: 16px; height: 16px; }
 
         /* QR View */
         #qr-view { gap: 15px; }
@@ -164,7 +170,8 @@
         }
         
         .section-header { padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .section-title { font-size: 11px; font-weight: 800; color: #0369a1; text-transform: uppercase; }
+        .section-title { font-size: 11px; font-weight: 800; color: #0369a1; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        .section-title svg { width: 14px; height: 14px; fill: #0369a1; }
         .chevron { transition: transform 0.3s ease; width: 16px; height: 16px; fill: #0369a1; }
         
         .section-content { display: none; padding: 0 15px 15px 15px; border-top: 1px solid rgba(0,0,0,0.05); margin-top: 0; }
@@ -183,13 +190,7 @@
         }
         .full-width { grid-column: span 2; }
         
-        /* Fixed Theme Grid: Fit All in Block */
-        .theme-grid { 
-            display: flex; gap: 4px; 
-            justify-content: space-between;
-            padding: 8px 0;
-            width: 100%;
-        }
+        .theme-grid { display: flex; gap: 4px; justify-content: space-between; padding: 8px 0; width: 100%; }
         .theme-swatch, .color-picker-wrapper { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-shrink: 0; }
         .theme-swatch.active { border-color: #000; transform: scale(1.1); }
         .color-picker-wrapper { overflow: hidden; position: relative; background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); }
@@ -197,7 +198,6 @@
 
         .save-btn { width: 100%; padding: 14px; background: #000; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; margin-top: 10px; cursor: pointer; }
 
-        /* Footnote Styling */
         .footnote { 
             position: absolute; bottom: 15px; width: 100%; 
             display: flex; justify-content: center; align-items: center; gap: 8px;
@@ -227,7 +227,12 @@
                 
                 <!-- 1. App Theme -->
                 <div class="settings-section static visible">
-                    <div class="section-header"><div class="section-title">App Theme</div></div>
+                    <div class="section-header">
+                        <div class="section-title">
+                            <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9s1.5.67 1.5 1.5S7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/></svg>
+                            App Theme
+                        </div>
+                    </div>
                     <div class="section-content">
                         <div class="theme-grid">
                             <div class="theme-swatch" style="background:#1c3e7d" onclick="window.setTheme('#1c3e7d')"></div>
@@ -244,7 +249,12 @@
 
                 <!-- 2. Social Links -->
                 <div class="settings-section static visible">
-                    <div class="section-header"><div class="section-title">Social Links</div></div>
+                    <div class="section-header">
+                        <div class="section-title">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/></svg>
+                            Social Links
+                        </div>
+                    </div>
                     <div class="section-content">
                         <div class="form-grid">
                             <div class="input-group"><label>LinkedIn</label><input type="text" id="in-linkedin" placeholder="Username"></div>
@@ -263,7 +273,10 @@
                 <!-- 3. Custom Link -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-custom-link', this)">
-                        <div class="section-title">Custom Link</div>
+                        <div class="section-title">
+                            <svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+                            Custom Link
+                        </div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-custom-link" class="section-content">
@@ -277,7 +290,10 @@
                 <!-- 4. Context & Greeting -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-context', this)">
-                        <div class="section-title">Context & Greeting</div>
+                        <div class="section-title">
+                            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg>
+                            Context & Greeting
+                        </div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-context" class="section-content">
@@ -298,7 +314,10 @@
                 <!-- 5. Personal Details -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-personal', this)">
-                        <div class="section-title">Personal Details</div>
+                        <div class="section-title">
+                            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                            Personal Details
+                        </div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-personal" class="section-content">
@@ -319,7 +338,10 @@
                 <!-- 6. Utilities -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-utils', this)">
-                        <div class="section-title">Utilities</div>
+                        <div class="section-title">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                            Utilities
+                        </div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-utils" class="section-content">
@@ -334,7 +356,10 @@
                 <!-- 7. Backup -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-backup', this)">
-                        <div class="section-title">Data Backup</div>
+                        <div class="section-title">
+                            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                            Data Backup
+                        </div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-backup" class="section-content">
@@ -359,7 +384,14 @@
                 </div>
             </div>
 
+            <!-- Profile Info Display -->
+            <div id="profile-info-box" class="profile-info">
+                <p id="display-name" class="display-name"></p>
+                <p id="display-job-company" class="display-job-company"></p>
+            </div>
+
             <button id="btn-copy-greeting" class="copy-intro-btn" onclick="window.copyGreeting()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                 <span>Copy Intro</span>
             </button>
 
@@ -368,7 +400,6 @@
 
         <!-- QR View -->
         <div id="qr-view" class="view">
-            <!-- Camera Icon (Shortcut) -->
             <div id="qr-camera-btn" class="camera-btn-fixed" onclick="document.getElementById('camera-input').click()">
                 <svg class="camera-svg" viewBox="0 0 512 512"><path d="M149.1 64.8L138.7 96H64C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H373.3L362.9 64.8C356.4 45.2 338.1 32 317.4 32H194.6c-20.7 0-39 13.2-45.5 32.8zM256 192a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/></svg>
             </div>
@@ -379,7 +410,6 @@
                 
                 <button id="qr-action-btn" class="action-btn" onclick="window.shareProfile()">Share Link</button>
                 
-                <!-- Open App Button (Deep Linking) -->
                 <button id="open-app-btn" class="action-btn open-app-btn" onclick="window.openNativeApp()">
                     <span id="open-app-text">Open App</span>
                 </button>
@@ -427,8 +457,9 @@
             return window.inputs;
         };
 
+        // ACCURATE WHATSAPP PATH (24x24)
         window.ICON_PATHS = {
-            whatsapp: '<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z',
+            whatsapp: '<path d="M12.031 21.496c-1.556 0-3.076-.416-4.403-1.202L4 21.5l1.233-4.502a9.42 9.42 0 0 1-1.328-4.832c.003-5.214 4.248-9.458 9.466-9.458a9.407 9.407 0 0 1 6.697 2.769 9.408 9.408 0 0 1 2.764 6.697c-.003 5.214-4.248 9.458-9.466 9.458zm5.17-6.571c-.284-.144-1.682-.83-1.944-.925-.262-.096-.453-.144-.643.144-.19.288-.737.925-.904 1.115-.166.19-.333.214-.617.072-.284-.144-1.198-.442-2.283-1.411-.843-.752-1.411-1.682-1.577-1.969-.166-.288-.018-.444.125-.586.128-.128.284-.333.427-.5.144-.166.19-.284.284-.476.096-.192.048-.36-.024-.5-.072-.144-.643-1.549-.881-2.126-.232-.558-.468-.481-.643-.49-.166-.007-.357-.01-.547-.01s-.499.072-.76.357c-.262.288-1.002.973-1.002 2.373s1.026 2.748 1.17 2.938c.144.19 2.019 3.082 4.891 4.322.684.296 1.217.472 1.632.604.686.218 1.311.187 1.805.114.551-.082 1.682-.688 1.92-1.352.238-.664.238-1.234.166-1.352-.072-.119-.262-.19-.547-.334z"/>',
             telegram: '<path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.97 9.288c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.293-.605.293l.213-3.053 5.56-5.022c.242-.213-.054-.334-.373-.121l-6.869 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.553-4.458c.538-.196 1.006.128.847.932z"/>',
             linkedin: '<path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>',
             instagram: '<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>',
@@ -445,6 +476,12 @@
                     const parsed = JSON.parse(dataStr);
                     if (parsed.theme) { window.selectedTheme = parsed.theme; window.updateTheme(window.selectedTheme); }
                     for (const key in window.inputs) { if (parsed[key] && window.inputs[key]) window.inputs[key].value = parsed[key]; }
+                    
+                    // Profile Info Rendering
+                    document.getElementById('display-name').innerText = parsed.name || '';
+                    let jobComp = [parsed.jobTitle, parsed.company].filter(Boolean).join(' @ ');
+                    document.getElementById('display-job-company').innerText = jobComp;
+
                     if (parsed.photo) {
                         window.profilePhotoData = parsed.photo;
                         document.getElementById('display-photo').src = parsed.photo;
@@ -456,6 +493,8 @@
                 } catch(e) { window.renderHomeGrid(null); }
             } else {
                 window.renderHomeGrid(null);
+                document.getElementById('display-name').innerText = '';
+                document.getElementById('display-job-company').innerText = '';
                 document.getElementById('btn-copy-greeting').style.display = 'none';
                 window.updateTheme('#1c3e7d'); 
             }
@@ -471,10 +510,10 @@
                     div.innerHTML = `
                         <div class="add-qr-label">${label}</div>
                         <div class="mini-icons">
-                            <svg viewBox="0 0 24 24" style="fill:var(--whatsapp-color)">${window.ICON_PATHS.whatsapp}</svg>
-                            <svg viewBox="0 0 24 24" style="fill:var(--telegram-color)">${window.ICON_PATHS.telegram}</svg>
-                            <svg viewBox="0 0 24 24" style="fill:var(--linkedin-color)">${window.ICON_PATHS.linkedin}</svg>
-                            <svg viewBox="0 0 24 24" style="fill:var(--instagram-color)">${window.ICON_PATHS.instagram}</svg>
+                            <svg viewBox="0 0 24 24" style="fill:#25D366">${window.ICON_PATHS.whatsapp}</svg>
+                            <svg viewBox="0 0 24 24" style="fill:#24A1DE">${window.ICON_PATHS.telegram}</svg>
+                            <svg viewBox="0 0 24 24" style="fill:#0077B5">${window.ICON_PATHS.linkedin}</svg>
+                            <svg viewBox="0 0 24 24" style="fill:#C13584">${window.ICON_PATHS.instagram}</svg>
                         </div>
                     `;
                 } else {
@@ -484,22 +523,17 @@
                 return div;
             };
 
-            // Order Logic: "Get QRME" Left, then next action Right
             if (!data) {
                 grid.appendChild(createBlock('share-app', 'Get QRME', window.ICON_PATHS.share, () => window.openQR('share-app')));
                 grid.appendChild(createBlock('add-qr', '+ Add QR', '', () => window.showSetup(), true));
             } else {
                 grid.appendChild(createBlock('share-app', 'Get QRME', window.ICON_PATHS.share, () => window.openQR('share-app')));
                 grid.appendChild(createBlock('vcard', 'Get vCard', '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>', () => window.openQR('vcard')));
-                
                 if(data.linkedin) grid.appendChild(createBlock('linkedin', 'LinkedIn', window.ICON_PATHS.linkedin, () => window.openQR('linkedin')));
                 if(data.whatsapp) grid.appendChild(createBlock('whatsapp', 'WhatsApp', window.ICON_PATHS.whatsapp, () => window.openQR('whatsapp')));
                 if(data.telegram) grid.appendChild(createBlock('telegram', 'Telegram', window.ICON_PATHS.telegram, () => window.openQR('telegram')));
                 if(data.instagram) grid.appendChild(createBlock('instagram', 'Instagram', window.ICON_PATHS.instagram, () => window.openQR('instagram')));
                 if(data.calendly) grid.appendChild(createBlock('calendly', 'Calendly', '<path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>', () => window.openQR('calendly')));
-                if(data.wifiSSID) grid.appendChild(createBlock('wifi', 'WiFi', '<path d="M12.01 6c-3.19 0-6.22 1.17-8.66 3.32l1.45 1.76C6.54 9.63 9.17 8.5 12 8.5c2.8 0 5.48 1.1 7.23 2.58l1.43-1.78C18.2 7.15 15.19 6 12.01 6zm0 5c-1.89 0-3.69.73-5.07 2.05L12 19l5.06-5.96C15.68 11.74 13.9 11 12.01 11z"/>', () => window.openQR('wifi')));
-                if(data.btc) grid.appendChild(createBlock('bitcoin', 'Bitcoin Wallet', '<path d="M16.5 10.5C16.5 9.12 15.38 8 14 8H10V6H8V8H6V10H8V16H6V18H8V20H10V18H13.5C15.43 18 17 16.43 17 14.5C17 13.1 16.18 11.9 15 11.3C15.9 10.9 16.5 10.1 16.5 9.25V10.5M10 10H13.5C14.05 10 14.5 10.45 14.5 11C14.5 11.55 14.05 12 13.5 12H10V10M10 16V14H13.5C14.05 14 14.5 14.45 14.5 15C14.5 15.55 14.05 16 13.5 16H10Z" />', () => window.openQR('bitcoin')));
-                if(data.customUrl) grid.appendChild(createBlock('custom', data.customLabel || 'Link', '<path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>', () => window.openQR('custom')));
             }
         };
 
@@ -620,23 +654,28 @@
             if (p === 'instagram') { url = `https://instagram.com/${data.instagram}`; deepLink = `instagram://user?username=${data.instagram}`; }
             if (p === 'linkedin') { url = `https://linkedin.com/in/${data.linkedin}`; deepLink = url; }
             if (p === 'calendly') { url = data.calendly; deepLink = url; }
-            if (p === 'bitcoin') { url = `bitcoin:${data.btc}`; deepLink = 'bitcoin:'; }
-            if (p === 'wifi') { url = `WIFI:T:WPA;S:${data.wifiSSID};P:${data.wifiPass};;`; }
-            if (p === 'custom') { url = data.customUrl; }
+            if (p === 'bitcoin') { url = `bitcoin:${data.btc}`; deepLink = 'zengo://'; }
 
             const qrBtn = document.getElementById('qr-action-btn');
             const qrTitle = document.getElementById('qr-title');
             const openBtn = document.getElementById('open-app-btn');
             const vcardBtn = document.getElementById('vcard-dl-btn');
+            const openAppText = document.getElementById('open-app-text');
 
-            openBtn.style.display = (deepLink && p !== 'bitcoin') ? 'block' : 'none';
+            openBtn.style.display = deepLink ? 'block' : 'none';
             vcardBtn.style.display = (p === 'vcard') ? 'block' : 'none';
             
             if (p === 'share-app') {
                 qrTitle.innerText = "Share QRME";
                 qrBtn.innerText = "Share Link";
+                openBtn.style.display = 'none';
+            } else if (p === 'bitcoin') {
+                qrTitle.innerText = "BITCOIN WALLET";
+                openAppText.innerText = "Open Zengo";
+                qrBtn.innerText = "Share Link";
             } else {
                 qrTitle.innerText = p.toUpperCase();
+                openAppText.innerText = "Open App";
                 qrBtn.innerText = "Share Link";
             }
 
@@ -653,8 +692,13 @@
             const msg = document.getElementById('in-greeting').value || "Meet QRME!";
             navigator.clipboard.writeText(msg);
             const btn = document.getElementById('btn-copy-greeting');
+            const originalHTML = btn.innerHTML;
             btn.innerHTML = "<span>Copied!</span>";
-            setTimeout(() => { btn.innerHTML = "<span>Copy Intro</span>"; }, 1500);
+            btn.style.background = "#25D366";
+            setTimeout(() => { 
+                btn.innerHTML = originalHTML; 
+                btn.style.background = "rgba(255, 255, 255, 0.2)";
+            }, 1500);
         };
 
         window.downloadVCard = function() {
