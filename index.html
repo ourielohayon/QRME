@@ -8,8 +8,8 @@
     <meta name="theme-color" content="#000000">
     <title>QRME</title>
 
-    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=42">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=42">
+    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=95">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=95">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -54,14 +54,6 @@
         }
         .gear-svg { width: 24px; height: 24px; fill: currentColor; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
 
-        .camera-icon {
-            position: absolute; top: 20px; right: 25px; z-index: 100;
-            color: rgba(255,255,255,0.95); padding: 10px; cursor: pointer;
-            display: none;
-        }
-        .camera-svg { width: 28px; height: 28px; fill: currentColor; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
-        #camera-input { display: none; }
-
         .view {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -70,68 +62,55 @@
         }
         .view.active { opacity: 1; pointer-events: all; transform: scale(1); }
 
-        .profile-container { margin-bottom: 15px; position: relative; }
+        /* Profile Area */
+        .profile-container { margin-bottom: 15px; position: relative; cursor: pointer; transition: transform 0.2s; }
+        .profile-container:active { transform: scale(0.92); }
         .profile-pic {
-            width: 90px; height: 90px; border-radius: 50%;
-            background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2);
-            object-fit: cover; box-shadow: 0 8px 20px rgba(0,0,0,0.3); display: none; 
+            width: 100px; height: 100px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3);
+            object-fit: cover; box-shadow: 0 8px 25px rgba(0,0,0,0.4); display: none; 
         }
         .profile-placeholder {
-            width: 90px; height: 90px; border-radius: 50%;
+            width: 100px; height: 100px; border-radius: 50%;
             background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center;
-            font-size: 30px; color: rgba(255,255,255,0.8); border: 2px solid rgba(255,255,255,0.1);
+            border: 2px dashed rgba(255,255,255,0.3);
         }
+        .profile-placeholder svg { width: 40px; height: 40px; fill: rgba(255,255,255,0.6); }
 
         .copy-intro-btn {
             background: rgba(255, 255, 255, 0.2); color: #fff;
             border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px;
             padding: 12px 20px; width: 100%; max-width: 360px;
             font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;
-            margin-bottom: 15px; cursor: pointer;
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            transition: background 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 15px; cursor: pointer; backdrop-filter: blur(10px);
         }
-        .copy-intro-btn:active { background: rgba(255, 255, 255, 0.3); transform: scale(0.98); }
-        .copy-icon { width: 18px; height: 18px; }
 
         .grid-container {
             display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
             width: 100%; max-width: 360px; padding: 0 25px;
             max-height: 60vh; overflow-y: auto;
-            -ms-overflow-style: none; scrollbar-width: none;
         }
-        .grid-container::-webkit-scrollbar { display: none; }
 
         .app-icon {
             background: var(--card-bg);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-radius: 18px; padding: 16px;
+            backdrop-filter: blur(20px); border-radius: 18px; padding: 16px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             gap: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer;
-            transition: transform 0.1s; height: 90px; 
+            height: 95px; transition: transform 0.1s;
         }
-        .app-icon:active { transform: scale(0.96); opacity: 0.9; }
+        .app-icon:active { transform: scale(0.96); }
 
         .icon-svg { width: 30px; height: 30px; display: block; }
         .icon-label { font-size: 13px; font-weight: 600; text-align: center; color: #000; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
 
-        /* Icon Colors */
-        .linkedin .icon-svg { fill: var(--linkedin-color); }
-        .telegram .icon-svg { fill: var(--telegram-color); }
-        .whatsapp .icon-svg { fill: var(--whatsapp-color); }
-        .twitter .icon-svg { fill: var(--twitter-color); }
-        .instagram .icon-svg { fill: var(--instagram-color); }
-        .youtube .icon-svg { fill: var(--youtube-color); }
-        .discord .icon-svg { fill: var(--discord-color); }
-        .github .icon-svg { fill: var(--github-color); }
-        .wifi .icon-svg { fill: var(--wifi-color); }
-        .bitcoin .icon-svg { fill: var(--bitcoin-color); }
-        .vcard .icon-svg { fill: var(--vcard-color); }
-        .share-app .icon-svg { fill: var(--share-app-color); }
-        .calendly .icon-svg { fill: var(--calendly-color); }
-        .custom .icon-svg { fill: var(--custom-color); }
+        /* Onboarding Add QR Block */
+        .add-qr-block { border: 2px dashed rgba(0,122,255,0.3); background: rgba(255,255,255,0.85); }
+        .add-qr-label { font-size: 22px; font-weight: 400; color: #000; }
+        .mini-icons { display: flex; gap: 6px; margin-top: 4px; }
+        .mini-icons svg { width: 14px; height: 14px; }
 
-        #qr-view { gap: 15px; position: relative; }
+        /* QR View */
+        #qr-view { gap: 15px; }
         .qr-card {
             background: rgba(255,255,255,0.95); padding: 25px; border-radius: 24px;
             display: flex; flex-direction: column; align-items: center; gap: 15px;
@@ -142,29 +121,16 @@
         .qr-label { font-size: 20px; font-weight: 700; text-align: center; margin: 0; }
 
         .action-btn {
-            background: #007AFF; color: white; border: none; padding: 10px;
-            font-size: 14px; font-weight: 600; border-radius: 10px; width: 100%;
+            background: #007AFF; color: white; border: none; padding: 12px;
+            font-size: 14px; font-weight: 600; border-radius: 12px; width: 100%;
             display: flex; justify-content: center; align-items: center; gap: 6px;
             cursor: pointer;
         }
-        
-        .open-app-btn {
-            background: transparent; color: #007AFF; 
-            border: 2px solid #007AFF; 
-            margin-top: -5px; 
-        }
-        .open-app-btn:active { background: rgba(0,122,255,0.1); }
-
-        .vcard-dl-btn {
-            background: #333; color: white;
-            margin-top: -5px; 
-        }
-
         .back-btn {
             background: rgba(255, 255, 255, 0.15); color: #fff;
             border: 1px solid rgba(255, 255, 255, 0.15); padding: 8px 24px;
             font-size: 15px; font-weight: 500; border-radius: 50px;
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
         }
 
         /* Settings Form */
@@ -173,97 +139,51 @@
             width: 95%; max-width: 400px;
             max-height: 90vh; overflow-y: auto;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            display: flex; flex-direction: column; gap: 15px;
-            padding-bottom: 80px;
+            padding-bottom: 100px;
         }
-        .setup-form h2 { margin: 0 0 5px; color: #000; font-size: 20px; text-align: center; font-weight: 800; }
+        .setup-form h2 { margin: 0 0 10px; color: #000; font-size: 20px; text-align: center; font-weight: 800; }
         
-        /* Section Styling */
         .settings-section {
             background: linear-gradient(180deg, #f0f9ff 0%, #e0f7fa 100%);
-            border-radius: 12px;
-            padding: 0;
-            border: 1px solid #e0e7ff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            margin-bottom: 5px;
-            overflow: visible; /* Prevents cut-off shadows */
+            border-radius: 12px; padding: 0; border: 1px solid #e0e7ff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 5px; overflow: visible;
         }
         
-        .section-header {
-            padding: 15px;
-            display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer;
-            background: transparent;
-        }
-        
-        .section-title {
-            font-size: 11px; font-weight: 800; color: #0369a1; 
-            text-transform: uppercase; letter-spacing: 0.5px; margin: 0;
-            display: flex; align-items: center; gap: 8px;
-        }
+        .section-header { padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .section-title { font-size: 11px; font-weight: 800; color: #0369a1; text-transform: uppercase; }
         .chevron { transition: transform 0.3s ease; width: 16px; height: 16px; fill: #0369a1; }
         
         .section-content { display: none; padding: 0 15px 15px 15px; border-top: 1px solid rgba(0,0,0,0.05); margin-top: 0; }
         .settings-section.open .section-content { display: block; padding-top: 15px; }
         .settings-section.open .chevron { transform: rotate(180deg); }
 
-        /* Static Visible Logic */
-        .settings-section.static .section-content { display: block; padding-top: 5px; border-top: none; }
+        .settings-section.static .section-content { display: block; border-top: none; }
         .settings-section.static .section-header { cursor: default; padding-bottom: 5px; }
         .settings-section.static .chevron { display: none; }
 
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 4px; }
-        .input-group { margin-bottom: 0; }
-        .full-width { grid-column: span 2; }
-
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .input-group label { display: block; font-size: 10px; color: #555; margin-bottom: 4px; font-weight: 700; text-transform: uppercase; }
         .input-group input, .input-group select, .input-group textarea {
-            width: 100%; padding: 10px; background: #fff; border: 1px solid #ccc; 
-            border-radius: 8px; font-size: 14px; -webkit-appearance: none;
-            box-sizing: border-box;
+            width: 100%; padding: 12px; background: #fff; border: 1px solid #ccc; 
+            border-radius: 8px; font-size: 14px;
         }
+        .full-width { grid-column: span 2; }
         
-        .loc-row { display: flex; gap: 5px; }
-        .loc-btn { width: 45px; background: #007AFF; color: white; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        
-        .file-btn { background: #fff; border: 1px solid #cbd5e1; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; text-align: center; width: 100%; display:block; border: 1px solid #d1d5db; color:#333; }
-        
-        .save-btn { width: 100%; padding: 14px; background: #000; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; margin-top: 10px; transition: background 0.3s; cursor: pointer; display: block; }
-
-        .data-btns { display: flex; gap: 10px; margin-top: 5px; }
-        .data-btn { flex: 1; padding: 10px; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
-
-        /* Theme Grid: Tighter spacing, no scroll needed for standard phones */
+        /* Fixed Theme Grid: Fit All in Block */
         .theme-grid { 
-            display: flex; gap: 8px; 
+            display: flex; gap: 4px; 
             justify-content: space-between;
-            flex-wrap: nowrap; 
-            padding: 5px 2px;
+            padding: 8px 0;
             width: 100%;
-            overflow-x: auto;
-            -ms-overflow-style: none; scrollbar-width: none;
         }
-        .theme-grid::-webkit-scrollbar { display: none; }
-        
-        .theme-swatch {
-            width: 32px; height: 32px; border-radius: 50%; cursor: pointer; flex-shrink: 0;
-            border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
+        .theme-swatch, .color-picker-wrapper { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-shrink: 0; }
         .theme-swatch.active { border-color: #000; transform: scale(1.1); }
-        .color-picker-wrapper {
-            width: 32px; height: 32px; border-radius: 50%; overflow: hidden; position: relative; cursor: pointer; border: 2px solid #ddd; background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); flex-shrink: 0;
-        }
+        .color-picker-wrapper { overflow: hidden; position: relative; background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); }
         .color-picker-input { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; opacity: 0; cursor: pointer; }
 
-        #greeting-editor { display: none; margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px; width: 100%; }
-        #in-greeting { width: 100% !important; box-sizing: border-box; font-family: sans-serif; min-height: 80px; display: block; resize: vertical; }
-        
-        .greeting-btn { background: #fff; color: #007AFF; margin-top: 5px; width: 100%; font-size: 12px; font-weight: 600; border-radius: 8px; padding: 10px; border: 1px solid #bae6fd; cursor: pointer; }
-        .regen-btn { background: #f1f5f9; color: #64748b; font-size: 11px; padding: 8px; border-radius: 6px; border: none; margin-top: 8px; cursor: pointer; width: 100%; }
+        .save-btn { width: 100%; padding: 14px; background: #000; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; margin-top: 10px; cursor: pointer; }
 
-        .custom-link-row { display: flex; gap: 5px; margin-bottom: 8px; align-items: center; }
-        .add-link-btn { background: #fff; color: #007AFF; border: 1px dashed #007AFF; padding: 10px; border-radius: 8px; width: 100%; cursor: pointer; font-size: 12px; font-weight: 600; }
-
+        /* Footnote Styling */
         .footnote { 
             position: absolute; bottom: 15px; width: 100%; 
             display: flex; justify-content: center; align-items: center; gap: 8px;
@@ -279,27 +199,20 @@
     <div class="app-background" id="bg-layer"></div>
 
     <div id="app">
-        <!-- Settings Icon -->
         <div id="settings-btn" class="settings-icon" onclick="window.showSetup()">
             <svg class="gear-svg" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
         </div>
 
-        <!-- Camera Icon (Solid Style) -->
-        <div id="camera-btn" class="camera-icon" onclick="document.getElementById('camera-input').click()">
-            <svg class="camera-svg" viewBox="0 0 512 512"><path d="M149.1 64.8L138.7 96H64C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H373.3L362.9 64.8C356.4 45.2 338.1 32 317.4 32H194.6c-20.7 0-39 13.2-45.5 32.8zM256 192a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/></svg>
-        </div>
-        <input type="file" id="camera-input" accept="image/*" capture="environment">
+        <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;" onchange="window.handlePhotoUpload(this)">
 
         <!-- Setup View -->
         <div id="setup-view" class="view">
             <div class="setup-form">
                 <h2>Set up my QRME</h2>
                 
-                <!-- 1. App Theme (Static Visible) -->
+                <!-- 1. App Theme -->
                 <div class="settings-section static visible">
-                    <div class="section-header">
-                        <div class="section-title">App Theme</div>
-                    </div>
+                    <div class="section-header"><div class="section-title">App Theme</div></div>
                     <div class="section-content">
                         <div class="theme-grid">
                             <div class="theme-swatch" style="background:#1c3e7d" onclick="window.setTheme('#1c3e7d')"></div>
@@ -314,125 +227,101 @@
                     </div>
                 </div>
 
-                <!-- 2. Social Links (Static Visible) -->
+                <!-- 2. Social Links (Visible, includes Calendly) -->
                 <div class="settings-section static visible">
-                    <div class="section-header">
-                        <div class="section-title">Social Links</div>
-                    </div>
+                    <div class="section-header"><div class="section-title">Social Links</div></div>
                     <div class="section-content">
                         <div class="form-grid">
-                            <div class="input-group"><label>LinkedIn (URL)</label><input type="url" id="in-linkedin"></div>
-                            <div class="input-group"><label>Calendly (URL)</label><input type="url" id="in-calendly" placeholder="calendly.com/..."></div>
-                            <div class="input-group"><label>WhatsApp (Tel)</label><input type="tel" id="in-whatsapp"></div>
-                            <div class="input-group"><label>Telegram (User)</label><input type="text" id="in-telegram"></div>
-                            <div class="input-group"><label>X / Twitter (@)</label><input type="text" id="in-twitter"></div>
-                            <div class="input-group"><label>Instagram (User)</label><input type="text" id="in-instagram"></div>
-                            <div class="input-group"><label>Youtube</label><input type="text" id="in-youtube" placeholder="channel"></div>
-                            <div class="input-group"><label>Discord (Link)</label><input type="url" id="in-discord" placeholder="invite"></div>
-                            <div class="input-group"><label>GitHub (User)</label><input type="text" id="in-github" placeholder="username"></div>
+                            <div class="input-group"><label>LinkedIn</label><input type="text" id="in-linkedin" placeholder="Username"></div>
+                            <div class="input-group"><label>WhatsApp</label><input type="tel" id="in-whatsapp" placeholder="Tel"></div>
+                            <div class="input-group"><label>Telegram</label><input type="text" id="in-telegram" placeholder="Username"></div>
+                            <div class="input-group"><label>Instagram</label><input type="text" id="in-instagram" placeholder="Username"></div>
+                            <div class="input-group"><label>Twitter/X</label><input type="text" id="in-twitter" placeholder="@handle"></div>
+                            <div class="input-group"><label>YouTube</label><input type="text" id="in-youtube" placeholder="Channel ID"></div>
+                            <div class="input-group"><label>Calendly</label><input type="text" id="in-calendly" placeholder="Calendly URL"></div>
+                            <div class="input-group"><label>GitHub</label><input type="text" id="in-github" placeholder="Username"></div>
+                            <div class="input-group full-width"><label>Discord</label><input type="text" id="in-discord" placeholder="Invite link"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 3. Context & Greeting (Collapsible) -->
-                <div class="settings-section" id="sec-context-container">
-                    <div class="section-header" onclick="window.toggleSection('sec-context', this)">
-                        <div class="section-title">
-                             <svg style="width:14px;height:14px;margin-right:5px;fill:#1c3e7d" viewBox="0 0 24 24"><path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>
-                            Context & Greeting
+                <!-- 3. Custom Link (Collapsed, Separate Section) -->
+                <div class="settings-section">
+                    <div class="section-header" onclick="window.toggleSection('sec-custom-link', this)">
+                        <div class="section-title">Custom Link</div>
+                        <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </div>
+                    <div id="sec-custom-link" class="section-content">
+                        <div class="form-grid">
+                            <div class="input-group"><label>Label</label><input type="text" id="in-custom-label" placeholder="Portfolio"></div>
+                            <div class="input-group"><label>URL</label><input type="url" id="in-custom-url" placeholder="https://..."></div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- 4. Context & Greeting (Collapsed) -->
+                <div class="settings-section">
+                    <div class="section-header" onclick="window.toggleSection('sec-context', this)">
+                        <div class="section-title">Context & Greeting</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-context" class="section-content">
                          <div class="form-grid">
-                            <div class="input-group"><label>Event</label><input type="text" id="in-event" placeholder="Event Name"></div>
-                            <div class="input-group"><label>Date</label><input type="date" id="in-date"></div>
-                            <div class="input-group full-width">
+                            <div class="input-group"><label>Event Name</label><input type="text" id="in-event"></div>
+                            <div class="input-group">
                                 <label>Location</label>
-                                <div class="loc-row">
-                                    <input type="text" id="in-location" placeholder="City, Country">
-                                    <button class="loc-btn" onclick="window.fetchLocation()">📍</button>
+                                <div style="display:flex;gap:4px;">
+                                    <input type="text" id="in-location" style="flex:1;">
+                                    <button onclick="window.fetchLocation()" style="background:#007AFF;color:white;border:none;border-radius:8px;padding:0 8px;">📍</button>
                                 </div>
                             </div>
                         </div>
-                        <button class="greeting-btn" onclick="window.toggleGreetingEditor()">Edit Greeting Message</button>
-                        <div id="greeting-editor">
-                            <label style="font-size:10px; color:#555; margin-bottom:4px; display:block;">CUSTOM MESSAGE</label>
-                            <textarea id="in-greeting" rows="4"></textarea>
-                            <button class="regen-btn" onclick="window.generateDefaultGreeting()">↺ Revert to Default Template</button>
-                        </div>
+                        <div class="input-group" style="margin-top:10px;"><label>Greeting Text</label><textarea id="in-greeting" rows="3"></textarea></div>
                     </div>
                 </div>
 
-                <!-- 4. Personal Details (Collapsible) -->
-                <div class="settings-section" id="sec-personal-container">
+                <!-- 5. Personal Details (Collapsed) -->
+                <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-personal', this)">
-                        <div class="section-title">
-                            <svg style="width:14px;height:14px;margin-right:5px;fill:#1c3e7d" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                            Personal Details
-                        </div>
+                        <div class="section-title">Personal Details</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-personal" class="section-content">
                         <div class="form-grid">
-                            <div class="input-group full-width">
-                                <label>Profile Photo</label>
-                                <label class="file-btn">Choose Photo<input type="file" id="in-photo" accept="image/*" style="display: none;" onchange="window.handlePhotoUpload(this)"></label>
-                            </div>
-                            <div class="input-group"><label>Name</label><input type="text" id="in-name" placeholder="John Doe"></div>
-                            <div class="input-group"><label>Company</label><input type="text" id="in-company" placeholder="Acme Inc"></div>
-                            <div class="input-group full-width"><label>Website</label><input type="url" id="in-website" placeholder="https://example.com"></div>
-                            <div class="input-group full-width"><label>Email (for vCard)</label><input type="email" id="in-email" placeholder="john@example.com"></div>
+                            <div class="input-group"><label>Full Name</label><input type="text" id="in-name"></div>
+                            <div class="input-group"><label>Job Title</label><input type="text" id="in-job-title" placeholder="CEO / Designer"></div>
+                            <div class="input-group full-width"><label>Company</label><input type="text" id="in-company"></div>
+                            <div class="input-group full-width"><label>Website</label><input type="url" id="in-website" placeholder="https://..."></div>
+                            <div class="input-group full-width"><label>Email (for vCard)</label><input type="email" id="in-email"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 5. Utilities (Collapsible) -->
-                <div class="settings-section" id="sec-utils-container">
+                <!-- 6. Utilities (Collapsed) -->
+                <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-utils', this)">
-                        <div class="section-title">
-                             <svg style="width:14px;height:14px;margin-right:5px;fill:#1c3e7d" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                            Utilities
-                        </div>
+                        <div class="section-title">Utilities</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-utils" class="section-content">
                         <div class="form-grid">
                             <div class="input-group"><label>WiFi Name</label><input type="text" id="in-wifi-ssid"></div>
                             <div class="input-group"><label>WiFi Pass</label><input type="text" id="in-wifi-pass"></div>
-                            <div class="input-group full-width"><label>Bitcoin Wallet</label><input type="text" id="in-btc"></div>
+                            <div class="input-group full-width"><label>Bitcoin Address</label><input type="text" id="in-btc"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 6. Custom Links (Collapsible) -->
-                <div class="settings-section" id="sec-custom-container">
-                    <div class="section-header" onclick="window.toggleSection('sec-custom', this)">
-                         <div class="section-title">
-                             <svg style="width:14px;height:14px;margin-right:5px;fill:#1c3e7d" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
-                            Custom Links
-                        </div>
-                        <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-                    </div>
-                    <div id="sec-custom" class="section-content">
-                        <div id="custom-links-container"></div>
-                        <button class="add-link-btn" onclick="window.addCustomField()">+ add custom link</button>
-                    </div>
-                </div>
-
-                <!-- 7. Data Backup (Collapsible) -->
-                <div class="settings-section" id="sec-backup-container">
-                     <div class="section-header" onclick="window.toggleSection('sec-backup', this)">
-                        <div class="section-title">
-                            <svg style="width:14px;height:14px;margin-right:5px;fill:#1c3e7d" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                            Data Backup
-                        </div>
+                <!-- 7. Backup -->
+                <div class="settings-section">
+                    <div class="section-header" onclick="window.toggleSection('sec-backup', this)">
+                        <div class="section-title">Data Backup</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-backup" class="section-content">
                         <div class="data-btns">
-                            <button class="data-btn" onclick="window.exportData()">⬇ Export File</button>
-                            <button class="data-btn" onclick="document.getElementById('file-import').click()">⬆ Restore File</button>
+                            <button class="data-btn" onclick="window.exportData()">Export File</button>
+                            <button class="data-btn" onclick="document.getElementById('file-import').click()">Restore File</button>
                             <input type="file" id="file-import" style="display:none" onchange="window.importData(this)">
                         </div>
                     </div>
@@ -444,13 +333,14 @@
 
         <!-- Home View -->
         <div id="home-view" class="view">
-            <div class="profile-container">
+            <div class="profile-container" onclick="document.getElementById('camera-input').click()">
                 <img id="display-photo" class="profile-pic" alt="Profile">
-                <div id="display-placeholder" class="profile-placeholder">Q</div>
+                <div id="display-placeholder" class="profile-placeholder">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </div>
             </div>
 
             <button id="btn-copy-greeting" class="copy-intro-btn" onclick="window.copyGreeting()">
-                <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                 <span>Copy Intro</span>
             </button>
 
@@ -462,371 +352,152 @@
             <div class="qr-card">
                 <div id="qrcode"></div>
                 <div class="qr-label" id="qr-title">Title</div>
-                
-                <button class="action-btn share-btn" onclick="window.shareProfile()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
-                    Share Link
-                </button>
-                
-                <button id="open-app-btn" class="action-btn open-app-btn" onclick="window.openNativeApp()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                    <span id="open-app-text">Open App</span>
-                </button>
-                
-                <button id="vcard-dl-btn" class="action-btn vcard-dl-btn" onclick="window.downloadVCard()" style="display:none;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    Save Contact
-                </button>
+                <button class="action-btn" onclick="window.shareProfile()" style="margin-bottom:8px;">Share Link</button>
+                <button id="vcard-dl-btn" class="action-btn" onclick="window.downloadVCard()" style="display:none;background:#333;">Save Contact</button>
             </div>
-            <button class="back-btn" onclick="window.showHome()">&lt; Back</button>
-            
-            <!-- Camera Button Top Right -->
-            <div id="camera-btn" class="camera-icon" onclick="document.getElementById('camera-input').click()">
-                <svg class="camera-svg" viewBox="0 0 512 512"><path d="M149.1 64.8L138.7 96H64C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H373.3L362.9 64.8C356.4 45.2 338.1 32 317.4 32H194.6c-20.7 0-39 13.2-45.5 32.8zM256 192a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/></svg>
-            </div>
-            <input type="file" id="camera-input" accept="image/*" capture="environment">
+            <button class="back-btn" onclick="window.showHome()" style="margin-top:20px;">&lt; Back</button>
         </div>
     </div>
 
-    <div class="footnote">created with ❤️ by Ouriel</div>
+    <div class="footnote">
+        created with ❤️ by Ouriel
+        <a href="https://github.com/ourielohayon/QRME" target="_blank" rel="noopener noreferrer">
+            <svg class="github-footer-icon" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+    </div>
 
     <script>
-        // --- GLOBALS ---
-        window.greetingDirty = false;
-        window.inputs = {};
-        window.qrCodeObj = null;
-        window.currentUrl = '';
-        window.currentDeepLink = '';
-        window.currentVCardBlob = null;
-        window.profilePhotoData = null;
-        window.selectedTheme = '#1c3e7d'; 
-        window.customLinks = [];
-        // Icon Paths (Global to avoid syntax errors in loops)
-        window.ICON_PATHS = {
-            vcard: '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>',
-            linkedin: '<path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>',
-            calendly: '<path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>',
-            whatsapp: '<path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-26.6l-6.7-4.2-69.8 18.3 18.6-68.1-4.4-6.9c-18.3-29.4-28-63.6-28-99.4 0-101.9 82.8-184.6 184.6-184.6 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" transform="scale(0.045) translate(0,0)"/>',
-            telegram: '<path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.97 9.288c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.293-.605.293l.213-3.053 5.56-5.022c.242-.213-.054-.334-.373-.121l-6.869 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.553-4.458c.538-.196 1.006.128.847.932z"/>',
-            twitter: '<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>',
-            instagram: '<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>',
-            youtube: '<path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>',
-            discord: '<path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z"/>',
-            github: '<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>',
-            wifi: '<path d="M12.01 6c-3.19 0-6.22 1.17-8.66 3.32l1.45 1.76C6.54 9.63 9.17 8.5 12 8.5c2.8 0 5.48 1.1 7.23 2.58l1.43-1.78C18.2 7.15 15.19 6 12.01 6zm0 5c-1.89 0-3.69.73-5.07 2.05L12 19l5.06-5.96C15.68 11.74 13.9 11 12.01 11z"/>',
-            bitcoin: '<path d="M16.5 10.5C16.5 9.12 15.38 8 14 8H10V6H8V8H6V10H8V16H6V18H8V20H10V18H13.5C15.43 18 17 16.43 17 14.5C17 13.1 16.18 11.9 15 11.3C15.9 10.9 16.5 10.1 16.5 9.25V10.5M10 10H13.5C14.05 10 14.5 10.45 14.5 11C14.5 11.55 14.05 12 13.5 12H10V10M10 16V14H13.5C14.05 14 14.5 14.45 14.5 15C14.5 15.55 14.05 16 13.5 16H10Z"/>',
-            share: '<path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>',
-            custom: '<path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>'
-        };
-
-        // --- HELPER: Get Inputs Safely ---
+        // --- 1. GLOBAL HELPERS DEFINED IMMEDIATELY ---
         window.getInputs = function() {
             window.inputs = {
                 name: document.getElementById('in-name'),
+                jobTitle: document.getElementById('in-job-title'),
                 company: document.getElementById('in-company'),
                 website: document.getElementById('in-website'),
                 email: document.getElementById('in-email'),
                 event: document.getElementById('in-event'),
                 location: document.getElementById('in-location'),
-                date: document.getElementById('in-date'),
                 linkedin: document.getElementById('in-linkedin'),
-                telegram: document.getElementById('in-telegram'),
                 whatsapp: document.getElementById('in-whatsapp'),
-                twitter: document.getElementById('in-twitter'),
+                telegram: document.getElementById('in-telegram'),
                 instagram: document.getElementById('in-instagram'),
+                twitter: document.getElementById('in-twitter'),
                 youtube: document.getElementById('in-youtube'),
-                discord: document.getElementById('in-discord'),
                 github: document.getElementById('in-github'),
+                discord: document.getElementById('in-discord'),
                 wifiSSID: document.getElementById('in-wifi-ssid'),
                 wifiPass: document.getElementById('in-wifi-pass'),
                 btc: document.getElementById('in-btc'),
-                calendly: document.getElementById('in-calendly')
+                calendly: document.getElementById('in-calendly'),
+                customLabel: document.getElementById('in-custom-label'),
+                customUrl: document.getElementById('in-custom-url'),
+                greeting: document.getElementById('in-greeting')
             };
             return window.inputs;
-        }
+        };
 
-        // --- CORE FUNCTIONS (Attached to Window) ---
+        window.ICON_PATHS = {
+            whatsapp: '<path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-26.6l-6.7-4.2-69.8 18.3 18.6-68.1-4.4-6.9c-18.3-29.4-28-63.6-28-99.4 0-101.9 82.8-184.6 184.6-184.6 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>',
+            telegram: '<path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.97 9.288c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.293-.605.293l.213-3.053 5.56-5.022c.242-.213-.054-.334-.373-.121l-6.869 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.553-4.458c.538-.196 1.006.128.847.932z"/>',
+            linkedin: '<path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>',
+            instagram: '<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>',
+            share: '<path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>'
+        };
 
         window.init = function() {
             window.getInputs();
-            if (window.inputs.date && !window.inputs.date.value) {
-                window.inputs.date.valueAsDate = new Date();
-            }
+            const dataStr = localStorage.getItem('qrme_data');
+            window.switchView('home'); 
 
-            const data = localStorage.getItem('qrme_data');
-            
-            // IF NO DATA, GO TO SETUP
-            if (!data) {
-                window.switchView('setup');
-                return;
-            }
-
-            try {
-                const parsed = JSON.parse(data);
-                if (parsed.theme) { window.selectedTheme = parsed.theme; window.updateTheme(window.selectedTheme); }
-
-                for (const key in window.inputs) {
-                    if (parsed[key] && window.inputs[key]) window.inputs[key].value = parsed[key];
-                }
-                
-                document.getElementById('in-greeting').value = parsed.greeting || window.generateGreetingText(parsed);
-                if(parsed.greetingDirty) window.greetingDirty = parsed.greetingDirty;
-                
-                if(parsed.customLinks && Array.isArray(parsed.customLinks)) {
-                    window.customLinks = parsed.customLinks;
-                } else if (parsed.customUrl) {
-                    window.customLinks = [{label: parsed.customLabel || 'Link', url: parsed.customUrl}];
-                } else {
-                    window.customLinks = [];
-                }
-                
-                const container = document.getElementById('custom-links-container');
-                container.innerHTML = '';
-                if (window.customLinks.length > 0) {
-                    window.customLinks.forEach(link => window.addCustomField(link.label, link.url));
-                }
-
-                if (parsed.photo) {
-                    window.profilePhotoData = parsed.photo;
-                    const disp = document.getElementById('display-photo');
-                    if(disp) {
-                        disp.src = parsed.photo;
-                        disp.style.display = 'block';
-                        document.querySelector('.profile-placeholder').style.display = 'none';
+            if (dataStr) {
+                try {
+                    const parsed = JSON.parse(dataStr);
+                    if (parsed.theme) { window.selectedTheme = parsed.theme; window.updateTheme(window.selectedTheme); }
+                    for (const key in window.inputs) { if (parsed[key] && window.inputs[key]) window.inputs[key].value = parsed[key]; }
+                    if (parsed.photo) {
+                        window.profilePhotoData = parsed.photo;
+                        document.getElementById('display-photo').src = parsed.photo;
+                        document.getElementById('display-photo').style.display = 'block';
+                        document.getElementById('display-placeholder').style.display = 'none';
                     }
-                }
-                
-                window.renderHomeGrid(parsed);
-                const copyBtn = document.getElementById('btn-copy-greeting');
-                if(copyBtn) copyBtn.style.display = parsed.name ? 'flex' : 'none';
-
-                window.switchView('home');
-            } catch (e) {
-                console.error(e);
-                window.switchView('setup');
+                    window.renderHomeGrid(parsed);
+                    document.getElementById('btn-copy-greeting').style.display = parsed.name ? 'flex' : 'none';
+                } catch(e) { window.renderHomeGrid(null); }
+            } else {
+                window.renderHomeGrid(null);
+                document.getElementById('btn-copy-greeting').style.display = 'none';
+                window.updateTheme('#1c3e7d'); 
             }
         };
-
-        window.showSetup = function() {
-            window.switchView('setup');
-            window.getInputs(); 
-            if(window.inputs.date) window.inputs.date.valueAsDate = new Date();
-            window.fetchLocation();
-        };
-
-        window.toggleSection = function(id, header) {
-            const content = document.getElementById(id);
-            if (content.style.display === 'none' || content.style.display === '') {
-                content.style.display = 'block';
-                header.parentElement.classList.add('open');
-            } else {
-                content.style.display = 'none';
-                header.parentElement.classList.remove('open');
-            }
-        }
-
-        window.switchView = function(viewName) {
-            const views = { 
-                setup: document.getElementById('setup-view'), 
-                home: document.getElementById('home-view'), 
-                qr: document.getElementById('qr-view') 
-            };
-            Object.values(views).forEach(el => {
-                if(el) el.classList.remove('active');
-            });
-            if(views[viewName]) views[viewName].classList.add('active');
-            
-            const settingsBtn = document.getElementById('settings-btn');
-            if (viewName === 'home') {
-                if(settingsBtn) settingsBtn.style.display = 'block';
-                window.updateTheme(window.selectedTheme); 
-            } else {
-                if(settingsBtn) settingsBtn.style.display = 'none';
-            }
-            
-            const camBtn = document.getElementById('camera-btn');
-            if(camBtn) camBtn.style.display = (viewName === 'qr') ? 'block' : 'none';
-        }
-
-        window.addCustomField = function(label = "", url = "") {
-            const container = document.getElementById('custom-links-container');
-            const div = document.createElement('div');
-            div.className = "custom-link-row";
-            div.innerHTML = `
-                <div style="flex:1;"><input type="text" placeholder="Label" class="custom-label input-group" value="${label.replace(/"/g, '&quot;')}" style="width:100%;margin:0;"></div>
-                <div style="flex:2;"><input type="url" placeholder="URL" class="custom-url input-group" value="${url.replace(/"/g, '&quot;')}" style="width:100%;margin:0;"></div>
-                <button onclick="this.parentElement.remove()" style="background:#ef4444; color:white; border:none; border-radius:6px; width:30px; height:30px; display:flex; align-items:center; justify-content:center; cursor:pointer;">×</button>
-            `;
-            container.appendChild(div);
-        }
 
         window.renderHomeGrid = function(data) {
             const grid = document.getElementById('main-grid');
-            grid.innerHTML = ''; 
-            
-            const createIcon = (id, label, iconPath, onClick) => {
+            grid.innerHTML = '';
+            const createBlock = (id, label, iconPath, onClick, isAdd = false) => {
                 const div = document.createElement('div');
-                div.className = `app-icon ${id}`;
-                div.innerHTML = `<svg class="icon-svg" viewBox="0 0 24 24" style="fill:var(--${id}-color, #333)">${iconPath}</svg><span class="icon-label">${label}</span>`;
+                div.className = `app-icon ${id} ${isAdd ? 'add-qr-block' : ''}`;
+                if (isAdd) {
+                    div.innerHTML = `
+                        <div class="add-qr-label">${label}</div>
+                        <div class="mini-icons">
+                            <svg viewBox="0 0 448 512" style="fill:var(--whatsapp-color)">${window.ICON_PATHS.whatsapp}</svg>
+                            <svg viewBox="0 0 24 24" style="fill:var(--telegram-color)">${window.ICON_PATHS.telegram}</svg>
+                            <svg viewBox="0 0 24 24" style="fill:var(--linkedin-color)">${window.ICON_PATHS.linkedin}</svg>
+                            <svg viewBox="0 0 24 24" style="fill:var(--instagram-color)">${window.ICON_PATHS.instagram}</svg>
+                        </div>
+                    `;
+                } else {
+                    div.innerHTML = `<svg class="icon-svg" viewBox="0 0 24 24" style="fill:var(--${id}-color, #333)">${iconPath}</svg><span class="icon-label">${label}</span>`;
+                }
                 div.onclick = onClick;
                 return div;
             };
 
-            grid.appendChild(createIcon('vcard', 'Get vCard', window.ICON_PATHS.vcard, () => window.openQR('vcard')));
-            
-            if(data.linkedin) grid.appendChild(createIcon('linkedin', 'LinkedIn', window.ICON_PATHS.linkedin, () => window.openQR('linkedin')));
-            if(data.calendly) grid.appendChild(createIcon('calendly', 'Calendly', window.ICON_PATHS.calendly, () => window.openQR('calendly')));
-            if(data.whatsapp) grid.appendChild(createIcon('whatsapp', 'WhatsApp', window.ICON_PATHS.whatsapp, () => window.openQR('whatsapp')));
-            if(data.telegram) grid.appendChild(createIcon('telegram', 'Telegram', window.ICON_PATHS.telegram, () => window.openQR('telegram')));
-            if(data.twitter) grid.appendChild(createIcon('twitter', 'X / Twitter', window.ICON_PATHS.twitter, () => window.openQR('twitter')));
-            if(data.instagram) grid.appendChild(createIcon('instagram', 'Instagram', window.ICON_PATHS.instagram, () => window.openQR('instagram')));
-            if(data.youtube) grid.appendChild(createIcon('youtube', 'YouTube', window.ICON_PATHS.youtube, () => window.openQR('youtube')));
-            if(data.discord) grid.appendChild(createIcon('discord', 'Discord', window.ICON_PATHS.discord, () => window.openQR('discord')));
-            if(data.github) grid.appendChild(createIcon('github', 'GitHub', window.ICON_PATHS.github, () => window.openQR('github')));
-            
-            if(window.customLinks) {
-                window.customLinks.forEach((link, index) => {
-                    grid.appendChild(createIcon('custom', link.label || 'Link', window.ICON_PATHS.custom, () => window.openQR('custom', index)));
-                });
-            }
-
-            if(data.wifiSSID) grid.appendChild(createIcon('wifi', 'WiFi', window.ICON_PATHS.wifi, () => window.openQR('wifi')));
-            if(data.btc) grid.appendChild(createIcon('bitcoin', 'Bitcoin Wallet', window.ICON_PATHS.bitcoin, () => window.openQR('bitcoin')));
-            
-            grid.appendChild(createIcon('share-app', 'Get QRME', window.ICON_PATHS.share, () => window.openQR('share-app')));
-        }
-
-        window.setTheme = function(color) {
-            window.selectedTheme = color;
-            window.updateTheme(color);
-            document.querySelectorAll('.theme-swatch').forEach(el => el.classList.remove('active'));
-            const swatches = document.querySelectorAll('.theme-swatch');
-            for (let s of swatches) { if (s.style.backgroundColor === color) s.classList.add('active'); }
-        }
-
-        window.updateTheme = function(color) {
-            document.documentElement.style.setProperty('--theme-base', color);
-            const bgLayer = document.getElementById('bg-layer');
-            const qrView = document.getElementById('qr-view');
-            if (bgLayer && (!qrView || !qrView.classList.contains('active'))) {
-                bgLayer.style.background = `linear-gradient(180deg, ${color} 0%, #000000 100%)`;
-            }
-        }
-
-        window.toggleGreetingEditor = function() {
-            const editor = document.getElementById('greeting-editor');
-            if (editor.style.display === 'none' || editor.style.display === '') {
-                editor.style.display = 'block';
+            if (!data) {
+                grid.appendChild(createBlock('share-app', 'Get QRME', window.ICON_PATHS.share, () => window.openQR('share-app')));
+                grid.appendChild(createBlock('add-qr', '+ Add QR', '', () => window.showSetup(), true));
             } else {
-                editor.style.display = 'none';
+                grid.appendChild(createBlock('vcard', 'Get vCard', '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>', () => window.openQR('vcard')));
+                if(data.linkedin) grid.appendChild(createBlock('linkedin', 'LinkedIn', window.ICON_PATHS.linkedin, () => window.openQR('linkedin')));
+                if(data.whatsapp) grid.appendChild(createBlock('whatsapp', 'WhatsApp', window.ICON_PATHS.whatsapp, () => window.openQR('whatsapp')));
+                if(data.telegram) grid.appendChild(createBlock('telegram', 'Telegram', window.ICON_PATHS.telegram, () => window.openQR('telegram')));
+                if(data.instagram) grid.appendChild(createBlock('instagram', 'Instagram', window.ICON_PATHS.instagram, () => window.openQR('instagram')));
+                if(data.calendly) grid.appendChild(createBlock('calendly', 'Calendly', '<path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>', () => window.openQR('calendly')));
+                grid.appendChild(createBlock('share-app', 'Get QRME', window.ICON_PATHS.share, () => window.openQR('share-app')));
             }
-        }
+        };
 
-        window.generateGreetingText = function(data) {
-            const d = data || {}; 
-            const name = d.name !== undefined ? d.name : (window.inputs.name ? window.inputs.name.value : "");
-            const company = d.company !== undefined ? d.company : (window.inputs.company ? window.inputs.company.value : "");
-            const website = d.website !== undefined ? d.website : (window.inputs.website ? window.inputs.website.value : "");
-            const event = d.event !== undefined ? d.event : (window.inputs.event ? window.inputs.event.value : "");
-            const location = d.location !== undefined ? d.location : (window.inputs.location ? window.inputs.location.value : "");
-            const dateRaw = d.date !== undefined ? d.date : (window.inputs.date ? window.inputs.date.value : "");
-
-            let dateFormatted = "";
-            if(dateRaw) {
-                const parts = dateRaw.split('-');
-                if(parts.length === 3) dateFormatted = `${parts[2]}/${parts[1]}/${parts[0]}`;
-            }
-
-            let parts = [];
-            if(name) parts.push(`Hi, This is ${name}`);
-            
-            let contextParts = [];
-            if(company) contextParts.push(`from ${company}`);
-            if(website) contextParts.push(`(${website})`);
-            if(contextParts.length > 0) parts.push(contextParts.join(" "));
-
-            let meetingParts = [];
-            if(dateFormatted || event || location) {
-                meetingParts.push("We met");
-                if(dateFormatted) meetingParts.push(`on ${dateFormatted}`);
-                if(event) meetingParts.push(`at ${event}`);
-                if(location) meetingParts.push(`in ${location}`);
-            }
-            
-            if(meetingParts.length > 1) parts.push(meetingParts.join(" ") + ".");
-
-            const appLink = "https://tryqrme.vercel.app/";
-            
-            let mainText = parts.length > 0 ? parts.join(", ") : "";
-            if (mainText && !mainText.endsWith('.')) mainText += ".";
-
-            return `${mainText}\n\nGet your own QRME at ${appLink}`;
-        }
-
-        window.generateDefaultGreeting = function() {
-            window.greetingDirty = false; 
+        window.saveData = function() {
             window.getInputs();
-            const currentData = {
-                name: window.inputs.name.value,
-                company: window.inputs.company.value,
-                website: window.inputs.website.value,
-                event: window.inputs.event.value,
-                location: window.inputs.location.value,
-                date: window.inputs.date.value
+            const data = {
+                theme: window.selectedTheme,
+                name: window.inputs.name.value.trim(),
+                jobTitle: window.inputs.jobTitle.value.trim(),
+                company: window.inputs.company.value.trim(),
+                website: window.inputs.website.value.trim(),
+                email: window.inputs.email.value.trim(),
+                event: window.inputs.event.value.trim(),
+                location: window.inputs.location.value.trim(),
+                greeting: window.inputs.greeting.value,
+                linkedin: window.inputs.linkedin.value.trim(),
+                whatsapp: window.inputs.whatsapp.value.trim(),
+                telegram: window.inputs.telegram.value.trim(),
+                instagram: window.inputs.instagram.value.trim(),
+                twitter: window.inputs.twitter.value.trim(),
+                youtube: window.inputs.youtube.value.trim(),
+                github: window.inputs.github.value.trim(),
+                discord: window.inputs.discord.value.trim(),
+                wifiSSID: window.inputs.wifiSSID.value.trim(),
+                wifiPass: window.inputs.wifiPass.value.trim(),
+                btc: window.inputs.btc.value.trim(),
+                calendly: window.inputs.calendly.value.trim(),
+                customLabel: window.inputs.customLabel.value.trim(),
+                customUrl: window.inputs.customUrl.value.trim(),
+                photo: window.profilePhotoData
             };
-            document.getElementById('in-greeting').value = window.generateGreetingText(currentData);
-        }
-
-        window.fetchLocation = function() {
-            if (!navigator.geolocation) { return; } 
-            navigator.geolocation.getCurrentPosition(async (pos) => {
-                const { latitude, longitude } = pos.coords;
-                try {
-                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
-                    const data = await response.json();
-                    const addr = data.address;
-                    const city = addr.city || addr.town || addr.village || addr.municipality || addr.county || '';
-                    const country = addr.country || '';
-                    const locField = document.getElementById('in-location');
-                    if (city && country && locField) locField.value = `${city}, ${country}`;
-                    else if (country && locField) locField.value = country;
-                } catch (e) { console.log('Loc error', e); }
-            }, () => console.log('Loc permission denied'));
-        }
-
-        window.copyGreeting = function() {
-            const text = document.getElementById('in-greeting').value;
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(showCopyFeedback).catch(() => tryFallbackCopy(text));
-            } else {
-                tryFallbackCopy(text);
-            }
-        }
-
-        function tryFallbackCopy(text) {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "fixed"; textArea.style.left = "-9999px";
-            document.body.appendChild(textArea);
-            textArea.focus(); textArea.select();
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) showCopyFeedback();
-            } catch (err) {}
-            document.body.removeChild(textArea);
-        }
-
-        function showCopyFeedback() {
-            if (navigator.vibrate) navigator.vibrate(50);
-            const btn = document.getElementById('btn-copy-greeting');
-            const originalContent = btn.innerHTML;
-            btn.innerHTML = '<span>Copied!</span>';
-            btn.style.background = '#25D366'; 
-            setTimeout(() => {
-                btn.innerHTML = originalContent;
-                btn.style.background = 'rgba(255, 255, 255, 0.2)';
-            }, 1500);
-        }
+            localStorage.setItem('qrme_data', JSON.stringify(data));
+            window.init(); 
+        };
 
         window.handlePhotoUpload = function(input) {
             if (input.files && input.files[0]) {
@@ -836,312 +507,120 @@
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
-                        const size = 150; 
-                        canvas.width = size; canvas.height = size;
-                        const minScale = Math.max(size/img.width, size/img.height);
-                        const w = img.width * minScale; const h = img.height * minScale;
-                        const x = (size - w) / 2; const y = (size - h) / 2;
-                        ctx.drawImage(img, x, y, w, h);
+                        canvas.width = 150; canvas.height = 150;
+                        ctx.drawImage(img, 0, 0, 150, 150);
                         window.profilePhotoData = canvas.toDataURL('image/jpeg', 0.8);
+                        document.getElementById('display-photo').src = window.profilePhotoData;
+                        document.getElementById('display-photo').style.display = 'block';
+                        document.getElementById('display-placeholder').style.display = 'none';
+                        const existing = localStorage.getItem('qrme_data');
+                        if (existing) {
+                            const p = JSON.parse(existing); p.photo = window.profilePhotoData;
+                            localStorage.setItem('qrme_data', JSON.stringify(p));
+                        }
                     };
                     img.src = e.target.result;
                 };
                 reader.readAsDataURL(input.files[0]);
             }
-        }
+        };
 
-        window.saveData = function() {
-            window.getInputs();
-            const linkRows = document.querySelectorAll('.custom-link-row');
-            window.customLinks = [];
-            linkRows.forEach(row => {
-                const l = row.querySelector('.custom-label').value.trim();
-                const u = row.querySelector('.custom-url').value.trim();
-                if(u) window.customLinks.push({label: l, url: u});
-            });
-            
-            let greetingVal = document.getElementById('in-greeting').value;
-            if (!window.greetingDirty) {
-                 const currentData = {
-                    name: window.inputs.name.value,
-                    company: window.inputs.company.value,
-                    website: window.inputs.website.value,
-                    event: window.inputs.event.value,
-                    location: window.inputs.location.value,
-                    date: window.inputs.date.value
-                };
-                greetingVal = window.generateGreetingText(currentData);
-                document.getElementById('in-greeting').value = greetingVal;
+        window.setTheme = function(color) {
+            window.selectedTheme = color;
+            window.updateTheme(color);
+            document.querySelectorAll('.theme-swatch').forEach(el => el.classList.remove('active'));
+            const swatches = document.querySelectorAll('.theme-swatch');
+            for (let s of swatches) { if (s.style.backgroundColor === color) s.classList.add('active'); }
+        };
+
+        window.updateTheme = function(color) {
+            document.documentElement.style.setProperty('--theme-base', color);
+            const bg = document.getElementById('bg-layer');
+            if (bg) bg.style.background = `linear-gradient(180deg, ${color} 0%, #000000 100%)`;
+        };
+
+        window.switchView = function(viewName) {
+            const vs = { setup: document.getElementById('setup-view'), home: document.getElementById('home-view'), qr: document.getElementById('qr-view') };
+            Object.values(vs).forEach(v => v.classList.remove('active'));
+            vs[viewName].classList.add('active');
+            document.getElementById('settings-btn').style.display = (viewName === 'home') ? 'block' : 'none';
+            if (viewName === 'home') window.updateTheme(window.selectedTheme);
+        };
+
+        window.toggleSection = function(id, header) {
+            const content = document.getElementById(id);
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+                header.parentElement.classList.remove('open');
+            } else {
+                content.style.display = 'block';
+                header.parentElement.classList.add('open');
             }
+        };
 
-            const data = {
-                theme: window.selectedTheme,
-                name: window.inputs.name.value.trim(),
-                company: window.inputs.company.value.trim(),
-                website: window.inputs.website.value.trim(),
-                email: window.inputs.email.value.trim(),
-                event: window.inputs.event.value.trim(),
-                location: window.inputs.location.value.trim(),
-                date: window.inputs.date.value.trim(),
-                greeting: greetingVal,
-                greetingDirty: window.greetingDirty, 
-                linkedin: window.inputs.linkedin.value.trim(),
-                telegram: window.inputs.telegram.value.trim(),
-                whatsapp: window.inputs.whatsapp.value.trim(),
-                twitter: window.inputs.twitter.value.trim(),
-                instagram: window.inputs.instagram.value.trim(),
-                youtube: window.inputs.youtube.value.trim(),
-                discord: window.inputs.discord.value.trim(),
-                github: window.inputs.github.value.trim(),
-                wifiSSID: window.inputs.wifiSSID.value.trim(),
-                wifiPass: window.inputs.wifiPass.value.trim(),
-                btc: window.inputs.btc.value.trim(),
-                calendly: window.inputs.calendly.value.trim(),
-                customLinks: window.customLinks,
-                photo: window.profilePhotoData
-            };
-            try {
-                localStorage.setItem('qrme_data', JSON.stringify(data));
-                
-                const saveBtn = document.getElementById('save-btn');
-                const originalText = saveBtn.innerText;
-                saveBtn.innerText = "Settings Saved!";
-                saveBtn.style.background = "#25D366";
-                setTimeout(() => {
-                    saveBtn.innerText = originalText;
-                    saveBtn.style.background = "#000";
-                    // DO NOT RELOAD. CALL INIT INSTEAD.
-                    window.init(); 
-                }, 800);
-            } catch (e) {
-                alert("Photo too large! Use a smaller one.");
-            }
-        }
-
-        window.exportData = function() {
-            const data = localStorage.getItem('qrme_data');
-            if (!data) { alert("No data to export"); return; }
-            const blob = new Blob([data], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `qrme-backup-${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-
-        window.importData = function(input) {
-            const file = input.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
+        window.fetchLocation = function() {
+            if (!navigator.geolocation) return;
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const { latitude, longitude } = pos.coords;
                 try {
-                    const data = JSON.parse(e.target.result);
-                    if (data && typeof data === 'object') {
-                        localStorage.setItem('qrme_data', JSON.stringify(data));
-                        alert('Data restored successfully!');
-                        location.reload();
-                    } else {
-                        alert('Invalid file format.');
-                    }
-                } catch (err) {
-                    alert('Error parsing file.');
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        window.openQR = function(platform, extraData) {
-            const dataStr = localStorage.getItem('qrme_data');
-            if (!dataStr) {
-                alert("Please set up your profile first.");
-                window.showSetup();
-                return;
-            }
-            const data = JSON.parse(dataStr);
-            let url = '', title = '', color = '';
-            
-            const openAppBtn = document.getElementById('open-app-btn');
-            const openAppText = document.getElementById('open-app-text');
-            const vcardDlBtn = document.getElementById('vcard-dl-btn');
-
-            // Reset UI
-            openAppBtn.style.display = 'flex';
-            openAppBtn.style.color = '#007AFF';
-            openAppBtn.style.borderColor = '#007AFF';
-            openAppText.innerText = 'Open App';
-            vcardDlBtn.style.display = 'none'; 
-
-            window.updateTheme(platform);
-
-            if (platform === 'share-app') {
-                url = window.location.href;
-                title = 'Get QRME'; color = '#4B0082';
-                openAppBtn.style.display = 'none';
-            }
-            else if (platform === 'vcard') {
-                let simpleVCard = `BEGIN:VCARD\nVERSION:3.0\nN:;${data.name};;;\nFN:${data.name}\nORG:${data.company}\nEMAIL:${data.email}\nURL:${data.website}\nEND:VCARD`;
-                
-                let noteContent = `${data.greeting || ''}\n\n-- Social Links --\n`;
-                if(data.linkedin) noteContent += `LinkedIn: ${data.linkedin}\n`;
-                if(data.whatsapp) noteContent += `WhatsApp: ${data.whatsapp}\n`;
-                if(data.telegram) noteContent += `Telegram: ${data.telegram}\n`;
-                if(data.twitter) noteContent += `Twitter: https://x.com/${data.twitter.replace('@','')}\n`;
-                if(data.instagram) noteContent += `Instagram: https://instagram.com/${data.instagram}\n`;
-                if(data.youtube) noteContent += `Youtube: https://youtube.com/${data.youtube}\n`;
-                if(data.github) noteContent += `GitHub: https://github.com/${data.github}\n`;
-                if(data.discord) noteContent += `Discord: ${data.discord}\n`;
-                if(data.wifiSSID) noteContent += `WiFi: ${data.wifiSSID}\n`;
-                if(data.btc) noteContent += `BTC: ${data.btc}\n`;
-                if(data.calendly) noteContent += `Calendly: ${data.calendly}\n`;
-                
-                if(data.customLinks) {
-                    data.customLinks.forEach(cl => {
-                        noteContent += `${cl.label || 'Link'}: ${cl.url}\n`;
-                    });
-                }
-                
-                noteContent += `\nGet QRME: ${window.location.href}`;
-                
-                let richVCard = `BEGIN:VCARD\nVERSION:3.0\nN:;${data.name};;;\nFN:${data.name}\nORG:${data.company}\nEMAIL:${data.email}\nURL:${data.website}\nNOTE:${noteContent.replace(/\n/g, '\\n')}`;
-                
-                if (data.photo) {
-                    const base64Img = data.photo.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
-                    richVCard += `\nPHOTO;ENCODING=b;TYPE=JPEG:${base64Img}`;
-                }
-                
-                richVCard += `\nEND:VCARD`;
-
-                url = simpleVCard; 
-                title = 'Get vCard'; color = '#333';
-                openAppBtn.style.display = 'none'; 
-                vcardDlBtn.style.display = 'flex';
-                window.currentVCardBlob = new Blob([richVCard], { type: 'text/vcard' });
-            }
-            else if (platform === 'custom') {
-                const link = window.customLinks[extraData];
-                url = link.url;
-                title = link.label || 'Link';
-                color = '#FF9500';
-                window.currentDeepLink = url; 
-            }
-            else if (platform === 'linkedin') { 
-                url = data.linkedin; 
-                title = 'LinkedIn'; color = '#0077B5'; 
-                window.currentDeepLink = url;
-            }
-            else if (platform === 'calendly') {
-                url = data.calendly;
-                title = 'Calendly'; color = '#006BFF';
-                window.currentDeepLink = url;
-            }
-            else if (platform === 'telegram') { 
-                url = `https://t.me/${data.telegram}`; 
-                title = 'Telegram'; color = '#24A1DE'; 
-                window.currentDeepLink = `tg://resolve?domain=${data.telegram}`;
-            }
-            else if (platform === 'whatsapp') { 
-                const cleanNum = data.whatsapp.replace(/\D/g,''); 
-                url = `https://wa.me/${cleanNum}`; 
-                title = 'WhatsApp'; color = '#25D366'; 
-                window.currentDeepLink = `whatsapp://send?phone=${cleanNum}`;
-            }
-            else if (platform === 'twitter') { 
-                let handle = data.twitter.replace('@',''); 
-                url = `https://x.com/${handle}`; 
-                title = 'X / Twitter'; color = '#000000'; 
-                window.currentDeepLink = `twitter://user?screen_name=${handle}`;
-            }
-            else if (platform === 'instagram') { 
-                url = `https://instagram.com/${data.instagram}`; 
-                title = 'Instagram'; color = '#C13584'; 
-                window.currentDeepLink = `instagram://user?username=${data.instagram}`;
-            }
-            else if (platform === 'youtube') { 
-                url = `https://youtube.com/${data.youtube}`; 
-                title = 'YouTube'; color = '#FF0000'; 
-                window.currentDeepLink = url;
-            }
-            else if (platform === 'discord') { 
-                url = data.discord; 
-                title = 'Discord'; color = '#5865F2'; 
-                window.currentDeepLink = url;
-            }
-            else if (platform === 'github') { 
-                url = `https://github.com/${data.github}`; 
-                title = 'GitHub'; color = '#181717'; 
-                openAppBtn.style.display = 'none'; 
-            }
-            else if (platform === 'wifi') { 
-                url = `WIFI:T:WPA;S:${data.wifiSSID};P:${data.wifiPass};;`; 
-                title = 'Join WiFi'; color = '#5856D6'; 
-                openAppBtn.style.display = 'none'; 
-            }
-            else if (platform === 'bitcoin') { 
-                url = `bitcoin:${data.btc}`; 
-                title = 'Bitcoin Wallet'; color = '#F7931A'; 
-                window.currentDeepLink = 'zengo://'; 
-                document.getElementById('open-app-text').innerText = 'Open Zengo'; 
-            }
-
-            // Update Open App Button Style
-            if (openAppBtn.style.display !== 'none') {
-                openAppBtn.style.color = color;
-                openAppBtn.style.borderColor = color;
-            }
-
-            window.currentUrl = url;
-            document.getElementById('qrcode').innerHTML = '';
-            document.getElementById('qr-title').innerText = title;
-            document.getElementById('qr-title').style.color = color;
-
-            window.qrCodeObj = new QRCode(document.getElementById("qrcode"), {
-                text: url, width: 180, height: 180,
-                colorDark : color, colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.L
+                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                    const data = await response.json();
+                    const addr = data.address;
+                    const city = addr.city || addr.town || addr.village || '';
+                    const country = addr.country || '';
+                    document.getElementById('in-location').value = `${city}, ${country}`;
+                } catch (e) {}
             });
+        };
 
+        window.openQR = function(p) {
+            const dataStr = localStorage.getItem('qrme_data');
+            const data = dataStr ? JSON.parse(dataStr) : {};
+            let url = (p === 'share-app') ? window.location.href : (data[p] || window.location.href);
+            
+            if (p === 'whatsapp') url = `https://wa.me/${data.whatsapp.replace(/\D/g,'')}`;
+            if (p === 'telegram') url = `https://t.me/${data.telegram}`;
+            if (p === 'instagram') url = `https://instagram.com/${data.instagram}`;
+            if (p === 'linkedin') url = `https://linkedin.com/in/${data.linkedin}`;
+            if (p === 'calendly') url = data.calendly;
+
+            document.getElementById('qrcode').innerHTML = '';
+            new QRCode(document.getElementById("qrcode"), { text: url, width: 180, height: 180 });
+            document.getElementById('qr-title').innerText = p.toUpperCase();
             window.switchView('qr');
-        }
+        };
 
-        window.openNativeApp = function() {
-            if (window.currentDeepLink) {
-                window.location.href = window.currentDeepLink;
-            }
-        }
+        window.copyGreeting = function() {
+            const msg = document.getElementById('in-greeting').value || "Meet QRME!";
+            navigator.clipboard.writeText(msg);
+            const btn = document.getElementById('btn-copy-greeting');
+            btn.innerHTML = "<span>Copied!</span>";
+            setTimeout(() => { btn.innerHTML = "<span>Copy Intro</span>"; }, 1500);
+        };
 
         window.downloadVCard = function() {
-            if (!window.currentVCardBlob) return;
+            const dataStr = localStorage.getItem('qrme_data');
+            if (!dataStr) return;
+            const data = JSON.parse(dataStr);
             
-            if (navigator.share && navigator.canShare) {
-                const file = new File([window.currentVCardBlob], "contact.vcf", { type: "text/vcard" });
-                if (navigator.canShare({ files: [file] })) {
-                    navigator.share({
-                        files: [file],
-                        title: 'Save Contact',
-                        text: 'Add to contacts'
-                    }).catch(console.error);
-                    return;
-                }
-            }
-
-            const url = URL.createObjectURL(window.currentVCardBlob);
+            let vCard = `BEGIN:VCARD\nVERSION:3.0\nN:;${data.name};;;\nFN:${data.name}\nTITLE:${data.jobTitle || ''}\nORG:${data.company}\nEMAIL:${data.email}\nURL:${data.website}\nEND:VCARD`;
+            const blob = new Blob([vCard], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = "contact.vcf";
             a.click();
             URL.revokeObjectURL(url);
-        }
+        };
 
-        window.showHome = function() { window.switchView('home'); }
-        
+        window.showSetup = function() { window.switchView('setup'); };
+        window.showHome = function() { window.switchView('home'); };
         window.shareProfile = async function() {
             if (navigator.share) {
-                try { await navigator.share({ title: 'My Profile', url: window.currentUrl }); } catch (err) {}
+                try { await navigator.share({ title: 'My Profile', url: window.location.href }); } catch (err) {}
             } else { alert('Sharing not supported'); }
-        }
+        };
 
-        // INIT LOAD
         window.addEventListener('load', window.init);
     </script>
 </body>
