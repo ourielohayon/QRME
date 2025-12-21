@@ -8,8 +8,8 @@
     <meta name="theme-color" content="#000000">
     <title>QRME</title>
 
-    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=95">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=95">
+    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=96">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=96">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -103,7 +103,7 @@
         .icon-svg { width: 30px; height: 30px; display: block; }
         .icon-label { font-size: 13px; font-weight: 600; text-align: center; color: #000; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
 
-        /* Onboarding Add QR Block */
+        /* Onboarding Add QR Block Styling */
         .add-qr-block { border: 2px dashed rgba(0,122,255,0.3); background: rgba(255,255,255,0.85); }
         .add-qr-label { font-size: 22px; font-weight: 400; color: #000; }
         .mini-icons { display: flex; gap: 6px; margin-top: 4px; }
@@ -169,7 +169,7 @@
         }
         .full-width { grid-column: span 2; }
         
-        /* Fixed Theme Grid: Fit All in Block */
+        /* Theme Grid */
         .theme-grid { 
             display: flex; gap: 4px; 
             justify-content: space-between;
@@ -183,16 +183,15 @@
 
         .save-btn { width: 100%; padding: 14px; background: #000; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; margin-top: 10px; cursor: pointer; }
 
-        /* Footnote Styling */
+        /* Footnote */
         .footnote { 
             position: absolute; bottom: 15px; width: 100%; 
             display: flex; justify-content: center; align-items: center; gap: 8px;
             color: #ffffff; font-size: 11px; font-weight: 500; pointer-events: auto; 
         }
         .footnote a { color: white; text-decoration: none; display: flex; align-items: center; }
-        .github-footer-icon { width: 16px; height: 16px; fill: white; opacity: 0.8; transition: opacity 0.2s; }
+        .github-footer-icon { width: 14px; height: 14px; fill: white; opacity: 0.8; transition: opacity 0.2s; }
         .github-footer-icon:hover { opacity: 1; }
-
         .file-btn { background: #fff; border: 1px solid #ccc; padding: 12px; border-radius: 8px; font-size: 14px; cursor: pointer; text-align: center; width: 100%; display:block; }
     </style>
 </head>
@@ -247,7 +246,7 @@
                     </div>
                 </div>
 
-                <!-- 3. Custom Link (Collapsed) -->
+                <!-- 3. Custom Link (Collapsed, Separate Section) -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-custom-link', this)">
                         <div class="section-title">Custom Link</div>
@@ -290,7 +289,6 @@
                     </div>
                     <div id="sec-personal" class="section-content">
                         <div class="form-grid">
-                            <!-- RESTORED: Photo upload field -->
                             <div class="input-group full-width">
                                 <label>Profile Photo</label>
                                 <label class="file-btn">Choose Photo<input type="file" id="in-photo-settings" accept="image/*" style="display: none;" onchange="window.handlePhotoUpload(this)"></label>
@@ -340,7 +338,6 @@
 
         <!-- Home View -->
         <div id="home-view" class="view">
-            <!-- Interactive Profile Picker -->
             <div class="profile-container" onclick="document.getElementById('camera-input').click()">
                 <img id="display-photo" class="profile-pic" alt="Profile">
                 <div id="display-placeholder" class="profile-placeholder">
@@ -360,7 +357,7 @@
             <div class="qr-card">
                 <div id="qrcode"></div>
                 <div class="qr-label" id="qr-title">Title</div>
-                <button class="action-btn" onclick="window.shareProfile()" style="margin-bottom:8px;">Share Link</button>
+                <button id="qr-action-btn" class="action-btn" onclick="window.shareProfile()" style="margin-bottom:8px;">Share Link</button>
                 <button id="vcard-dl-btn" class="action-btn" onclick="window.downloadVCard()" style="display:none;background:#333;">Save Contact</button>
             </div>
             <button class="back-btn" onclick="window.showHome()" style="margin-top:20px;">&lt; Back</button>
@@ -375,7 +372,7 @@
     </div>
 
     <script>
-        // --- 1. DEFINE HELPERS AT TOP ---
+        // --- 1. CORE HELPERS (Defined First at Global Scope) ---
         window.getInputs = function() {
             window.inputs = {
                 name: document.getElementById('in-name'),
@@ -434,7 +431,7 @@
             } else {
                 window.renderHomeGrid(null);
                 document.getElementById('btn-copy-greeting').style.display = 'none';
-                window.updateTheme('#1c3e7d'); // Default Deep Blue
+                window.updateTheme('#1c3e7d'); 
             }
         };
 
@@ -461,18 +458,19 @@
                 return div;
             };
 
+            // USER REQUIREMENT: "Get QRME" Left, then primary action Right
             if (!data) {
-                // "Get QRME" Left, "+ Add QR" Right
                 grid.appendChild(createBlock('share-app', 'Get QRME', window.ICON_PATHS.share, () => window.openQR('share-app')));
                 grid.appendChild(createBlock('add-qr', '+ Add QR', '', () => window.showSetup(), true));
             } else {
+                grid.appendChild(createBlock('share-app', 'Get QRME', window.ICON_PATHS.share, () => window.openQR('share-app')));
                 grid.appendChild(createBlock('vcard', 'Get vCard', '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>', () => window.openQR('vcard')));
+                
                 if(data.linkedin) grid.appendChild(createBlock('linkedin', 'LinkedIn', window.ICON_PATHS.linkedin, () => window.openQR('linkedin')));
                 if(data.whatsapp) grid.appendChild(createBlock('whatsapp', 'WhatsApp', window.ICON_PATHS.whatsapp, () => window.openQR('whatsapp')));
                 if(data.telegram) grid.appendChild(createBlock('telegram', 'Telegram', window.ICON_PATHS.telegram, () => window.openQR('telegram')));
                 if(data.instagram) grid.appendChild(createBlock('instagram', 'Instagram', window.ICON_PATHS.instagram, () => window.openQR('instagram')));
                 if(data.calendly) grid.appendChild(createBlock('calendly', 'Calendly', '<path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>', () => window.openQR('calendly')));
-                grid.appendChild(createBlock('share-app', 'Get QRME', window.ICON_PATHS.share, () => window.openQR('share-app')));
             }
         };
 
@@ -593,9 +591,19 @@
             if (p === 'linkedin') url = `https://linkedin.com/in/${data.linkedin}`;
             if (p === 'calendly') url = data.calendly;
 
+            const qrBtn = document.getElementById('qr-action-btn');
+            const qrTitle = document.getElementById('qr-title');
+            
+            if (p === 'share-app') {
+                qrTitle.innerText = "Share QRME"; // TITLE ABOVE QR
+                qrBtn.innerText = "Share Link";   // TEXT IN BLUE BUTTON
+            } else {
+                qrTitle.innerText = p.toUpperCase();
+                qrBtn.innerText = "Share Link";
+            }
+
             document.getElementById('qrcode').innerHTML = '';
             new QRCode(document.getElementById("qrcode"), { text: url, width: 180, height: 180 });
-            document.getElementById('qr-title').innerText = p.toUpperCase();
             window.switchView('qr');
         };
 
@@ -611,7 +619,6 @@
             const dataStr = localStorage.getItem('qrme_data');
             if (!dataStr) return;
             const data = JSON.parse(dataStr);
-            
             let vCard = `BEGIN:VCARD\nVERSION:3.0\nN:;${data.name};;;\nFN:${data.name}\nTITLE:${data.jobTitle || ''}\nORG:${data.company}\nEMAIL:${data.email}\nURL:${data.website}\nEND:VCARD`;
             const blob = new Blob([vCard], { type: 'text/vcard' });
             const url = URL.createObjectURL(blob);
