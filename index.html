@@ -8,8 +8,8 @@
     <meta name="theme-color" content="#000000">
     <title>QRME</title>
 
-    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=130">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=130">
+    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=135">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=135">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -110,7 +110,7 @@
         }
         .app-icon:active { transform: scale(0.96); }
 
-        .icon-svg { width: 32px; height: 32px; display: block; }
+        .icon-svg { width: 30px; height: 30px; display: block; }
         .icon-label { font-size: 13px; font-weight: 600; text-align: center; color: #000; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
 
         .add-qr-block { border: 2px dashed rgba(0,122,255,0.3); background: rgba(255,255,255,0.85); }
@@ -118,6 +118,7 @@
         .mini-icons { display: flex; gap: 6px; margin-top: 4px; }
         .mini-icons svg { width: 14px; height: 14px; }
 
+        #qr-view { gap: 15px; }
         .qr-card {
             background: rgba(255,255,255,0.95); padding: 25px; border-radius: 24px;
             display: flex; flex-direction: column; align-items: center; gap: 15px;
@@ -133,6 +134,7 @@
             display: flex; justify-content: center; align-items: center; gap: 6px;
             cursor: pointer; transition: background 0.2s;
         }
+        .action-btn:active { background: #0056b3; }
         
         .open-app-btn { background: transparent; color: #007AFF; border: 2px solid #007AFF; margin-top: -5px; }
 
@@ -155,7 +157,7 @@
         .settings-section {
             background: linear-gradient(180deg, #f0f9ff 0%, #e0f7fa 100%);
             border-radius: 12px; padding: 0; border: 1px solid #e0e7ff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 10px; overflow: visible;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 5px; overflow: visible;
         }
         
         .section-header { padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
@@ -190,12 +192,6 @@
         .data-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 5px; }
         .data-btn { width: 100%; padding: 16px; background: #f2f2f7; color: #000; border: 1px solid #ddd; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; text-align: center; }
 
-        /* About Section text style */
-        .about-text { font-size: 13px; line-height: 1.6; color: #1e293b; font-weight: 500; }
-        .about-text p { margin-bottom: 12px; }
-        .about-text a { color: #007AFF; font-weight: 700; text-decoration: underline; }
-        .about-disclaimer { font-style: italic; opacity: 0.7; font-size: 12px; margin-top: 15px; display: block; }
-
         .footnote { 
             position: absolute; bottom: 15px; width: 100%; 
             display: flex; justify-content: center; align-items: center; gap: 8px;
@@ -205,11 +201,42 @@
         .github-footer-icon { width: 14px; height: 14px; fill: white; opacity: 0.8; transition: opacity 0.2s; }
         .github-footer-icon:hover { opacity: 1; }
         .file-btn { background: #fff; border: 1px solid #ccc; padding: 12px; border-radius: 8px; font-size: 14px; cursor: pointer; text-align: center; width: 100%; display:block; }
+
+        /* iOS Install Prompt */
+        .ios-prompt {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 360px;
+            background: rgba(30, 30, 30, 0.95); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px; padding: 20px;
+            color: white; z-index: 9999;
+            display: none; flex-direction: column; align-items: center; text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .ios-prompt p { margin: 0 0 12px; font-size: 15px; font-weight: 500; line-height: 1.4; }
+        .ios-prompt span { color: #0A84FF; font-weight: 700; }
+        .ios-prompt-close { position: absolute; top: 10px; right: 15px; color: #888; font-size: 20px; cursor: pointer; padding: 5px; }
+        .ios-share-icon { width: 18px; height: 18px; vertical-align: text-bottom; fill: #0A84FF; margin: 0 4px; display: inline-block; }
+        
+        @keyframes slideUp { from { bottom: -150px; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        .ios-prompt::after {
+            content: ''; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%);
+            border-width: 12px 12px 0; border-style: solid; 
+            border-color: rgba(30,30,30,0.95) transparent transparent transparent;
+        }
     </style>
 </head>
 <body>
 
     <div class="app-background" id="bg-layer"></div>
+
+    <!-- iOS Prompt HTML -->
+    <div id="ios-install-prompt" class="ios-prompt">
+        <div class="ios-prompt-close" onclick="closePrompt()">×</div>
+        <p>Install <span>QRME</span> for the best experience!</p>
+        <p style="opacity: 0.9; font-size: 14px;">Tap <svg class="ios-share-icon" viewBox="0 0 50 50"><path d="M30.3 13.7L25 8.4l-5.3 5.3-1.4-1.4L25 5.6l6.7 6.7z"/><path d="M24 7h2v21h-2z"/><path d="M35 40H15c-1.7 0-3-1.3-3-3V19c0-1.7 1.3-3 3-3h7v2h-7c-.6 0-1 .4-1 1v18c0 .6.4 1 1 1h20c.6 0 1-.4 1-1V19c0-.6-.4-1-1-1h-7v-2h7c1.7 0 3 1.3 3 3v18c0 1.7-1.3 3-3 3z"/></svg> below, then select <br><b>Add to Home Screen</b>.</p>
+    </div>
 
     <div id="app">
         <div id="settings-btn" class="settings-icon" onclick="window.showSetup()">
@@ -219,6 +246,7 @@
         <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;" onchange="window.handlePhotoUpload(this)">
         <input type="file" id="library-input" accept="image/*" style="display:none;" onchange="window.handlePhotoUpload(this)">
 
+        <!-- Setup View -->
         <div id="setup-view" class="view">
             <div class="setup-form">
                 <h2>Set up my QRME</h2>
@@ -353,29 +381,11 @@
                     </div>
                 </div>
 
-                <!-- 8. NEW: About QRME -->
-                <div class="settings-section">
-                    <div class="section-header" onclick="window.toggleSection('sec-about', this)">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
-                            About QRME
-                        </div>
-                        <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-                    </div>
-                    <div id="sec-about" class="section-content">
-                        <div class="about-text">
-                            <p>Welcome to QRME, a new app created to make it easy and fast to connect in real life (IRL).</p>
-                            <p>Just list all your links and profile details, QRME will automatically create your personal page with all the QR codes ready to be scanned when you meet someone. It also generates a smart greeting message ready to copy with your location, date and event name.</p>
-                            <p>To install QRME on your home screen follow those <a href="https://tryqr.me/guide.html" target="_blank" rel="noopener noreferrer">simple steps here</a>.</p>
-                            <span class="about-disclaimer">This is an experimental app, designed with care. It may still include some bug.</span>
-                        </div>
-                    </div>
-                </div>
-
                 <button id="save-btn" class="save-btn" onclick="window.saveData()">Save & Launch</button>
             </div>
         </div>
 
+        <!-- Home View -->
         <div id="home-view" class="view">
             <div class="profile-container" onclick="document.getElementById('library-input').click()">
                 <img id="display-photo" class="profile-pic" alt="Profile">
@@ -397,6 +407,7 @@
             <div class="grid-container" id="main-grid"></div>
         </div>
 
+        <!-- QR View -->
         <div id="qr-view" class="view">
             <div id="qr-camera-btn" class="camera-btn-fixed" onclick="document.getElementById('camera-input').click()">
                 <svg class="camera-svg" viewBox="0 0 512 512"><path d="M149.1 64.8L138.7 96H64C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H373.3L362.9 64.8C356.4 45.2 338.1 32 317.4 32H194.6c-20.7 0-39 13.2-45.5 32.8zM256 192a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/></svg>
@@ -405,10 +416,13 @@
             <div class="qr-card">
                 <div id="qrcode"></div>
                 <div class="qr-label" id="qr-title">Title</div>
+                
                 <button id="qr-action-btn" class="action-btn" onclick="window.shareProfile()">Share Link</button>
+                
                 <button id="open-app-btn" class="action-btn open-app-btn" onclick="window.openNativeApp()">
                     <span id="open-app-text">Open App</span>
                 </button>
+                
                 <button id="vcard-dl-btn" class="action-btn" onclick="window.downloadVCard()" style="display:none;background:#333;">Save Contact</button>
             </div>
             <button class="back-btn" onclick="window.showHome()" style="margin-top:20px;">&lt; Back</button>
@@ -422,7 +436,15 @@
         </a>
     </div>
 
+    <!-- iOS Prompt -->
+    <div id="ios-install-prompt" class="ios-prompt">
+        <div class="ios-prompt-close" onclick="closePrompt()">×</div>
+        <p>Install <span>QRME</span> for the best experience!</p>
+        <p style="opacity: 0.9; font-size: 14px;">Tap <svg class="ios-share-icon" viewBox="0 0 50 50" style="width:18px;height:18px;vertical-align:text-bottom;fill:#0A84FF;"><path d="M30.3 13.7L25 8.4l-5.3 5.3-1.4-1.4L25 5.6l6.7 6.7z"/><path d="M24 7h2v21h-2z"/><path d="M35 40H15c-1.7 0-3-1.3-3-3V19c0-1.7 1.3-3 3-3h7v2h-7c-.6 0-1 .4-1 1v18c0 .6.4 1 1 1h20c.6 0 1-.4 1-1V19c0-.6-.4-1-1-1h-7v-2h7c1.7 0 3 1.3 3 3v18c0 1.7-1.3 3-3 3z"/></svg> below, then select <br><b>Add to Home Screen</b>.</p>
+    </div>
+
     <script>
+        // --- 1. GLOBAL VARIABLES & HELPERS ---
         window.brandColors = {
             linkedin: '#0077B5', telegram: '#24A1DE', whatsapp: '#25D366', twitter: '#000000',
             instagram: '#C13584', youtube: '#FF0000', discord: '#5865F2', github: '#333333',
@@ -431,10 +453,12 @@
         };
 
         window.ICON_PATHS = {
-            whatsapp: '<g transform="scale(0.9) translate(1.2, 1.2)"><path d="M12.031 21.496c-1.556 0-3.076-.416-4.403-1.202L4 21.5l1.233-4.502a9.42 9.42 0 0 1-1.328-4.832c.003-5.214 4.248-9.458 9.466-9.458a9.407 9.407 0 0 1 6.697 2.769 9.408 9.408 0 0 1 2.764 6.697c-.003 5.214-4.248 9.458-9.466 9.458zm5.17-6.571c-.284-.144-1.682-.83-1.944-.925-.262-.096-.453-.144-.643.144-.19.288-.737.925-.904 1.115-.166.19-.333.214-.617.072-.284-.144-1.198-.442-2.283-1.411-.843-.752-1.411-1.682-1.577-1.969-.166-.288-.018-.444.125-.586.128-.128.284-.333.427-.5.144-.166.19-.284.284-.476.096-.192.048-.36-.024-.5-.072-.144-.643-1.549-.881-2.126-.232-.558-.468-.481-.643-.49-.166-.007-.357-.01-.547-.01s-.499.072-.76.357c-.262.288-1.002.973-1.002 2.373s1.026 2.748 1.17 2.938c.144.19 2.019 3.082 4.891 4.322.684.296 1.217.472 1.632.604.686.218 1.311.187 1.805.114.551-.082 1.682-.688 1.92-1.352.238-.664.238-1.234.166-1.352-.072-.119-.262-.19-.547-.334z"/></g>',
-            instagram: '<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>',
-            linkedin: '<path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>',
+            // FIXED WHATSAPP SVG (24x24 Centered)
+            whatsapp: '<g transform="translate(1,1)"><path d="M18.89 3.04A10.7 10.7 0 0 0 11.23 0C5.07 0 .04 5.03.04 11.23c0 2.08.54 4.04 1.52 5.76L.33 22l5.12-1.34a10.65 10.65 0 0 0 5.77 1.7h.01c6.16 0 11.19-5.03 11.19-11.23 0-3-.12-5.83-2.28-7.98l-1.25-.11zM11.23 20.3a8.8 8.8 0 0 1-4.48-1.22l-.32-.19-3.32.87.89-3.24-.21-.33a8.83 8.83 0 0 1 14.28-4.96c.01 4.88-3.95 8.84-8.84 8.84l1.24.23zm4.84-6.62c-.27-.13-1.57-.77-1.81-.86-.24-.09-.42-.13-.6.13-.18.27-.69.86-.84 1.04-.15.18-.3.2-.57.07-.27-.13-1.12-.41-2.14-1.32-.79-.7-1.32-1.57-1.47-1.84-.15-.27-.02-.41.12-.55.12-.12.27-.3.4-.46.14-.15.18-.26.27-.44.09-.18.04-.34-.02-.48-.06-.13-.6-1.45-.82-1.99-.22-.52-.44-.45-.6-.45h-.51c-.18 0-.47.07-.71.34-.24.27-.92.9-.92 2.2s.95 2.56 1.08 2.74c.13.18 1.86 2.85 4.51 4 .63.28 1.12.45 1.51.57.64.2 1.22.17 1.68.1.51-.08 1.57-.64 1.79-1.26.22-.62.22-1.15.15-1.26-.07-.11-.24-.18-.51-.31z"/></g>',
             telegram: '<path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.97 9.288c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.293-.605.293l.213-3.053 5.56-5.022c.242-.213-.054-.334-.373-.121l-6.869 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.553-4.458c.538-.196 1.006.128.847.932z"/>',
+            linkedin: '<path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>',
+            // FIXED INSTAGRAM GLYPH
+            instagram: '<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>',
             twitter: '<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>',
             youtube: '<path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>',
             discord: '<path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z"/>',
@@ -498,19 +522,6 @@
             return window.inputs;
         };
 
-        window.generateGreetingText = function(data) {
-            const name = data.name || window.inputs.name.value || '...';
-            const company = data.company || window.inputs.company.value || '...';
-            const event = data.event || window.inputs.event.value || '...';
-            const location = data.location || window.inputs.location.value || '...';
-            const date = data.date || window.inputs.date.value || '...';
-            return `Hi, I'm ${name} from ${company}. We met on ${date} at ${event} in ${location}.\n\nConnect with me: ${window.location.href}`;
-        };
-
-        window.generateDefaultGreeting = function() {
-            window.inputs.greeting.value = window.generateGreetingText({});
-        };
-
         window.fetchLocation = function() {
             if (!navigator.geolocation) return;
             navigator.geolocation.getCurrentPosition(async (pos) => {
@@ -560,9 +571,25 @@
                 } catch(e) { window.renderHomeGrid(null); }
             } else {
                 window.renderHomeGrid(null);
+                
+                // Onboarding Logic for new user
+                const prompt = document.getElementById('ios-install-prompt');
+                if (prompt) {
+                     // Check if iOS and not standalone
+                    const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+                    const isStandalone = ('standalone' in window.navigator) && (window.navigator.standalone);
+                    if (isIos && !isStandalone && !localStorage.getItem('qrme_install_prompt')) {
+                        setTimeout(() => { prompt.style.display = 'flex'; }, 2000);
+                    }
+                }
             }
             window.updateBackground('home');
         };
+
+        window.closePrompt = function() {
+            document.getElementById('ios-install-prompt').style.display = 'none';
+            localStorage.setItem('qrme_install_prompt', 'true');
+        }
 
         window.renderHomeGrid = function(data) {
             const grid = document.getElementById('main-grid');
@@ -779,10 +806,33 @@
             URL.revokeObjectURL(url);
         };
 
+        window.generateGreetingText = function(data) {
+            const name = data.name || window.inputs.name.value || '...';
+            const company = data.company || window.inputs.company.value || '...';
+            const event = data.event || window.inputs.event.value || '...';
+            const location = data.location || window.inputs.location.value || '...';
+            const date = data.date || window.inputs.date.value || '...';
+            return `Hi, I'm ${name} from ${company}. We met on ${date} at ${event} in ${location}.\n\nConnect with me: ${window.location.href}`;
+        };
+
+        window.generateDefaultGreeting = function() {
+            window.inputs.greeting.value = window.generateGreetingText({});
+        };
+
+        window.toggleGreetingEditor = function() {
+            const editor = document.getElementById('greeting-editor');
+            if (editor.style.display === 'none' || editor.style.display === '') {
+                editor.style.display = 'block';
+            } else {
+                editor.style.display = 'none';
+            }
+        }
+
+        window.showSetup = function() { window.switchView('setup'); };
         window.showHome = function() { window.switchView('home'); };
         window.shareProfile = async function() {
             if (navigator.share) {
-                try { await navigator.share({ title: 'My Profile', url: window.location.href }); } catch (err) {}
+                try { await navigator.share({ title: 'My Profile', url: window.currentUrl || window.location.href }); } catch (err) {}
             } else { alert('Sharing not supported'); }
         };
 
