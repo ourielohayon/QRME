@@ -190,6 +190,12 @@
         .data-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 5px; }
         .data-btn { width: 100%; padding: 16px; background: #f2f2f7; color: #000; border: 1px solid #ddd; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; text-align: center; }
 
+        /* About Section text style */
+        .about-text { font-size: 13px; line-height: 1.6; color: #1e293b; font-weight: 500; }
+        .about-text p { margin-bottom: 12px; }
+        .about-text a { color: #007AFF; font-weight: 700; text-decoration: underline; }
+        .about-disclaimer { font-style: italic; opacity: 0.7; font-size: 12px; margin-top: 15px; display: block; }
+
         .footnote { 
             position: absolute; bottom: 15px; width: 100%; 
             display: flex; justify-content: center; align-items: center; gap: 8px;
@@ -210,11 +216,7 @@
             <svg class="gear-svg" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
         </div>
 
-        <!-- NEW: Differentiated Inputs -->
-        <!-- Forces Camera only -->
         <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;" onchange="window.handlePhotoUpload(this)">
-        
-        <!-- Allows Library -->
         <input type="file" id="library-input" accept="image/*" style="display:none;" onchange="window.handlePhotoUpload(this)">
 
         <div id="setup-view" class="view">
@@ -224,9 +226,7 @@
                 <!-- 1. App Theme -->
                 <div class="settings-section static visible">
                     <div class="section-header">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z"/></svg> App Theme
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z"/></svg> App Theme</div>
                     </div>
                     <div class="section-content">
                         <div class="theme-grid">
@@ -245,9 +245,7 @@
                 <!-- 2. Social Links -->
                 <div class="settings-section static visible">
                     <div class="section-header">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/></svg> Social Links
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/></svg> Social Links</div>
                     </div>
                     <div class="section-content">
                         <div class="form-grid">
@@ -267,9 +265,7 @@
                 <!-- 3. Custom Link -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-custom-link', this)">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg> Custom Link
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg> Custom Link</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-custom-link" class="section-content">
@@ -283,9 +279,7 @@
                 <!-- 4. Context & Greeting -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-context', this)">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg> Context & Greeting
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg> Context & Greeting</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-context" class="section-content">
@@ -311,16 +305,13 @@
                 <!-- 5. Personal Details -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-personal', this)">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg> Personal Details
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg> Personal Details</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-personal" class="section-content">
                         <div class="form-grid">
                             <div class="input-group full-width">
                                 <label>Profile Photo</label>
-                                <!-- Profile replacement opens Library -->
                                 <label class="file-btn">Choose Photo<input type="file" id="in-photo-settings" accept="image/*" style="display: none;" onchange="window.handlePhotoUpload(this)"></label>
                             </div>
                             <div class="input-group"><label>Full Name</label><input type="text" id="in-name"></div>
@@ -335,9 +326,7 @@
                 <!-- 6. Utilities -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-utils', this)">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> Utilities
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> Utilities</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-utils" class="section-content">
@@ -352,9 +341,7 @@
                 <!-- 7. Backup -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-backup', this)">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Data Backup
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Data Backup</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-backup" class="section-content">
@@ -366,12 +353,30 @@
                     </div>
                 </div>
 
+                <!-- 8. NEW: About QRME -->
+                <div class="settings-section">
+                    <div class="section-header" onclick="window.toggleSection('sec-about', this)">
+                        <div class="section-title">
+                            <svg viewBox="0 0 24 24"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                            About QRME
+                        </div>
+                        <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </div>
+                    <div id="sec-about" class="section-content">
+                        <div class="about-text">
+                            <p>Welcome to QRME, a new app created to make it easy and fast to connect in real life (IRL).</p>
+                            <p>Just list all your links and profile details, QRME will automatically create your personal page with all the QR codes ready to be scanned when you meet someone. It also generates a smart greeting message ready to copy with your location, date and event name.</p>
+                            <p>To install QRME on your home screen follow those <a href="https://tryqr.me/guide.html" target="_blank" rel="noopener noreferrer">simple steps here</a>.</p>
+                            <span class="about-disclaimer">This is an experimental app, designed with care. It may still include some bug.</span>
+                        </div>
+                    </div>
+                </div>
+
                 <button id="save-btn" class="save-btn" onclick="window.saveData()">Save & Launch</button>
             </div>
         </div>
 
         <div id="home-view" class="view">
-            <!-- Profile circle opens Library -->
             <div class="profile-container" onclick="document.getElementById('library-input').click()">
                 <img id="display-photo" class="profile-pic" alt="Profile">
                 <div id="display-placeholder" class="profile-placeholder">
@@ -393,7 +398,6 @@
         </div>
 
         <div id="qr-view" class="view">
-            <!-- Camera Icon opens Camera directly -->
             <div id="qr-camera-btn" class="camera-btn-fixed" onclick="document.getElementById('camera-input').click()">
                 <svg class="camera-svg" viewBox="0 0 512 512"><path d="M149.1 64.8L138.7 96H64C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H373.3L362.9 64.8C356.4 45.2 338.1 32 317.4 32H194.6c-20.7 0-39 13.2-45.5 32.8zM256 192a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/></svg>
             </div>
@@ -401,13 +405,10 @@
             <div class="qr-card">
                 <div id="qrcode"></div>
                 <div class="qr-label" id="qr-title">Title</div>
-                
                 <button id="qr-action-btn" class="action-btn" onclick="window.shareProfile()">Share Link</button>
-                
                 <button id="open-app-btn" class="action-btn open-app-btn" onclick="window.openNativeApp()">
                     <span id="open-app-text">Open App</span>
                 </button>
-                
                 <button id="vcard-dl-btn" class="action-btn" onclick="window.downloadVCard()" style="display:none;background:#333;">Save Contact</button>
             </div>
             <button class="back-btn" onclick="window.showHome()" style="margin-top:20px;">&lt; Back</button>
@@ -422,7 +423,6 @@
     </div>
 
     <script>
-        // --- 1. GLOBAL VARIABLES & HELPERS ---
         window.brandColors = {
             linkedin: '#0077B5', telegram: '#24A1DE', whatsapp: '#25D366', twitter: '#000000',
             instagram: '#C13584', youtube: '#FF0000', discord: '#5865F2', github: '#333333',
