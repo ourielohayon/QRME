@@ -8,8 +8,8 @@
     <meta name="theme-color" content="#000000">
     <title>QRME</title>
 
-    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=145">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=145">
+    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=180">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=180">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -18,15 +18,24 @@
             --theme-base: #1c3e7d; 
             --bg-gradient: linear-gradient(180deg, var(--theme-base) 0%, #000000 100%);
             
-            --linkedin-color: #0077B5; --telegram-color: #24A1DE; --whatsapp-color: #25D366;
-            --twitter-color: #000000; --instagram-color: #E1306C; --youtube-color: #FF0000;
-            --discord-color: #5865F2; --github-color: #333333; --wifi-color: #5856D6;
-            --bitcoin-color: #F7931A; --vcard-color: #333333; --share-app-color: #4B0082;
-            --calendly-color: #006BFF; --custom-color: #FF9500;
+            /* Brand Colors */
+            --linkedin-color: #0077B5; 
+            --telegram-color: #24A1DE; 
+            --whatsapp-color: #25D366;
+            --twitter-color: #000000; 
+            --instagram-color: #E1306C;
+            --youtube-color: #FF0000;
+            --discord-color: #5865F2; 
+            --github-color: #333333; 
+            --wifi-color: #5856D6;
+            --bitcoin-color: #F7931A; 
+            --vcard-color: #333333; 
+            --share-app-color: #4B0082;
+            --calendly-color: #006BFF; 
+            --custom-color: #FF9500;
 
             --card-bg: rgba(255, 255, 255, 0.94); 
             --text-primary: #000000;
-            --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -194,7 +203,6 @@
         .data-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 5px; }
         .data-btn { width: 100%; padding: 16px; background: #f2f2f7; color: #000; border: 1px solid #ddd; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; text-align: center; }
 
-        /* About & Legal Sections */
         .about-text { font-size: 13px; line-height: 1.6; color: #1e293b; font-weight: 500; }
         .about-text p { margin-bottom: 12px; }
         .about-text a { color: #007AFF; font-weight: 700; text-decoration: underline; }
@@ -250,7 +258,7 @@
 
     <div id="app">
         <div id="settings-btn" class="settings-icon" onclick="window.showSetup()">
-            <svg class="gear-svg" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+            <svg class="gear-svg" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
         </div>
 
         <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;" onchange="window.handlePhotoUpload(this)">
@@ -264,10 +272,7 @@
                 <!-- 1. App Theme -->
                 <div class="settings-section static visible">
                     <div class="section-header">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9s1.5.67 1.5 1.5S7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/></svg>
-                            App Theme
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9s1.5.67 1.5 1.5S7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/></svg> App Theme</div>
                     </div>
                     <div class="section-content">
                         <div class="theme-grid">
@@ -286,10 +291,7 @@
                 <!-- 2. Social Links -->
                 <div class="settings-section static visible">
                     <div class="section-header">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/></svg>
-                            Social Links
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/></svg> Social Links</div>
                     </div>
                     <div class="section-content">
                         <div class="form-grid">
@@ -309,10 +311,7 @@
                 <!-- 3. Custom Link -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-custom-link', this)">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
-                            Custom Link
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg> Custom Link</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-custom-link" class="section-content">
@@ -326,10 +325,7 @@
                 <!-- 4. Context & Greeting -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-context', this)">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg>
-                            Context & Greeting
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg> Context & Greeting</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-context" class="section-content">
@@ -355,10 +351,7 @@
                 <!-- 5. Personal Details -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-personal', this)">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                            Personal Details
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg> Personal Details</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-personal" class="section-content">
@@ -379,10 +372,7 @@
                 <!-- 6. Utilities -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-utils', this)">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                            Utilities
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> Utilities</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-utils" class="section-content">
@@ -397,10 +387,7 @@
                 <!-- 7. Backup -->
                 <div class="settings-section">
                     <div class="section-header" onclick="window.toggleSection('sec-backup', this)">
-                        <div class="section-title">
-                            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                            Data Backup
-                        </div>
+                        <div class="section-title"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Data Backup</div>
                         <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                     </div>
                     <div id="sec-backup" class="section-content">
@@ -440,7 +427,6 @@
             </div>
         </div>
 
-        <!-- Home View -->
         <div id="home-view" class="view">
             <div class="profile-container" onclick="document.getElementById('library-input').click()">
                 <img id="display-photo" class="profile-pic" alt="Profile">
@@ -449,7 +435,6 @@
                 </div>
             </div>
 
-            <!-- Profile Info Display -->
             <div id="profile-info-box" class="profile-info">
                 <p id="display-name" class="display-name"></p>
                 <p id="display-job-company" class="display-job-company"></p>
@@ -463,7 +448,6 @@
             <div class="grid-container" id="main-grid"></div>
         </div>
 
-        <!-- QR View -->
         <div id="qr-view" class="view">
             <div id="qr-camera-btn" class="camera-btn-fixed" onclick="document.getElementById('camera-input').click()">
                 <svg class="camera-svg" viewBox="0 0 512 512"><path d="M149.1 64.8L138.7 96H64C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H373.3L362.9 64.8C356.4 45.2 338.1 32 317.4 32H194.6c-20.7 0-39 13.2-45.5 32.8zM256 192a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/></svg>
@@ -472,13 +456,10 @@
             <div class="qr-card">
                 <div id="qrcode"></div>
                 <div class="qr-label" id="qr-title">Title</div>
-                
                 <button id="qr-action-btn" class="action-btn" onclick="window.shareProfile()">Share Link</button>
-                
                 <button id="open-app-btn" class="action-btn open-app-btn" onclick="window.openNativeApp()">
                     <span id="open-app-text">Open App</span>
                 </button>
-                
                 <button id="vcard-dl-btn" class="action-btn" onclick="window.downloadVCard()" style="display:none;background:#333;">Save Contact</button>
             </div>
             <button class="back-btn" onclick="window.showHome()" style="margin-top:20px;">&lt; Back</button>
@@ -510,15 +491,21 @@
 
         window.ICON_PATHS = {
             // FIXED WHATSAPP SVG (24x24 Centered)
-            whatsapp: '<g transform="scale(0.9) translate(1.2, 1.2)"><path d="M12.031 21.496c-1.556 0-3.076-.416-4.403-1.202L4 21.5l1.233-4.502a9.42 9.42 0 0 1-1.328-4.832c.003-5.214 4.248-9.458 9.466-9.458a9.407 9.407 0 0 1 6.697 2.769 9.408 9.408 0 0 1 2.764 6.697c-.003 5.214-4.248 9.458-9.466 9.458zm5.17-6.571c-.284-.144-1.682-.83-1.944-.925-.262-.096-.453-.144-.643.144-.19.288-.737.925-.904 1.115-.166.19-.333.214-.617.072-.284-.144-1.198-.442-2.283-1.411-.843-.752-1.411-1.682-1.577-1.969-.166-.288-.018-.444.125-.586.128-.128.284-.333.427-.5.144-.166.19-.284.284-.476.096-.192.048-.36-.024-.5-.072-.144-.643-1.549-.881-2.126-.232-.558-.468-.481-.643-.49-.166-.007-.357-.01-.547-.01s-.499.072-.76.357c-.262.288-1.002.973-1.002 2.373s1.026 2.748 1.17 2.938c.144.19 2.019 3.082 4.891 4.322.684.296 1.217.472 1.632.604.686.218 1.311.187 1.805.114.551-.082 1.682-.688 1.92-1.352.238-.664.238-1.234.166-1.352-.072-.119-.262-.19-.547-.334z"/></g>',
-            // FIXED INSTAGRAM GLYPH (Rounded Square + Circle)
-            instagram: '<path d="M16 3H8C5.243 3 3 5.243 3 8v8c0 2.757 2.243 5 5 5h8c2.757 0 5-2.243 5-5V8c0-2.757-2.243-5-5-5zm-8 2h8c1.654 0 3 1.346 3 3v8c0 1.654-1.346 3-3 3H8c-1.654 0-3-1.346-3-3V8c0-1.654 1.346-3 3-3zm4 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm5.5-2.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>',
+            whatsapp: '<g transform="scale(0.85) translate(2,2)"><path d="M12.031 21.496c-1.556 0-3.076-.416-4.403-1.202L4 21.5l1.233-4.502a9.42 9.42 0 0 1-1.328-4.832c.003-5.214 4.248-9.458 9.466-9.458a9.407 9.407 0 0 1 6.697 2.769 9.408 9.408 0 0 1 2.764 6.697c-.003 5.214-4.248 9.458-9.466 9.458zm5.17-6.571c-.284-.144-1.682-.83-1.944-.925-.262-.096-.453-.144-.643.144-.19.288-.737.925-.904 1.115-.166.19-.333.214-.617.072-.284-.144-1.198-.442-2.283-1.411-.843-.752-1.411-1.682-1.577-1.969-.166-.288-.018-.444.125-.586.128-.128.284-.333.427-.5.144-.166.19-.284.284-.476.096-.192.048-.36-.024-.5-.072-.144-.643-1.549-.881-2.126-.232-.558-.468-.481-.643-.49-.166-.007-.357-.01-.547-.01s-.499.072-.76.357c-.262.288-1.002.973-1.002 2.373s1.026 2.748 1.17 2.938c.144.19 2.019 3.082 4.891 4.322.684.296 1.217.472 1.632.604.686.218 1.311.187 1.805.114.551-.082 1.682-.688 1.92-1.352.238-.664.238-1.234.166-1.352-.072-.119-.262-.19-.547-.334z"/></g>',
+            // FIXED INSTAGRAM GLYPH (Official Rounded Square + Circle)
+            instagram: '<path d="M16 3H8C5.24 3 3 5.24 3 8v8c0 2.76 2.24 5 5 5h8c2.76 0 5-2.24 5-5V8c0-2.76-2.24-5-5-5zm-8 2h8c1.65 0 3 1.35 3 3v8c0 1.65-1.35 3-3 3H8c-1.65 0-3-1.35-3-3V8c0-1.65 1.35-3 3-3zm4 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm5.5-2.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>',
             linkedin: '<path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>',
             telegram: '<path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.97 9.288c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.293-.605.293l.213-3.053 5.56-5.022c.242-.213-.054-.334-.373-.121l-6.869 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.553-4.458c.538-.196 1.006.128.847.932z"/>',
             twitter: '<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>',
             youtube: '<path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>',
             discord: '<path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z"/>',
-            share: '<path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>'
+            share: '<path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>',
+            bitcoin: '<path d="M16.5 10.5C16.5 9.12 15.38 8 14 8H10V6H8V8H6V10H8V16H6V18H8V20H10V18H13.5C15.43 18 17 16.43 17 14.5C17 13.1 16.18 11.9 15 11.3C15.9 10.9 16.5 10.1 16.5 9.25V10.5M10 10H13.5C14.05 10 14.5 10.45 14.5 11C14.5 11.55 14.05 12 13.5 12H10V10M10 16V14H13.5C14.05 14 14.5 14.45 14.5 15C14.5 15.55 14.05 16 13.5 16H10Z" />',
+            calendly: '<path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>',
+            vcard: '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>',
+            wifi: '<path d="M12.01 6c-3.19 0-6.22 1.17-8.66 3.32l1.45 1.76C6.54 9.63 9.17 8.5 12 8.5c2.8 0 5.48 1.1 7.23 2.58l1.43-1.78C18.2 7.15 15.19 6 12.01 6zm0 5c-1.89 0-3.69.73-5.07 2.05L12 19l5.06-5.96C15.68 11.74 13.9 11 12.01 11z"/>',
+            custom: '<path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>',
+            'share-app': '<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" style="fill:#4B0082"/>'
         };
 
         window.updateBackground = function(type) {
@@ -676,11 +663,11 @@
             };
 
             if (!data) {
-                grid.appendChild(createBlock('share-app', 'Get QRME', window.ICON_PATHS.share, () => window.openQR('share-app')));
+                grid.appendChild(createBlock('share-app', 'Share QRME', '<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" style="fill:#4B0082"/>', () => window.openQR('share-app'))); 
                 grid.appendChild(createBlock('add-qr', '+ Add QR', '', () => window.showSetup(), true));
             } else {
-                grid.appendChild(createBlock('share-app', 'Get QRME', window.ICON_PATHS.share, () => window.openQR('share-app')));
-                grid.appendChild(createBlock('vcard', 'Get vCard', window.ICON_PATHS.vcard, () => window.openQR('vcard')));
+                grid.appendChild(createBlock('share-app', 'Share QRME', '<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" style="fill:#4B0082"/>', () => window.openQR('share-app')));
+                grid.appendChild(createBlock('vcard', 'vCard', window.ICON_PATHS.vcard, () => window.openQR('vcard')));
                 if(data.linkedin) grid.appendChild(createBlock('linkedin', 'LinkedIn', window.ICON_PATHS.linkedin, () => window.openQR('linkedin')));
                 if(data.whatsapp) grid.appendChild(createBlock('whatsapp', 'WhatsApp', window.ICON_PATHS.whatsapp, () => window.openQR('whatsapp')));
                 if(data.telegram) grid.appendChild(createBlock('telegram', 'Telegram', window.ICON_PATHS.telegram, () => window.openQR('telegram')));
