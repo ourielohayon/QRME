@@ -43,6 +43,7 @@
             --share-app-color: #4B0082;
             --calendly-color: #006BFF; 
             --custom-color: #FF9500;
+            --add-qr-color: #666666;
 
             --card-bg: rgba(255, 255, 255, 0.94); 
             --text-primary: #000000;
@@ -275,7 +276,29 @@
         <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;" onchange="window.handlePhotoUpload(this)">
         <input type="file" id="library-input" accept="image/*" style="display:none;" onchange="window.handlePhotoUpload(this)">
 
-        <!-- Setup View -->
+        <!-- Welcome View -->
+        <div id="welcome-view" class="view">
+            <div style="text-align:center; padding: 40px; color: white;">
+                <h1 style="font-size: 4.5rem; font-weight: 800; line-height: 0.9; margin-bottom: 20px; letter-spacing: -2px;">Hello<br>There.</h1>
+                <p style="font-size: 1.4rem; opacity: 0.8; margin-bottom: 50px; font-weight: 500;">Nice to meet you 👋</p>
+                <button class="action-btn" onclick="window.switchView('onboarding')" style="font-size: 1.2rem; padding: 16px 40px; width: auto; margin: 0 auto; background: white; color: #000; border-radius: 50px;">Start</button>
+            </div>
+        </div>
+
+        <!-- Onboarding View -->
+        <div id="onboarding-view" class="view">
+            <div class="setup-form" style="display: flex; flex-direction: column; height: auto; max-height: 85vh; justify-content: center; padding-top: 30px;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 25px;">Basic Info</h2>
+                <div class="input-group"><label>Full Name</label><input type="text" id="ob-name" placeholder="John Doe"></div>
+                <div class="input-group" style="margin-top:15px"><label>Job Title</label><input type="text" id="ob-job" placeholder="Designer"></div>
+                <div class="input-group" style="margin-top:15px"><label>Company</label><input type="text" id="ob-company" placeholder="Acme Inc"></div>
+                <div class="input-group" style="margin-top:15px"><label>Email</label><input type="email" id="ob-email" placeholder="john@example.com"></div>
+                
+                <button class="action-btn" onclick="window.finishOnboarding()" style="margin-top: 30px; background: #000; padding: 16px; font-size: 1.1rem;">Set up my QRME</button>
+            </div>
+        </div>
+
+        <!-- Setup View (Full Settings) -->
         <div id="setup-view" class="view">
             <div class="setup-form">
                 <h2>Set up my QRME</h2>
@@ -511,7 +534,7 @@
             linkedin: '#0077B5', telegram: '#24A1DE', whatsapp: '#25D366', twitter: '#000000',
             instagram: '#E1306C', youtube: '#FF0000', discord: '#5865F2', github: '#333333',
             wifi: '#5856D6', bitcoin: '#F7931A', vcard: '#333333', 'share-app': '#4B0082',
-            calendly: '#006BFF', custom: '#FF9500'
+            calendly: '#006BFF', custom: '#FF9500', 'add-qr': '#666666'
         };
 
         window.ICON_PATHS = {
@@ -542,11 +565,20 @@
         };
 
         window.switchView = function(viewName) {
-            const vs = { setup: document.getElementById('setup-view'), home: document.getElementById('home-view'), qr: document.getElementById('qr-view') };
-            Object.values(vs).forEach(v => v.classList.remove('active'));
-            vs[viewName].classList.add('active');
-            document.getElementById('settings-btn').style.display = (viewName === 'home') ? 'block' : 'none';
-            if (viewName === 'home') window.updateBackground('home');
+            const vs = { 
+                setup: document.getElementById('setup-view'), 
+                home: document.getElementById('home-view'), 
+                qr: document.getElementById('qr-view'),
+                welcome: document.getElementById('welcome-view'),
+                onboarding: document.getElementById('onboarding-view')
+            };
+            Object.values(vs).forEach(v => v ? v.classList.remove('active') : null);
+            if(vs[viewName]) vs[viewName].classList.add('active');
+            
+            const settingsBtn = document.getElementById('settings-btn');
+            settingsBtn.style.display = (viewName === 'home') ? 'block' : 'none';
+            
+            if (viewName === 'home' || viewName === 'welcome') window.updateBackground('home');
         };
 
         window.showSetup = function() {
@@ -611,6 +643,50 @@
             });
         };
 
+        // NEW: Onboarding Completion Logic
+        window.finishOnboarding = function() {
+            const name = document.getElementById('ob-name').value.trim();
+            const job = document.getElementById('ob-job').value.trim();
+            const company = document.getElementById('ob-company').value.trim();
+            const email = document.getElementById('ob-email').value.trim();
+
+            if(!name) { alert('Please enter your name'); return; }
+
+            const today = new Date().toISOString().split('T')[0];
+            
+            // Build initial data structure
+            const data = {
+                theme: window.selectedTheme || '#1c3e7d',
+                name: name,
+                jobTitle: job,
+                company: company,
+                email: email,
+                date: today, // Auto-set date
+                location: '', // Will fill after fetch
+                // Initialize others empty
+                linkedin:'', whatsapp:'', telegram:'', instagram:'', twitter:'', 
+                youtube:'', github:'', discord:'', wifiSSID:'', wifiPass:'', 
+                bitcoin:'', calendly:'', customLabel:'', customUrl:'', photo:''
+            };
+
+            // Save
+            localStorage.setItem('qrme_data', JSON.stringify(data));
+            
+            // Sync to main settings inputs for future edits
+            const inputs = window.getInputs();
+            if(inputs.name) inputs.name.value = name;
+            if(inputs.jobTitle) inputs.jobTitle.value = job;
+            if(inputs.company) inputs.company.value = company;
+            if(inputs.email) inputs.email.value = email;
+            if(inputs.date) inputs.date.value = today;
+
+            // Trigger Location
+            window.fetchLocation(); 
+
+            // Go Home
+            window.init();
+        };
+
         window.init = function() {
             window.getInputs();
             const dataStr = localStorage.getItem('qrme_data');
@@ -618,9 +694,12 @@
             const today = new Date().toISOString().split('T')[0];
             window.inputs.date.value = today;
 
-            window.switchView('home'); 
-
-            if (dataStr) {
+            if (!dataStr) {
+                // No data = First time user = Welcome Screen
+                window.switchView('welcome');
+            } else {
+                window.switchView('home'); 
+                
                 try {
                     const parsed = JSON.parse(dataStr);
                     if (parsed.theme) { window.selectedTheme = parsed.theme; }
@@ -643,9 +722,10 @@
                     window.renderHomeGrid(parsed);
                     document.getElementById('btn-copy-greeting').style.display = parsed.name ? 'flex' : 'none';
                 } catch(e) { window.renderHomeGrid(null); }
-            } else {
-                window.renderHomeGrid(null);
-                
+            }
+            
+            // iOS Prompt Logic (only if on home view)
+            if(dataStr) {
                 const prompt = document.getElementById('ios-install-prompt');
                 if (prompt) {
                     const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
@@ -655,6 +735,7 @@
                     }
                 }
             }
+            
             window.updateBackground('home');
         };
 
@@ -671,7 +752,7 @@
                 div.className = `app-icon ${id} ${isAdd ? 'add-qr-block' : ''}`;
                 if (isAdd) {
                     div.innerHTML = `
-                        <div class="add-qr-label"></div>
+                        <div class="add-qr-label" style="font-size:16px; font-weight:700;">+ Add QRME</div>
                         <div class="mini-icons">
                             <svg viewBox="0 0 24 24" style="fill:#25D366">${window.ICON_PATHS.whatsapp}</svg>
                             <svg viewBox="0 0 24 24" style="fill:#24A1DE">${window.ICON_PATHS.telegram}</svg>
@@ -679,20 +760,21 @@
                             <svg viewBox="0 0 24 24" style="fill:#E1306C">${window.ICON_PATHS.instagram}</svg>
                         </div>
                     `;
-                    div.querySelector('.add-qr-label').textContent = label; // Safe
                 } else {
-                    div.innerHTML = `<svg class="icon-svg" viewBox="0 0 24 24" style="fill:var(--${id}-color, #333)">${iconPath}</svg><span class="icon-label"></span>`;
-                    div.querySelector('.icon-label').textContent = label; // Safe
+                    // Safe SVG rendering
+                    const safePath = iconPath || '';
+                    div.innerHTML = `<svg class="icon-svg" viewBox="0 0 24 24" style="fill:var(--${id}-color, #333)">${safePath}</svg><span class="icon-label"></span>`;
+                    div.querySelector('.icon-label').textContent = label; 
                 }
                 div.onclick = onClick;
                 return div;
             };
 
-            if (!data) {
-                grid.appendChild(createBlock('share-app', 'Share QRME', '<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" style="fill:#4B0082"/>', () => window.openQR('share-app'))); 
-                grid.appendChild(createBlock('add-qr', '+ Add QR', '', () => window.showSetup(), true));
-            } else {
-                grid.appendChild(createBlock('share-app', 'Share QRME', '<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" style="fill:#4B0082"/>', () => window.openQR('share-app')));
+            // Always show "Get QRME" (Share) first using the key 'share-app'
+            grid.appendChild(createBlock('share-app', 'Get QRME', window.ICON_PATHS['share-app'], () => window.openQR('share-app')));
+
+            if (data) {
+                // If data exists, show vCard + any others + Add button at end
                 grid.appendChild(createBlock('vcard', 'vCard', window.ICON_PATHS.vcard, () => window.openQR('vcard')));
                 if(data.linkedin) grid.appendChild(createBlock('linkedin', 'LinkedIn', window.ICON_PATHS.linkedin, () => window.openQR('linkedin')));
                 if(data.whatsapp) grid.appendChild(createBlock('whatsapp', 'WhatsApp', window.ICON_PATHS.whatsapp, () => window.openQR('whatsapp')));
@@ -706,6 +788,12 @@
                 if(data.wifiSSID) grid.appendChild(createBlock('wifi', 'WiFi', window.ICON_PATHS.wifi, () => window.openQR('wifi')));
                 if(data.bitcoin) grid.appendChild(createBlock('bitcoin', 'Bitcoin Wallet', window.ICON_PATHS.bitcoin, () => window.openQR('bitcoin')));
                 if(data.customUrl) grid.appendChild(createBlock('custom', data.customLabel || 'Link', window.ICON_PATHS.custom, () => window.openQR('custom')));
+                
+                // Explicit "Add QRME" button at the end
+                grid.appendChild(createBlock('add-qr', '', '', () => window.showSetup(), true));
+            } else {
+                // If no data (shouldn't happen with new flow, but safe fallback)
+                grid.appendChild(createBlock('add-qr', '', '', () => window.showSetup(), true));
             }
         };
 
@@ -728,7 +816,6 @@
                     const data = JSON.parse(e.target.result);
                     localStorage.setItem('qrme_data', JSON.stringify(data));
                     window.init();
-                    // location.reload(); // Reloading not recommended in preview
                     console.log('Data imported successfully');
                 } catch (err) { console.error('Error: Invalid file.'); }
             };
