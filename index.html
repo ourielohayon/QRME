@@ -13,14 +13,13 @@
     <meta property="og:url" content="https://tryqr.me/">
     <meta property="og:title" content="QRME, Simply Connect IRL">
     <meta property="og:description" content="My digital business card. Scan to connect instantly.">
-    <!-- Removed og:image to prevent ugly large previews on LinkedIn -->
 
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="QRME, Simply Connect IRL">
     <meta name="twitter:description" content="My digital business card. Scan to connect instantly.">
 
-    <link rel="icon" type="image/png" href="/apple-touch-icon.png?v=210">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=210">
+    <link rel="icon" type="image/png" href="apple-touch-icon.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -445,12 +444,12 @@
                         <div class="about-text">
                             <p>Welcome to QRME, a new app created to make it easy and fast to connect in real life (IRL).</p>
                             <p>Just list all your links and profile details, QRME will automatically create your personal page with all the QR codes ready to be scanned when you meet someone. It also generates a smart greeting message ready to copy with your location, date and event name.</p>
-                            <p>To install QRME on your home screen follow those <a href="https://tryqr.me/guide.html" target="_blank" rel="noopener noreferrer">simple steps here</a>.</p>
+                            <p>To install QRME on your home screen follow those <a href="#" onclick="alert('The guide is not available in this preview.'); return false;">simple steps here</a>.</p>
                             <span class="about-disclaimer">This is an experimental app, designed with care. It may still include some bug.</span>
                             
                             <div class="legal-links">
-                                <a href="/terms.html" target="_blank">Terms of Service</a>
-                                <a href="/privacy.html" target="_blank">Privacy Policy</a>
+                                <a href="#" target="_blank">Terms of Service</a>
+                                <a href="#" target="_blank">Privacy Policy</a>
                             </div>
                         </div>
                     </div>
@@ -696,6 +695,10 @@
                 if(data.whatsapp) grid.appendChild(createBlock('whatsapp', 'WhatsApp', window.ICON_PATHS.whatsapp, () => window.openQR('whatsapp')));
                 if(data.telegram) grid.appendChild(createBlock('telegram', 'Telegram', window.ICON_PATHS.telegram, () => window.openQR('telegram')));
                 if(data.instagram) grid.appendChild(createBlock('instagram', 'Instagram', window.ICON_PATHS.instagram, () => window.openQR('instagram')));
+                if(data.twitter) grid.appendChild(createBlock('twitter', 'Twitter', window.ICON_PATHS.twitter, () => window.openQR('twitter')));
+                if(data.youtube) grid.appendChild(createBlock('youtube', 'YouTube', window.ICON_PATHS.youtube, () => window.openQR('youtube')));
+                if(data.github) grid.appendChild(createBlock('github', 'GitHub', window.ICON_PATHS.github, () => window.openQR('github')));
+                if(data.discord) grid.appendChild(createBlock('discord', 'Discord', window.ICON_PATHS.discord, () => window.openQR('discord')));
                 if(data.calendly) grid.appendChild(createBlock('calendly', 'Calendly', window.ICON_PATHS.calendly, () => window.openQR('calendly')));
                 if(data.wifiSSID) grid.appendChild(createBlock('wifi', 'WiFi', window.ICON_PATHS.wifi, () => window.openQR('wifi')));
                 if(data.bitcoin) grid.appendChild(createBlock('bitcoin', 'Bitcoin Wallet', window.ICON_PATHS.bitcoin, () => window.openQR('bitcoin')));
@@ -722,8 +725,9 @@
                     const data = JSON.parse(e.target.result);
                     localStorage.setItem('qrme_data', JSON.stringify(data));
                     window.init();
-                    location.reload(); 
-                } catch (err) { alert('Error: Invalid file.'); }
+                    // location.reload(); // Reloading not recommended in preview
+                    console.log('Data imported successfully');
+                } catch (err) { console.error('Error: Invalid file.'); }
             };
             reader.readAsText(file);
         };
@@ -812,12 +816,40 @@
             let url = (p === 'share-app') ? window.location.href : (data[p] || window.location.href);
             let deepLink = '';
 
+            // Handle URL & Deep Links construction
             if (p === 'whatsapp') { url = `https://wa.me/${data.whatsapp.replace(/\D/g,'')}`; deepLink = `whatsapp://send?phone=${data.whatsapp.replace(/\D/g,'')}`; }
             if (p === 'telegram') { url = `https://t.me/${data.telegram}`; deepLink = `tg://resolve?domain=${data.telegram}`; }
             if (p === 'instagram') { url = `https://instagram.com/${data.instagram}`; deepLink = `instagram://user?username=${data.instagram}`; }
             if (p === 'linkedin') { url = `https://linkedin.com/in/${data.linkedin}`; deepLink = url; }
             if (p === 'calendly') { url = data.calendly; deepLink = url; }
             if (p === 'bitcoin') { url = `bitcoin:${data.bitcoin}`; deepLink = 'zengo://'; }
+            if (p === 'custom') { url = data.customUrl; deepLink = data.customUrl; }
+            
+            // New Supported Types
+            if (p === 'twitter') { 
+                let handle = data.twitter.replace('@', '');
+                url = `https://twitter.com/${handle}`; 
+                deepLink = `twitter://user?screen_name=${handle}`; 
+            }
+            if (p === 'youtube') { 
+                url = `https://youtube.com/${data.youtube}`; 
+                deepLink = url; 
+            }
+            if (p === 'github') { 
+                url = `https://github.com/${data.github}`; 
+                deepLink = url; 
+            }
+            if (p === 'discord') { 
+                url = data.discord.startsWith('http') ? data.discord : `https://discord.gg/${data.discord}`;
+                deepLink = url.replace('https://', 'discord://').replace('http://', 'discord://'); 
+            }
+
+            // WiFi Logic (No "Open App" for WiFi)
+            if (p === 'wifi') {
+                // WiFi String Format: WIFI:T:WPA;S:mynetwork;P:mypass;;
+                url = `WIFI:T:WPA;S:${data.wifiSSID};P:${data.wifiPass};;`;
+                deepLink = ''; 
+            }
 
             window.updateBackground(p);
 
@@ -827,6 +859,7 @@
             const vcardBtn = document.getElementById('vcard-dl-btn');
             const openAppText = document.getElementById('open-app-text');
 
+            // Toggle Open App Button
             openBtn.style.display = deepLink ? 'block' : 'none';
             vcardBtn.style.display = (p === 'vcard') ? 'block' : 'none';
             
@@ -858,7 +891,18 @@
 
         window.copyGreeting = function() {
             const msg = document.getElementById('in-greeting').value || "Meet QRME!";
-            navigator.clipboard.writeText(msg);
+            // Fallback for clipboard if execCommand is needed
+            const textArea = document.createElement("textarea");
+            textArea.value = msg;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+            document.body.removeChild(textArea);
+
             const btn = document.getElementById('btn-copy-greeting');
             const originalHTML = btn.innerHTML;
             btn.innerHTML = "<span>Copied!</span>";
@@ -886,7 +930,9 @@
         window.shareProfile = async function() {
             if (navigator.share) {
                 try { await navigator.share({ title: 'My Profile', url: window.currentUrl || window.location.href }); } catch (err) {}
-            } else { alert('Sharing not supported'); }
+            } else { 
+                console.log('Sharing not supported'); 
+            }
         };
 
         window.addEventListener('load', window.init);
