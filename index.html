@@ -671,7 +671,7 @@
                 div.className = `app-icon ${id} ${isAdd ? 'add-qr-block' : ''}`;
                 if (isAdd) {
                     div.innerHTML = `
-                        <div class="add-qr-label">${label}</div>
+                        <div class="add-qr-label"></div>
                         <div class="mini-icons">
                             <svg viewBox="0 0 24 24" style="fill:#25D366">${window.ICON_PATHS.whatsapp}</svg>
                             <svg viewBox="0 0 24 24" style="fill:#24A1DE">${window.ICON_PATHS.telegram}</svg>
@@ -679,8 +679,10 @@
                             <svg viewBox="0 0 24 24" style="fill:#E1306C">${window.ICON_PATHS.instagram}</svg>
                         </div>
                     `;
+                    div.querySelector('.add-qr-label').textContent = label; // Safe
                 } else {
-                    div.innerHTML = `<svg class="icon-svg" viewBox="0 0 24 24" style="fill:var(--${id}-color, #333)">${iconPath}</svg><span class="icon-label">${label}</span>`;
+                    div.innerHTML = `<svg class="icon-svg" viewBox="0 0 24 24" style="fill:var(--${id}-color, #333)">${iconPath}</svg><span class="icon-label"></span>`;
+                    div.querySelector('.icon-label').textContent = label; // Safe
                 }
                 div.onclick = onClick;
                 return div;
@@ -774,9 +776,20 @@
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
-                        canvas.width = 150; canvas.height = 150;
-                        ctx.drawImage(img, 0, 0, 150, 150);
-                        window.profilePhotoData = canvas.toDataURL('image/jpeg', 0.8);
+                        
+                        // FIX: Center Crop to Square
+                        const size = 300; // Increased resolution
+                        canvas.width = size; 
+                        canvas.height = size;
+                        
+                        const minScale = Math.min(img.width, img.height);
+                        const sx = (img.width - minScale) / 2;
+                        const sy = (img.height - minScale) / 2;
+                        
+                        // Draw cropped image
+                        ctx.drawImage(img, sx, sy, minScale, minScale, 0, 0, size, size);
+
+                        window.profilePhotoData = canvas.toDataURL('image/jpeg', 0.85);
                         document.getElementById('display-photo').src = window.profilePhotoData;
                         document.getElementById('display-photo').style.display = 'block';
                         document.getElementById('display-placeholder').style.display = 'none';
@@ -817,27 +830,38 @@
             let url = (p === 'share-app') ? window.location.href : (data[p] || window.location.href);
             let deepLink = '';
 
+            // Handle Sanitization (Strip @ from handles)
+            const cleanHandle = (h) => h ? h.replace(/^@/, '').trim() : '';
+
             // Handle URL & Deep Links construction
             if (p === 'whatsapp') { url = `https://wa.me/${data.whatsapp.replace(/\D/g,'')}`; deepLink = `whatsapp://send?phone=${data.whatsapp.replace(/\D/g,'')}`; }
-            if (p === 'telegram') { url = `https://t.me/${data.telegram}`; deepLink = `tg://resolve?domain=${data.telegram}`; }
-            if (p === 'instagram') { url = `https://instagram.com/${data.instagram}`; deepLink = `instagram://user?username=${data.instagram}`; }
+            if (p === 'telegram') { 
+                const h = cleanHandle(data.telegram);
+                url = `https://t.me/${h}`; 
+                deepLink = `tg://resolve?domain=${h}`; 
+            }
+            if (p === 'instagram') { 
+                const h = cleanHandle(data.instagram);
+                url = `https://instagram.com/${h}`; 
+                deepLink = `instagram://user?username=${h}`; 
+            }
             if (p === 'linkedin') { url = `https://linkedin.com/in/${data.linkedin}`; deepLink = url; }
             if (p === 'calendly') { url = data.calendly; deepLink = url; }
             if (p === 'bitcoin') { url = `bitcoin:${data.bitcoin}`; deepLink = 'zengo://'; }
             if (p === 'custom') { url = data.customUrl; deepLink = data.customUrl; }
             
-            // New Supported Types
             if (p === 'twitter') { 
-                let handle = data.twitter.replace('@', '');
-                url = `https://twitter.com/${handle}`; 
-                deepLink = `twitter://user?screen_name=${handle}`; 
+                const h = cleanHandle(data.twitter);
+                url = `https://twitter.com/${h}`; 
+                deepLink = `twitter://user?screen_name=${h}`; 
             }
             if (p === 'youtube') { 
                 url = `https://youtube.com/${data.youtube}`; 
                 deepLink = url; 
             }
             if (p === 'github') { 
-                url = `https://github.com/${data.github}`; 
+                const h = cleanHandle(data.github);
+                url = `https://github.com/${h}`; 
                 deepLink = url; 
             }
             if (p === 'discord') { 
@@ -935,6 +959,17 @@
                 console.log('Sharing not supported'); 
             }
         };
+
+        // --- SERVICE WORKER REGISTRATION (Offline Capability) ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    console.log('SW registered: ', registration);
+                }).catch(registrationError => {
+                    console.log('SW registration failed: ', registrationError);
+                });
+            });
+        }
 
         window.addEventListener('load', window.init);
     </script>
