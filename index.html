@@ -647,8 +647,21 @@
                     const addr = data.address;
                     const city = addr.city || addr.town || addr.village || '';
                     const country = addr.country || '';
-                    document.getElementById('in-location').value = `${city}, ${country}`;
-                } catch (e) {}
+                    const locString = `${city}, ${country}`;
+                    
+                    // Update Input
+                    const locInput = document.getElementById('in-location');
+                    if(locInput) locInput.value = locString;
+
+                    // NEW: Automatically save location to storage so it persists immediately
+                    const currentDataStr = localStorage.getItem('qrme_data');
+                    if (currentDataStr) {
+                        const currentData = JSON.parse(currentDataStr);
+                        currentData.location = locString;
+                        localStorage.setItem('qrme_data', JSON.stringify(currentData));
+                    }
+
+                } catch (e) { console.error("Location fetch failed", e); }
             });
         };
 
@@ -758,15 +771,17 @@
                 } catch(e) { window.renderHomeGrid(null); }
             }
             
-            // iOS Prompt Logic (only if on home view)
-            if(dataStr) {
-                const prompt = document.getElementById('ios-install-prompt');
-                if (prompt) {
-                    const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
-                    const isStandalone = ('standalone' in window.navigator) && (window.navigator.standalone);
-                    if (isIos && !isStandalone && !localStorage.getItem('qrme_install_prompt')) {
-                        setTimeout(() => { prompt.style.display = 'flex'; }, 2000);
-                    }
+            // iOS Prompt Logic - Checks on load for ANY screen
+            const prompt = document.getElementById('ios-install-prompt');
+            if (prompt) {
+                // Simple check for iOS device
+                const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+                // Check if already installed/standalone
+                const isStandalone = ('standalone' in window.navigator) && (window.navigator.standalone);
+                
+                // Show if iOS, not standalone, and hasn't been dismissed before
+                if (isIos && !isStandalone && !localStorage.getItem('qrme_install_prompt')) {
+                    setTimeout(() => { prompt.style.display = 'flex'; }, 2000);
                 }
             }
             
