@@ -287,14 +287,23 @@
 
         <!-- Onboarding View -->
         <div id="onboarding-view" class="view">
-            <div class="setup-form" style="display: flex; flex-direction: column; height: auto; max-height: 85vh; justify-content: center; padding-top: 30px;">
-                <h2 style="font-size: 1.8rem; margin-bottom: 25px;">Basic Info</h2>
+            <div class="setup-form" style="display: flex; flex-direction: column; height: auto; max-height: 85vh; justify-content: center; padding-top: 30px; position: relative;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 25px;">Let's get to know you</h2>
                 <div class="input-group"><label>Full Name</label><input type="text" id="ob-name" placeholder="John Doe"></div>
                 <div class="input-group" style="margin-top:15px"><label>Job Title</label><input type="text" id="ob-job" placeholder="Designer"></div>
                 <div class="input-group" style="margin-top:15px"><label>Company</label><input type="text" id="ob-company" placeholder="Acme Inc"></div>
                 <div class="input-group" style="margin-top:15px"><label>Email</label><input type="email" id="ob-email" placeholder="john@example.com"></div>
+                <div class="input-group" style="margin-top:15px"><label>Mobile Phone</label><input type="tel" id="ob-phone" placeholder="+1 234 567 8900"></div>
                 
                 <button class="action-btn" onclick="window.finishOnboarding()" style="margin-top: 30px; background: #000; padding: 16px; font-size: 1.1rem;">Set up my QRME</button>
+                
+                <div style="text-align:center; margin-top:15px;">
+                    <span onclick="window.skipOnboarding()" style="color:#999; text-decoration:underline; font-size:0.9rem; cursor:pointer;">skip for now</span>
+                </div>
+
+                <div style="margin-top: 25px; font-size: 0.7rem; color: #888; text-align: center; width: 100%;">
+                    🔒 your data is yours alone and is locally stored on your phone.
+                </div>
             </div>
         </div>
 
@@ -649,6 +658,7 @@
             const job = document.getElementById('ob-job').value.trim();
             const company = document.getElementById('ob-company').value.trim();
             const email = document.getElementById('ob-email').value.trim();
+            const phone = document.getElementById('ob-phone').value.trim();
 
             if(!name) { alert('Please enter your name'); return; }
 
@@ -664,7 +674,9 @@
                 date: today, // Auto-set date
                 location: '', // Will fill after fetch
                 // Initialize others empty
-                linkedin:'', whatsapp:'', telegram:'', instagram:'', twitter:'', 
+                linkedin:'', 
+                whatsapp: phone, // Use phone for WhatsApp tile
+                telegram:'', instagram:'', twitter:'', 
                 youtube:'', github:'', discord:'', wifiSSID:'', wifiPass:'', 
                 bitcoin:'', calendly:'', customLabel:'', customUrl:'', photo:''
             };
@@ -678,12 +690,29 @@
             if(inputs.jobTitle) inputs.jobTitle.value = job;
             if(inputs.company) inputs.company.value = company;
             if(inputs.email) inputs.email.value = email;
+            if(inputs.whatsapp) inputs.whatsapp.value = phone;
             if(inputs.date) inputs.date.value = today;
 
             // Trigger Location
             window.fetchLocation(); 
 
             // Go Home
+            window.init();
+        };
+
+        // NEW: Skip Logic
+        window.skipOnboarding = function() {
+            const today = new Date().toISOString().split('T')[0];
+            const data = {
+                theme: window.selectedTheme || '#1c3e7d',
+                date: today,
+                // Initialize empty
+                name:'', jobTitle:'', company:'', email:'', linkedin:'', whatsapp:'', 
+                telegram:'', instagram:'', twitter:'', youtube:'', github:'', discord:'', 
+                wifiSSID:'', wifiPass:'', bitcoin:'', calendly:'', customLabel:'', customUrl:'', photo:''
+            };
+            localStorage.setItem('qrme_data', JSON.stringify(data));
+            window.fetchLocation(); 
             window.init();
         };
 
@@ -770,12 +799,14 @@
                 return div;
             };
 
-            // Always show "Get QRME" (Share) first using the key 'share-app'
-            grid.appendChild(createBlock('share-app', 'Get QRME', window.ICON_PATHS['share-app'], () => window.openQR('share-app')));
+            // Always show "Share QRME" first using the key 'share-app'
+            grid.appendChild(createBlock('share-app', 'Share QRME', window.ICON_PATHS['share-app'], () => window.openQR('share-app')));
 
             if (data) {
                 // If data exists, show vCard + any others + Add button at end
-                grid.appendChild(createBlock('vcard', 'vCard', window.ICON_PATHS.vcard, () => window.openQR('vcard')));
+                if (data.name && data.name.trim() !== '') {
+                    grid.appendChild(createBlock('vcard', 'vCard', window.ICON_PATHS.vcard, () => window.openQR('vcard')));
+                }
                 if(data.linkedin) grid.appendChild(createBlock('linkedin', 'LinkedIn', window.ICON_PATHS.linkedin, () => window.openQR('linkedin')));
                 if(data.whatsapp) grid.appendChild(createBlock('whatsapp', 'WhatsApp', window.ICON_PATHS.whatsapp, () => window.openQR('whatsapp')));
                 if(data.telegram) grid.appendChild(createBlock('telegram', 'Telegram', window.ICON_PATHS.telegram, () => window.openQR('telegram')));
@@ -1029,7 +1060,7 @@
             const dataStr = localStorage.getItem('qrme_data');
             if (!dataStr) return;
             const data = JSON.parse(dataStr);
-            let vCard = `BEGIN:VCARD\nVERSION:3.0\nN:;${data.name};;;\nFN:${data.name}\nTITLE:${data.jobTitle || ''}\nORG:${data.company}\nEMAIL:${data.email}\nURL:${data.website}\nEND:VCARD`;
+            let vCard = `BEGIN:VCARD\nVERSION:3.0\nN:;${data.name};;;\nFN:${data.name}\nTITLE:${data.jobTitle || ''}\nORG:${data.company}\nEMAIL:${data.email}\nTEL;TYPE=CELL:${data.whatsapp}\nURL:${data.website}\nEND:VCARD`;
             const blob = new Blob([vCard], { type: 'text/vcard' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
