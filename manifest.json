@@ -1,11 +1,12 @@
 {
   "name": "QRME",
   "short_name": "QRME",
-  "start_url": ".",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
   "orientation": "portrait",
+  "scope": "./",
   "icons": [
     {
       "src": "apple-touch-icon.png",
