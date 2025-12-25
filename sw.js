@@ -1,9 +1,10 @@
-const CACHE_NAME = 'qrme-v1';
+const CACHE_NAME = 'qrme-v2'; // Bumped version
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/apple-touch-icon.png?v=3',
-  'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'
+  './',
+  './index.html',
+  './apple-touch-icon.png',
+  'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js',
+  'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js'
 ];
 
 // Install Event: Cache assets
