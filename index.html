@@ -267,7 +267,7 @@
         .github-footer-icon:hover { opacity: 1; }
         .file-btn { background: #fff; border: 1px solid #ccc; padding: 12px; border-radius: 8px; font-size: 14px; cursor: pointer; text-align: center; width: 100%; display:block; }
 
-        /* iOS Install Prompt */
+        /* Install Prompt */
         .ios-prompt {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 360px;
@@ -296,11 +296,18 @@
 
     <div class="app-background" id="bg-layer"></div>
 
-    <!-- iOS Prompt HTML -->
-    <div id="ios-install-prompt" class="ios-prompt">
+    <!-- Generic Install Prompt HTML -->
+    <div id="install-prompt" class="ios-prompt">
         <div class="ios-prompt-close" onclick="closePrompt()">×</div>
-        <p>Install <span>QRME</span> for the best experience!</p>
-        <p style="opacity: 0.9; font-size: 14px;">Tap <svg class="ios-share-icon" viewBox="0 0 50 50" style="width:18px;height:18px;vertical-align:text-bottom;fill:#0A84FF;"><path d="M30.3 13.7L25 8.4l-5.3 5.3-1.4-1.4L25 5.6l6.7 6.7z"/><path d="M24 7h2v21h-2z"/><path d="M35 40H15c-1.7 0-3-1.3-3-3V19c0-1.7 1.3-3 3-3h7v2h-7c-.6 0-1 .4-1 1v18c0 .6.4 1 1 1h20c.6 0 1-.4 1-1V19c0-.6-.4-1-1-1h-7v-2h7c1.7 0 3 1.3 3 3v18c0 1.7-1.3 3-3 3z"/></svg> below, then select <br><b>Add to Home Screen</b>.</p>
+        <p id="install-text">Install <span>QRME</span> for the best experience!</p>
+        
+        <!-- iOS Instructions -->
+        <div id="ios-instructions" style="display:none;">
+            <p style="opacity: 0.9; font-size: 14px;">Tap <svg class="ios-share-icon" viewBox="0 0 50 50" style="width:18px;height:18px;vertical-align:text-bottom;fill:#0A84FF;"><path d="M30.3 13.7L25 8.4l-5.3 5.3-1.4-1.4L25 5.6l6.7 6.7z"/><path d="M24 7h2v21h-2z"/><path d="M35 40H15c-1.7 0-3-1.3-3-3V19c0-1.7 1.3-3 3-3h7v2h-7c-.6 0-1 .4-1 1v18c0 .6.4 1 1 1h20c.6 0 1-.4 1-1V19c0-.6-.4-1-1-1h-7v-2h7c1.7 0 3 1.3 3 3v18c0 1.7-1.3 3-3 3z"/></svg> below, then select <br><b>Add to Home Screen</b>.</p>
+        </div>
+
+        <!-- Android Button -->
+        <button id="android-install-btn" class="action-btn" style="display:none; background: #0A84FF; margin-top: 10px;" onclick="triggerInstall()">Install App</button>
     </div>
 
     <div id="app">
@@ -316,7 +323,7 @@
             <div style="text-align:center; padding: 40px; color: white;">
                 <h1 style="font-size: 4.5rem; font-weight: 800; line-height: 0.9; margin-bottom: 20px; letter-spacing: -2px;">Hello<br>There.</h1>
                 <p style="font-size: 1.4rem; opacity: 0.8; margin-bottom: 50px; font-weight: 500;">Nice to meet you 👋</p>
-                <button class="action-btn" onclick="window.switchView('onboarding')" style="font-size: 1.2rem; padding: 16px 40px; width: auto; margin: 0 auto; background: white; color: #000; border-radius: 50px;">Start</button>
+                <button class="action-btn" onclick="window.startOnboarding()" style="font-size: 1.2rem; padding: 16px 40px; width: auto; margin: 0 auto; background: white; color: #000; border-radius: 50px;">Start</button>
             </div>
         </div>
 
@@ -580,7 +587,8 @@
                 </button>
                 <button id="vcard-dl-btn" class="action-btn" onclick="window.downloadVCard()" style="display:none;background:#333;">Save Contact</button>
             </div>
-            <button class="back-btn" onclick="window.showHome()" style="margin-top:20px;">&lt; Back</button>
+            <!-- Back button uses history.back() to fix navigation issues -->
+            <button class="back-btn" onclick="window.history.back()" style="margin-top:20px;">&lt; Back</button>
         </div>
     </div>
 
@@ -593,6 +601,8 @@
 
     <script>
         // --- 1. GLOBAL VARIABLES & HELPERS ---
+        let deferredPrompt; // For Android install prompt
+
         window.brandColors = {
             linkedin: '#0077B5', telegram: '#24A1DE', whatsapp: '#25D366', twitter: '#000000',
             instagram: '#E1306C', youtube: '#FF0000', discord: '#5865F2', github: '#333333',
@@ -618,6 +628,35 @@
             'share-app': '<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" style="fill:#4B0082"/>'
         };
 
+        // Capture Android Install Prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing on mobile
+            e.preventDefault();
+            // Stash the event so it can be triggered later.
+            deferredPrompt = e;
+            // Update UI notify the user they can install the PWA
+            const btn = document.getElementById('android-install-btn');
+            if(btn) btn.style.display = 'block';
+            
+            // Show prompt container if hidden
+            const promptContainer = document.getElementById('install-prompt');
+            if(promptContainer && !localStorage.getItem('qrme_install_prompt')) {
+                promptContainer.style.display = 'flex';
+                document.getElementById('install-text').innerHTML = "Install <span>QRME</span> App!";
+            }
+        });
+
+        window.triggerInstall = async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+            }
+            deferredPrompt = null;
+            closePrompt();
+        };
+
         window.updateBackground = function(type) {
             const bgLayer = document.getElementById('bg-layer');
             let color = window.selectedTheme || '#1c3e7d';
@@ -627,7 +666,18 @@
             bgLayer.style.background = `linear-gradient(180deg, ${color} 0%, #000000 100%)`;
         };
 
-        window.switchView = function(viewName) {
+        // History State Management
+        window.onpopstate = function(event) {
+            if (event.state && event.state.view) {
+                // We don't push state here, just switch view
+                const viewName = event.state.view;
+                window.switchView(viewName, false); // false = don't push state
+            } else {
+                window.switchView('home', false);
+            }
+        };
+
+        window.switchView = function(viewName, pushState = true) {
             const vs = { 
                 setup: document.getElementById('setup-view'), 
                 home: document.getElementById('home-view'), 
@@ -639,14 +689,30 @@
             if(vs[viewName]) vs[viewName].classList.add('active');
             
             const settingsBtn = document.getElementById('settings-btn');
-            settingsBtn.style.display = (viewName === 'home') ? 'block' : 'none';
+            if(settingsBtn) settingsBtn.style.display = (viewName === 'home') ? 'block' : 'none';
             
             if (viewName === 'home' || viewName === 'welcome') window.updateBackground('home');
+
+            // History Management
+            if (pushState) {
+                const url = new URL(window.location);
+                // We can add a query param or hash for better bookmarking if needed, 
+                // but for now just state is enough for back button.
+                window.history.pushState({ view: viewName }, '', url);
+            }
+        };
+
+        window.startOnboarding = function() {
+            window.switchView('onboarding');
         };
 
         window.showSetup = function() {
             window.switchView('setup');
             window.fetchLocation();
+        };
+
+        window.showHome = function() {
+            window.switchView('home');
         };
 
         window.getInputs = function() {
@@ -829,11 +895,18 @@
             const today = new Date().toISOString().split('T')[0];
             window.inputs.date.value = today;
 
+            // Replace State on Initial Load
+            const currentState = window.history.state;
+            if (!currentState) {
+                 window.history.replaceState({ view: dataStr ? 'home' : 'welcome' }, '', '');
+            }
+
             if (!dataStr) {
                 // No data = First time user = Welcome Screen
-                window.switchView('welcome');
+                // Don't push state here to avoid back button issues on load, just UI switch
+                window.switchView('welcome', false);
             } else {
-                window.switchView('home'); 
+                window.switchView('home', false); 
                 
                 try {
                     const parsed = JSON.parse(dataStr);
@@ -859,25 +932,26 @@
                 } catch(e) { window.renderHomeGrid(null); }
             }
             
-            // iOS Prompt Logic - Checks on load for ANY screen
-            const prompt = document.getElementById('ios-install-prompt');
+            // iOS/Android Prompt Logic - Checks on load for ANY screen
+            const prompt = document.getElementById('install-prompt');
+            const iosInstructions = document.getElementById('ios-instructions');
             if (prompt) {
-                // Simple check for iOS device
                 const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
-                // Check if already installed/standalone
                 const isStandalone = ('standalone' in window.navigator) && (window.navigator.standalone);
                 
-                // Show if iOS, not standalone, and hasn't been dismissed before
+                // iOS Specific Logic
                 if (isIos && !isStandalone && !localStorage.getItem('qrme_install_prompt')) {
+                    iosInstructions.style.display = 'block';
                     setTimeout(() => { prompt.style.display = 'flex'; }, 2000);
                 }
+                // Android logic handled by event listener above
             }
             
             window.updateBackground('home');
         };
 
         window.closePrompt = function() {
-            document.getElementById('ios-install-prompt').style.display = 'none';
+            document.getElementById('install-prompt').style.display = 'none';
             localStorage.setItem('qrme_install_prompt', 'true');
         }
 
