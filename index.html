@@ -74,18 +74,17 @@
 
         /* HEADER ICONS (Fixed) */
         .header-controls {
-            /* Adjusted TOP to be lower (safe area friendly) */
             position: absolute; top: env(safe-area-inset-top, 20px); left: 0; width: 100%; height: 80px;
             z-index: 100; display: flex; justify-content: space-between; align-items: flex-start;
             padding: 10px 25px; pointer-events: none;
-            /* Subtle gradient to ensure visibility */
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 100%);
+            /* Removed background gradient to fix color mismatch */
+            background: transparent;
         }
         
         .settings-icon {
             pointer-events: auto; color: rgba(255,255,255,0.9); padding: 8px; cursor: pointer;
             background: rgba(0,0,0,0.25); border-radius: 50%; backdrop-filter: blur(8px);
-            margin-top: -5px; /* Alignment adjustment */
+            margin-top: -5px; 
         }
         .gear-svg { width: 22px; height: 22px; fill: currentColor; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); display: block; }
 
@@ -98,7 +97,7 @@
         /* Speed Toggle Styles */
         .speed-toggle-wrap {
             pointer-events: auto; display: flex; align-items: center; gap: 10px; cursor: pointer;
-            display: none; /* Hidden by default */
+            display: none; 
         }
         .speed-toggle {
             width: 48px; height: 28px; background: rgba(255,255,255,0.25);
@@ -137,65 +136,65 @@
         
         /* Home View Specifics */
         #home-view { 
-            display: block; /* Allow flow layout */
+            display: block; 
         }
         #home-standard-content {
             width: 100%;
             display: flex; flex-direction: column; align-items: center;
-            /* REDUCED SPACING HERE from 180px to 100px + safe area */
-            padding-top: calc(100px + env(safe-area-inset-top)); 
-            padding-bottom: 120px;
+            /* REDUCED SPACING: Starts at 120px instead of 180px */
+            padding-top: calc(120px + env(safe-area-inset-top)); 
+            padding-bottom: 80px;
             min-height: 100%;
         }
 
-        .profile-container { margin-bottom: 15px; position: relative; cursor: pointer; transition: transform 0.2s; }
+        .profile-container { margin-bottom: 10px; position: relative; cursor: pointer; transition: transform 0.2s; }
         .profile-container:active { transform: scale(0.95); }
         .profile-pic {
-            width: 120px; height: 120px; border-radius: 50%;
+            width: 100px; height: 100px; border-radius: 50%; /* Reduced Size */
             background: rgba(255,255,255,0.1); border: 3px solid rgba(255,255,255,0.4);
             object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; 
         }
         .profile-placeholder {
-            width: 120px; height: 120px; border-radius: 50%;
+            width: 100px; height: 100px; border-radius: 50%; /* Reduced Size */
             background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center;
             border: 3px dashed rgba(255,255,255,0.3);
         }
-        .profile-placeholder svg { width: 50px; height: 50px; fill: rgba(255,255,255,0.6); }
+        .profile-placeholder svg { width: 45px; height: 45px; fill: rgba(255,255,255,0.6); }
 
-        .profile-info { text-align: center; color: white; margin-bottom: 25px; text-shadow: 0 2px 6px rgba(0,0,0,0.4); }
-        .display-name { font-size: 24px; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
-        .display-job-company { font-size: 15px; opacity: 0.9; margin: 5px 0 0; font-weight: 500; }
+        .profile-info { text-align: center; color: white; margin-bottom: 20px; text-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+        .display-name { font-size: 22px; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
+        .display-job-company { font-size: 14px; opacity: 0.9; margin: 4px 0 0; font-weight: 500; }
 
         .copy-intro-btn {
             background: rgba(255, 255, 255, 0.15); color: #fff;
             border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 16px;
-            padding: 14px 28px; width: auto; min-width: 180px;
-            font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;
-            margin-bottom: 30px; cursor: pointer; backdrop-filter: blur(12px);
+            padding: 12px 24px; width: auto; min-width: 160px;
+            font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-bottom: 20px; cursor: pointer; backdrop-filter: blur(12px);
             transition: all 0.2s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .grid-container {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 20px; /* INCREASED GAP */
-            width: 100%; max-width: 400px; padding: 0 25px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; /* Tighter Gap */
+            width: 100%; max-width: 400px; padding: 0 20px;
         }
 
         .app-icon {
             background: var(--card-bg);
-            backdrop-filter: blur(25px); border-radius: 22px; padding: 20px;
+            backdrop-filter: blur(25px); border-radius: 20px; padding: 12px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); cursor: pointer;
-            height: 110px; transition: transform 0.1s;
+            gap: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); cursor: pointer;
+            height: 90px; transition: transform 0.1s; /* Reduced Height */
         }
         .app-icon:active { transform: scale(0.96); }
 
-        .icon-svg { width: 36px; height: 36px; display: block; }
-        .icon-label { font-size: 13px; font-weight: 700; text-align: center; color: #000; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; letter-spacing: -0.2px; }
+        .icon-svg { width: 30px; height: 30px; display: block; }
+        .icon-label { font-size: 12px; font-weight: 700; text-align: center; color: #000; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; letter-spacing: -0.2px; }
 
         .add-qr-block { border: 2px dashed rgba(0,122,255,0.4); background: rgba(255,255,255,0.85); }
-        .add-qr-label { font-size: 16px; font-weight: 700; color: #000; }
-        .mini-icons { display: flex; gap: 6px; margin-top: 4px; }
-        .mini-icons svg { width: 14px; height: 14px; }
+        .add-qr-label { font-size: 14px; font-weight: 700; color: #000; }
+        .mini-icons { display: flex; gap: 4px; margin-top: 4px; }
+        .mini-icons svg { width: 12px; height: 12px; }
 
         /* QR View & Speed View */
         #qr-view { gap: 20px; }
@@ -574,16 +573,23 @@
         </div>
 
         <div id="home-view" class="view">
-            <!-- Speed Mode Toggle -->
-            <div id="speed-toggle-box" class="speed-toggle-wrap" onclick="window.toggleSpeedMode()">
-                <div class="speed-toggle">
-                    <div class="speed-knob"></div>
+            <!-- Header Controls (Fixed) -->
+            <div class="header-controls">
+                <!-- Speed Mode Toggle -->
+                <div id="speed-toggle-box" class="speed-toggle-wrap" onclick="window.toggleSpeedMode()">
+                    <div class="speed-toggle">
+                        <div class="speed-knob"></div>
+                    </div>
+                    <span class="speed-label">Speed Mode</span>
                 </div>
-                <span class="speed-label">Speed Mode</span>
+
+                <div id="settings-btn" class="settings-icon" onclick="showSetup()" style="display:none;">
+                    <svg class="gear-svg" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                </div>
             </div>
 
             <!-- Standard Content -->
-            <div id="home-standard-content" style="width:100%; display:flex; flex-direction:column; align-items:center;">
+            <div id="home-standard-content">
                 <div class="profile-container" onclick="document.getElementById('library-input').click()">
                     <img id="display-photo" class="profile-pic" alt="Profile">
                     <div id="display-placeholder" class="profile-placeholder">
@@ -658,6 +664,8 @@
             twitter: '<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>',
             youtube: '<path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>',
             discord: '<path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z"/>',
+            share: '<path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>',
+            github: '<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>',
             bitcoin: '<path d="M16.5 10.5C16.5 9.12 15.38 8 14 8H10V6H8V8H6V10H8V16H6V18H8V20H10V18H13.5C15.43 18 17 16.43 17 14.5C17 13.1 16.18 11.9 15 11.3C15.9 10.9 16.5 10.1 16.5 9.25V10.5M10 10H13.5C14.05 10 14.5 10.45 14.5 11C14.5 11.55 14.05 12 13.5 12H10V10M10 16V14H13.5C14.05 14 14.5 14.45 14.5 15C14.5 15.55 14.05 16 13.5 16H10Z" />',
             calendly: '<path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>',
             vcard: '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>',
@@ -668,15 +676,11 @@
 
         // Capture Android Install Prompt
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent the mini-infobar from appearing on mobile
             e.preventDefault();
-            // Stash the event so it can be triggered later.
             deferredPrompt = e;
-            // Update UI notify the user they can install the PWA
             const btn = document.getElementById('android-install-btn');
             if(btn) btn.style.display = 'block';
             
-            // Show prompt container if hidden
             const promptContainer = document.getElementById('install-prompt');
             if(promptContainer && !localStorage.getItem('qrme_install_prompt')) {
                 promptContainer.style.display = 'flex';
@@ -690,7 +694,6 @@
             const { outcome } = await deferredPrompt.userChoice;
             if (outcome === 'accepted') {
                 console.log('User accepted the install prompt');
-                // Hide button after acceptance
                 document.getElementById('install-prompt').style.display = 'none';
             }
             deferredPrompt = null;
@@ -709,9 +712,8 @@
         // History State Management
         window.onpopstate = function(event) {
             if (event.state && event.state.view) {
-                // We don't push state here, just switch view
                 const viewName = event.state.view;
-                window.switchView(viewName, false); // false = don't push state
+                window.switchView(viewName, false);
             } else {
                 window.switchView('home', false);
             }
@@ -728,20 +730,14 @@
             Object.values(vs).forEach(v => v ? v.classList.remove('active') : null);
             if(vs[viewName]) vs[viewName].classList.add('active');
             
-            const settingsBtn = document.getElementById('settings-btn');
-            if(settingsBtn) settingsBtn.style.display = (viewName === 'home') ? 'block' : 'none';
-            
-            // Speed toggle visibility
-            const speedToggle = document.getElementById('speed-toggle-box');
-            if(speedToggle) speedToggle.style.display = (viewName === 'home') ? 'flex' : 'none';
+            // Only show home header controls on the home view
+            const headerControls = document.querySelector('.header-controls');
+            if(headerControls) headerControls.style.display = (viewName === 'home') ? 'flex' : 'none';
 
             if (viewName === 'home' || viewName === 'welcome') window.updateBackground('home');
 
-            // History Management
             if (pushState) {
                 const url = new URL(window.location);
-                // We can add a query param or hash for better bookmarking if needed, 
-                // but for now just state is enough for back button.
                 window.history.pushState({ view: viewName }, '', url);
             }
         };
@@ -813,11 +809,9 @@
                     const country = addr.country || '';
                     const locString = `${city}, ${country}`;
                     
-                    // Update Input
                     const locInput = document.getElementById('in-location');
                     if(locInput) locInput.value = locString;
 
-                    // NEW: Automatically save location to storage so it persists immediately
                     const currentDataStr = localStorage.getItem('qrme_data');
                     if (currentDataStr) {
                         const currentData = JSON.parse(currentDataStr);
@@ -829,7 +823,6 @@
             });
         };
 
-        // NEW: Onboarding Completion Logic
         window.finishOnboarding = function() {
             const name = document.getElementById('ob-name').value.trim();
             const job = document.getElementById('ob-job').value.trim();
@@ -839,54 +832,34 @@
 
             if(!name) { alert('Please enter your name'); return; }
 
-            // UI Feedback
             const btn = document.getElementById('btn-setup-qrme');
-            btn.style.backgroundColor = '#25D366'; // Green
+            btn.style.backgroundColor = '#25D366'; 
             btn.innerText = "Done! Let's Go!";
 
-            // TRIGGER CONFETTI HERE
             if (typeof confetti === 'function') {
-                confetti({
-                    particleCount: 150,
-                    spread: 70,
-                    origin: { y: 0.6 },
-                    zIndex: 9999 // Ensure it's on top
-                });
-                
-                // Add a second burst for effect
-                setTimeout(() => {
-                     confetti({
-                        particleCount: 100,
-                        spread: 100,
-                        origin: { y: 0.6 },
-                        zIndex: 9999
-                    });
-                }, 400);
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, zIndex: 9999 });
+                setTimeout(() => { confetti({ particleCount: 100, spread: 100, origin: { y: 0.6 }, zIndex: 9999 }); }, 400);
             }
 
             const today = new Date().toISOString().split('T')[0];
             
-            // Build initial data structure
             const data = {
                 theme: window.selectedTheme || '#1c3e7d',
                 name: name,
                 jobTitle: job,
                 company: company,
                 email: email,
-                date: today, // Auto-set date
-                location: '', // Will fill after fetch
-                // Initialize others empty
+                date: today, 
+                location: '', 
                 linkedin:'', 
-                whatsapp: phone, // Use phone for WhatsApp tile
+                whatsapp: phone, 
                 telegram:'', instagram:'', twitter:'', 
                 youtube:'', github:'', discord:'', wifiSSID:'', wifiPass:'', 
                 bitcoin:'', calendly:'', customLabel:'', customUrl:'', photo:''
             };
 
-            // Save
             localStorage.setItem('qrme_data', JSON.stringify(data));
             
-            // Sync to main settings inputs for future edits
             const inputs = window.getInputs();
             if(inputs.name) inputs.name.value = name;
             if(inputs.jobTitle) inputs.jobTitle.value = job;
@@ -895,22 +868,17 @@
             if(inputs.whatsapp) inputs.whatsapp.value = phone;
             if(inputs.date) inputs.date.value = today;
 
-            // Trigger Location and switch with delay
             setTimeout(() => {
                 window.fetchLocation(); 
-                // IMPORTANT FIX: Reload page to clear history stack and reset navigation state
-                // This ensures "Back" button exits app instead of going back to form
                 location.reload();
             }, 1700);
         };
 
-        // NEW: Skip Logic
         window.skipOnboarding = function() {
             const today = new Date().toISOString().split('T')[0];
             const data = {
                 theme: window.selectedTheme || '#1c3e7d',
                 date: today,
-                // Initialize empty
                 name:'', jobTitle:'', company:'', email:'', linkedin:'', whatsapp:'', 
                 telegram:'', instagram:'', twitter:'', youtube:'', github:'', discord:'', 
                 wifiSSID:'', wifiPass:'', bitcoin:'', calendly:'', customLabel:'', customUrl:'', photo:''
@@ -920,17 +888,12 @@
             location.reload();
         };
 
-        // Toggle Speed Mode
         window.toggleSpeedMode = function() {
             const dataStr = localStorage.getItem('qrme_data');
-            if (!dataStr) return; // Should not happen in home view
+            if (!dataStr) return;
             const data = JSON.parse(dataStr);
-            
-            // Toggle State
             data.speedMode = !data.speedMode;
             localStorage.setItem('qrme_data', JSON.stringify(data));
-            
-            // Re-render
             window.renderHomeGrid(data);
         }
 
@@ -941,15 +904,12 @@
             const today = new Date().toISOString().split('T')[0];
             window.inputs.date.value = today;
 
-            // Replace State on Initial Load
             const currentState = window.history.state;
             if (!currentState) {
                  window.history.replaceState({ view: dataStr ? 'home' : 'welcome' }, '', '');
             }
 
             if (!dataStr) {
-                // No data = First time user = Welcome Screen
-                // Don't push state here to avoid back button issues on load, just UI switch
                 window.switchView('welcome', false);
             } else {
                 window.switchView('home', false); 
@@ -978,19 +938,16 @@
                 } catch(e) { window.renderHomeGrid(null); }
             }
             
-            // iOS/Android Prompt Logic - Checks on load for ANY screen
             const prompt = document.getElementById('install-prompt');
             const iosInstructions = document.getElementById('ios-instructions');
             if (prompt) {
                 const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
                 const isStandalone = ('standalone' in window.navigator) && (window.navigator.standalone);
                 
-                // iOS Specific Logic
                 if (isIos && !isStandalone && !localStorage.getItem('qrme_install_prompt')) {
                     iosInstructions.style.display = 'block';
                     setTimeout(() => { prompt.style.display = 'flex'; }, 2000);
                 }
-                // Android logic handled by event listener above
             }
             
             window.updateBackground('home');
@@ -1007,14 +964,11 @@
             const speedContent = document.getElementById('speed-content');
             const toggleBox = document.getElementById('speed-toggle-box');
             
-            // Check Speed Mode
             if (data && data.speedMode) {
-                // 1. Activate UI
                 toggleBox.classList.add('active');
                 standardContent.style.display = 'none';
                 speedContent.style.display = 'flex';
                 
-                // 2. Determine QR Content (Telegram -> vCard -> Share)
                 let type = 'share-app';
                 let url = window.location.href;
                 let title = 'SHARE QRME';
@@ -1023,26 +977,21 @@
                     type = 'telegram';
                     url = `https://t.me/${data.telegram}`;
                     title = 'TELEGRAM';
-                } else if (data.name) { // Fallback to vCard if name exists
-                    // We need to generate the vCard content here for QR
+                } else if (data.name) { 
                     let vCard = `BEGIN:VCARD\nVERSION:3.0\nN:;${data.name};;;\nFN:${data.name}\nTITLE:${data.jobTitle || ''}\nORG:${data.company}\nEMAIL:${data.email}\nTEL;TYPE=CELL:${data.whatsapp}\nURL:${data.website}\nEND:VCARD`;
-                    type = 'vcard'; // Just for bg color
+                    type = 'vcard'; 
                     url = vCard;
                     title = 'CONTACT CARD';
                 }
                 
-                // 3. Render Speed QR
                 document.getElementById('speed-qrcode').innerHTML = '';
                 new QRCode(document.getElementById("speed-qrcode"), { text: url, width: 180, height: 180 });
                 document.getElementById('speed-qr-title').innerText = title;
                 
-                // Update BG for the type
                 window.updateBackground(type);
-                
-                return; // Stop rendering standard grid
+                return; 
             }
 
-            // --- STANDARD MODE RENDER ---
             toggleBox.classList.remove('active');
             standardContent.style.display = 'flex';
             speedContent.style.display = 'none';
@@ -1063,7 +1012,6 @@
                         </div>
                     `;
                 } else {
-                    // Safe SVG rendering
                     const safePath = iconPath || '';
                     div.innerHTML = `<svg class="icon-svg" viewBox="0 0 24 24" style="fill:var(--${id}-color, #333)">${safePath}</svg><span class="icon-label"></span>`;
                     div.querySelector('.icon-label').textContent = label; 
@@ -1072,11 +1020,9 @@
                 return div;
             };
 
-            // Always show "Share QRME" first using the key 'share-app'
             grid.appendChild(createBlock('share-app', 'Share QRME', window.ICON_PATHS['share-app'], () => window.openQR('share-app')));
 
             if (data) {
-                // If data exists, show vCard + any others + Add button at end
                 if (data.name && data.name.trim() !== '') {
                     grid.appendChild(createBlock('vcard', 'vCard', window.ICON_PATHS.vcard, () => window.openQR('vcard')));
                 }
@@ -1093,10 +1039,8 @@
                 if(data.bitcoin) grid.appendChild(createBlock('bitcoin', 'Bitcoin Wallet', window.ICON_PATHS.bitcoin, () => window.openQR('bitcoin')));
                 if(data.customUrl) grid.appendChild(createBlock('custom', data.customLabel || 'Link', window.ICON_PATHS.custom, () => window.openQR('custom')));
                 
-                // Explicit "Add QRME" button at the end
                 grid.appendChild(createBlock('add-qr', '', '', () => window.showSetup(), true));
             } else {
-                // If no data (shouldn't happen with new flow, but safe fallback)
                 grid.appendChild(createBlock('add-qr', '', '', () => window.showSetup(), true));
             }
         };
