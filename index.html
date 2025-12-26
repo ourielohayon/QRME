@@ -32,7 +32,7 @@
             --theme-base: #1c3e7d; 
             --bg-gradient: linear-gradient(180deg, var(--theme-base) 0%, #000000 100%);
             
-            /* Brand Colors */
+            /* Brand Colors for Icons (Background stays theme color) */
             --linkedin-color: #0077B5; 
             --telegram-color: #24A1DE; 
             --whatsapp-color: #25D366;
@@ -74,8 +74,7 @@
 
         /* HEADER ICONS (Fixed) */
         .header-controls {
-            position: fixed;
-            top: 0; left: 0; width: 100%; 
+            position: fixed; top: 0; left: 0; width: 100%; 
             height: auto;
             min-height: 80px;
             z-index: 9999;
@@ -142,7 +141,8 @@
         #home-standard-content {
             width: 100%;
             display: flex; flex-direction: column; align-items: center;
-            padding-top: calc(120px + env(safe-area-inset-top)); 
+            /* REDUCED SPACING: Now 80px + safe area */
+            padding-top: calc(80px + env(safe-area-inset-top)); 
             padding-bottom: 80px;
             min-height: 100%;
         }
@@ -266,7 +266,11 @@
         }
         .full-width { grid-column: span 2; }
         
-        .theme-grid { display: flex; gap: 6px; justify-content: space-between; padding: 8px 0; width: 100%; }
+        /* Updated Theme Grid Layout */
+        .theme-grid { 
+            display: flex; gap: 10px; padding: 8px 0; width: 100%; 
+            flex-wrap: wrap; justify-content: center; 
+        }
         .theme-swatch, .color-picker-wrapper { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-shrink: 0; }
         .theme-swatch.active { border-color: #000; transform: scale(1.1); }
         .color-picker-wrapper { overflow: hidden; position: relative; background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); }
@@ -368,7 +372,7 @@
 
         <!-- Onboarding View -->
         <div id="onboarding-view" class="view">
-            <div style="display: flex; flex-direction: column; min-height: 60vh; justify-content: center; padding-top: 30px; padding-bottom: 30px; position: relative; margin-top: 10vh; width: 95%; max-width: 420px;">
+            <div class="setup-form" style="display: flex; flex-direction: column; min-height: 60vh; justify-content: center; padding-top: 30px; padding-bottom: 30px; position: relative; margin-top: 10vh; width: 95%; max-width: 420px;">
                 <h2 style="font-size: 2rem; margin-bottom: 25px; color: white; text-align: center; text-shadow: 0 2px 5px rgba(0,0,0,0.3);">Let's get to know you 👉</h2>
                 
                 <div class="setup-form" style="margin: 0; padding: 25px;">
@@ -667,6 +671,8 @@
             twitter: '<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>',
             youtube: '<path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>',
             discord: '<path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z"/>',
+            // Replaced GitHub icon with verified FontAwesome path
+            github: '<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>',
             bitcoin: '<path d="M16.5 10.5C16.5 9.12 15.38 8 14 8H10V6H8V8H6V10H8V16H6V18H8V20H10V18H13.5C15.43 18 17 16.43 17 14.5C17 13.1 16.18 11.9 15 11.3C15.9 10.9 16.5 10.1 16.5 9.25V10.5M10 10H13.5C14.05 10 14.5 10.45 14.5 11C14.5 11.55 14.05 12 13.5 12H10V10M10 16V14H13.5C14.05 14 14.5 14.45 14.5 15C14.5 15.55 14.05 16 13.5 16H10Z" />',
             calendly: '<path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>',
             vcard: '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>',
@@ -677,15 +683,11 @@
 
         // Capture Android Install Prompt
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent the mini-infobar from appearing on mobile
             e.preventDefault();
-            // Stash the event so it can be triggered later.
             deferredPrompt = e;
-            // Update UI notify the user they can install the PWA
             const btn = document.getElementById('android-install-btn');
             if(btn) btn.style.display = 'block';
             
-            // Show prompt container if hidden
             const promptContainer = document.getElementById('install-prompt');
             if(promptContainer && !localStorage.getItem('qrme_install_prompt')) {
                 promptContainer.style.display = 'flex';
@@ -699,7 +701,6 @@
             const { outcome } = await deferredPrompt.userChoice;
             if (outcome === 'accepted') {
                 console.log('User accepted the install prompt');
-                // Hide button after acceptance
                 document.getElementById('install-prompt').style.display = 'none';
             }
             deferredPrompt = null;
@@ -709,18 +710,18 @@
         window.updateBackground = function(type) {
             const bgLayer = document.getElementById('bg-layer');
             let color = window.selectedTheme || '#1c3e7d';
-            if (type !== 'home' && window.brandColors[type]) {
-                color = window.brandColors[type];
-            }
+            // REMOVED LOGIC: Background now stays uniform (blue/theme) always
+            // if (type !== 'home' && window.brandColors[type]) {
+            //     color = window.brandColors[type];
+            // }
             bgLayer.style.background = `linear-gradient(180deg, ${color} 0%, #000000 100%)`;
         };
 
         // History State Management
         window.onpopstate = function(event) {
             if (event.state && event.state.view) {
-                // We don't push state here, just switch view
                 const viewName = event.state.view;
-                window.switchView(viewName, false); // false = don't push state
+                window.switchView(viewName, false);
             } else {
                 window.switchView('home', false);
             }
@@ -744,13 +745,11 @@
             const speedToggle = document.getElementById('speed-toggle-box');
             if(speedToggle) speedToggle.style.display = (viewName === 'home') ? 'flex' : 'none';
 
-            if (viewName === 'home' || viewName === 'welcome') window.updateBackground('home');
+            // Always reset background
+            window.updateBackground('home');
 
-            // History Management
             if (pushState) {
                 const url = new URL(window.location);
-                // We can add a query param or hash for better bookmarking if needed, 
-                // but for now just state is enough for back button.
                 window.history.pushState({ view: viewName }, '', url);
             }
         };
@@ -822,11 +821,9 @@
                     const country = addr.country || '';
                     const locString = `${city}, ${country}`;
                     
-                    // Update Input
                     const locInput = document.getElementById('in-location');
                     if(locInput) locInput.value = locString;
 
-                    // NEW: Automatically save location to storage so it persists immediately
                     const currentDataStr = localStorage.getItem('qrme_data');
                     if (currentDataStr) {
                         const currentData = JSON.parse(currentDataStr);
@@ -838,7 +835,6 @@
             });
         };
 
-        // NEW: Onboarding Completion Logic
         window.finishOnboarding = function() {
             const name = document.getElementById('ob-name').value.trim();
             const job = document.getElementById('ob-job').value.trim();
@@ -848,34 +844,17 @@
 
             if(!name) { alert('Please enter your name'); return; }
 
-            // UI Feedback
             const btn = document.getElementById('btn-setup-qrme');
-            btn.style.backgroundColor = '#25D366'; // Green
+            btn.style.backgroundColor = '#25D366'; 
             btn.innerText = "Done! Let's Go!";
 
-            // TRIGGER CONFETTI HERE with specific downward settings
             if (typeof confetti === 'function') {
-                var duration = 2000;
-                var animationEnd = Date.now() + duration;
-                var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999, gravity: 0.8, scalar: 1.2 };
-
-                var random = function(min, max) { return Math.random() * (max - min) + min; };
-
-                var interval = setInterval(function() {
-                    var timeLeft = animationEnd - Date.now();
-                    if (timeLeft <= 0) {
-                        return clearInterval(interval);
-                    }
-                    var particleCount = 50 * (timeLeft / duration);
-                    // Start from the top
-                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: -0.1 } }));
-                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: -0.1 } }));
-                }, 250);
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, zIndex: 9999 });
+                setTimeout(() => { confetti({ particleCount: 100, spread: 100, origin: { y: 0.6 }, zIndex: 9999 }); }, 400);
             }
 
             const today = new Date().toISOString().split('T')[0];
             
-            // Build initial data structure
             const data = {
                 theme: window.selectedTheme || '#1c3e7d',
                 name: name,
@@ -883,18 +862,16 @@
                 company: company,
                 email: email,
                 date: today, 
-                location: '',
+                location: '', 
                 linkedin:'', 
-                whatsapp: phone, // Use phone for WhatsApp tile
+                whatsapp: phone, 
                 telegram:'', instagram:'', twitter:'', 
                 youtube:'', github:'', discord:'', wifiSSID:'', wifiPass:'', 
                 bitcoin:'', calendly:'', customLabel:'', customUrl:'', photo:''
             };
 
-            // Save
             localStorage.setItem('qrme_data', JSON.stringify(data));
             
-            // Sync to main settings inputs for future edits
             const inputs = window.getInputs();
             if(inputs.name) inputs.name.value = name;
             if(inputs.jobTitle) inputs.jobTitle.value = job;
@@ -903,21 +880,17 @@
             if(inputs.whatsapp) inputs.whatsapp.value = phone;
             if(inputs.date) inputs.date.value = today;
 
-            // Trigger Location and switch with delay equal to confetti duration
             setTimeout(() => {
                 window.fetchLocation(); 
-                // Reload page to clear history stack and reset navigation state
                 location.reload();
-            }, 2000);
+            }, 1700);
         };
 
-        // NEW: Skip Logic
         window.skipOnboarding = function() {
             const today = new Date().toISOString().split('T')[0];
             const data = {
                 theme: window.selectedTheme || '#1c3e7d',
                 date: today,
-                // Initialize empty
                 name:'', jobTitle:'', company:'', email:'', linkedin:'', whatsapp:'', 
                 telegram:'', instagram:'', twitter:'', youtube:'', github:'', discord:'', 
                 wifiSSID:'', wifiPass:'', bitcoin:'', calendly:'', customLabel:'', customUrl:'', photo:''
@@ -927,17 +900,12 @@
             location.reload();
         };
 
-        // Toggle Speed Mode
         window.toggleSpeedMode = function() {
             const dataStr = localStorage.getItem('qrme_data');
-            if (!dataStr) return; // Should not happen in home view
+            if (!dataStr) return;
             const data = JSON.parse(dataStr);
-            
-            // Toggle State
             data.speedMode = !data.speedMode;
             localStorage.setItem('qrme_data', JSON.stringify(data));
-            
-            // Re-render
             window.renderHomeGrid(data);
         }
 
@@ -948,15 +916,12 @@
             const today = new Date().toISOString().split('T')[0];
             window.inputs.date.value = today;
 
-            // Replace State on Initial Load
             const currentState = window.history.state;
             if (!currentState) {
                  window.history.replaceState({ view: dataStr ? 'home' : 'welcome' }, '', '');
             }
 
             if (!dataStr) {
-                // No data = First time user = Welcome Screen
-                // Don't push state here to avoid back button issues on load, just UI switch
                 window.switchView('welcome', false);
             } else {
                 window.switchView('home', false); 
@@ -985,19 +950,16 @@
                 } catch(e) { window.renderHomeGrid(null); }
             }
             
-            // iOS/Android Prompt Logic - Checks on load for ANY screen
             const prompt = document.getElementById('install-prompt');
             const iosInstructions = document.getElementById('ios-instructions');
             if (prompt) {
                 const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
                 const isStandalone = ('standalone' in window.navigator) && (window.navigator.standalone);
                 
-                // iOS Specific Logic
                 if (isIos && !isStandalone && !localStorage.getItem('qrme_install_prompt')) {
                     iosInstructions.style.display = 'block';
                     setTimeout(() => { prompt.style.display = 'flex'; }, 2000);
                 }
-                // Android logic handled by event listener above
             }
             
             window.updateBackground('home');
@@ -1014,14 +976,11 @@
             const speedContent = document.getElementById('speed-content');
             const toggleBox = document.getElementById('speed-toggle-box');
             
-            // Check Speed Mode
             if (data && data.speedMode) {
-                // 1. Activate UI
                 toggleBox.classList.add('active');
                 standardContent.style.display = 'none';
                 speedContent.style.display = 'flex';
                 
-                // 2. Determine QR Content (Telegram -> vCard -> Share)
                 let type = 'share-app';
                 let url = window.location.href;
                 let title = 'SHARE QRME';
@@ -1030,26 +989,22 @@
                     type = 'telegram';
                     url = `https://t.me/${data.telegram}`;
                     title = 'TELEGRAM';
-                } else if (data.name) { // Fallback to vCard if name exists
-                    // We need to generate the vCard content here for QR
+                } else if (data.name) { 
                     let vCard = `BEGIN:VCARD\nVERSION:3.0\nN:;${data.name};;;\nFN:${data.name}\nTITLE:${data.jobTitle || ''}\nORG:${data.company}\nEMAIL:${data.email}\nTEL;TYPE=CELL:${data.whatsapp}\nURL:${data.website}\nEND:VCARD`;
-                    type = 'vcard'; // Just for bg color
+                    type = 'vcard'; 
                     url = vCard;
                     title = 'CONTACT CARD';
                 }
                 
-                // 3. Render Speed QR
                 document.getElementById('speed-qrcode').innerHTML = '';
                 new QRCode(document.getElementById("speed-qrcode"), { text: url, width: 180, height: 180 });
                 document.getElementById('speed-qr-title').innerText = title;
                 
-                // Update BG for the type
-                window.updateBackground(type);
-                
-                return; // Stop rendering standard grid
+                // Keep background consistent with theme
+                window.updateBackground('home');
+                return; 
             }
 
-            // --- STANDARD MODE RENDER ---
             toggleBox.classList.remove('active');
             standardContent.style.display = 'flex';
             speedContent.style.display = 'none';
@@ -1070,7 +1025,6 @@
                         </div>
                     `;
                 } else {
-                    // Safe SVG rendering
                     const safePath = iconPath || '';
                     div.innerHTML = `<svg class="icon-svg" viewBox="0 0 24 24" style="fill:var(--${id}-color, #333)">${safePath}</svg><span class="icon-label"></span>`;
                     div.querySelector('.icon-label').textContent = label; 
@@ -1079,11 +1033,9 @@
                 return div;
             };
 
-            // Always show "Share QRME" first using the key 'share-app'
             grid.appendChild(createBlock('share-app', 'Share QRME', window.ICON_PATHS['share-app'], () => window.openQR('share-app')));
 
             if (data) {
-                // If data exists, show vCard + any others + Add button at end
                 if (data.name && data.name.trim() !== '') {
                     grid.appendChild(createBlock('vcard', 'vCard', window.ICON_PATHS.vcard, () => window.openQR('vcard')));
                 }
@@ -1100,10 +1052,8 @@
                 if(data.bitcoin) grid.appendChild(createBlock('bitcoin', 'Bitcoin Wallet', window.ICON_PATHS.bitcoin, () => window.openQR('bitcoin')));
                 if(data.customUrl) grid.appendChild(createBlock('custom', data.customLabel || 'Link', window.ICON_PATHS.custom, () => window.openQR('custom')));
                 
-                // Explicit "Add QRME" button at the end
                 grid.appendChild(createBlock('add-qr', '', '', () => window.showSetup(), true));
             } else {
-                // If no data (shouldn't happen with new flow, but safe fallback)
                 grid.appendChild(createBlock('add-qr', '', '', () => window.showSetup(), true));
             }
         };
