@@ -74,17 +74,21 @@
 
         /* HEADER ICONS (Fixed) */
         .header-controls {
-            position: absolute; top: env(safe-area-inset-top, 20px); left: 0; width: 100%; height: 80px;
-            z-index: 100; display: flex; justify-content: space-between; align-items: flex-start;
-            padding: 10px 25px; pointer-events: none;
-            /* Removed background gradient to fix color mismatch */
-            background: transparent;
+            position: fixed; /* Changed to fixed to stay on screen */
+            top: 0; left: 0; width: 100%; 
+            /* Height includes safe area plus spacing */
+            height: auto;
+            min-height: 80px;
+            z-index: 9999; /* Ensure on top */
+            display: flex; justify-content: space-between; align-items: flex-start;
+            /* Padding top handles the notch/status bar area safely */
+            padding: max(15px, env(safe-area-inset-top)) 20px 10px 20px;
+            pointer-events: none;
         }
         
         .settings-icon {
-            pointer-events: auto; color: rgba(255,255,255,0.9); padding: 8px; cursor: pointer;
-            background: rgba(0,0,0,0.25); border-radius: 50%; backdrop-filter: blur(8px);
-            margin-top: -5px; 
+            pointer-events: auto; color: rgba(255,255,255,0.95); padding: 8px; cursor: pointer;
+            background: rgba(0,0,0,0.2); border-radius: 50%; backdrop-filter: blur(10px);
         }
         .gear-svg { width: 22px; height: 22px; fill: currentColor; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); display: block; }
 
@@ -96,29 +100,29 @@
 
         /* Speed Toggle Styles */
         .speed-toggle-wrap {
-            pointer-events: auto; display: flex; align-items: center; gap: 10px; cursor: pointer;
+            pointer-events: auto; display: flex; align-items: center; gap: 8px; cursor: pointer;
             display: none; 
         }
         .speed-toggle {
-            width: 48px; height: 28px; background: rgba(255,255,255,0.25);
+            width: 44px; height: 26px; background: rgba(255,255,255,0.25);
             border-radius: 20px; position: relative;
             transition: background 0.3s ease; border: 1.5px solid rgba(255,255,255,0.5);
             backdrop-filter: blur(8px);
         }
         .speed-knob {
-            width: 22px; height: 22px; background: white; border-radius: 50%;
+            width: 20px; height: 20px; background: white; border-radius: 50%;
             position: absolute; top: 1.5px; left: 2px;
             transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
         .speed-label {
-            font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.95);
-            text-transform: uppercase; letter-spacing: 0.8px;
+            font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.95);
+            text-transform: uppercase; letter-spacing: 0.5px;
             text-shadow: 0 1px 4px rgba(0,0,0,0.5);
         }
         /* Active State */
         .speed-toggle-wrap.active .speed-toggle { background: #25D366; border-color: #25D366; }
-        .speed-toggle-wrap.active .speed-knob { transform: translateX(20px); }
+        .speed-toggle-wrap.active .speed-knob { transform: translateX(18px); }
 
         /* Views */
         .view {
@@ -141,8 +145,8 @@
         #home-standard-content {
             width: 100%;
             display: flex; flex-direction: column; align-items: center;
-            /* REDUCED SPACING: Starts at 120px instead of 180px */
-            padding-top: calc(120px + env(safe-area-inset-top)); 
+            /* Layout Calculation: Top header is ~70px. Start content right after to save space */
+            padding-top: calc(80px + env(safe-area-inset-top)); 
             padding-bottom: 80px;
             min-height: 100%;
         }
@@ -150,51 +154,51 @@
         .profile-container { margin-bottom: 10px; position: relative; cursor: pointer; transition: transform 0.2s; }
         .profile-container:active { transform: scale(0.95); }
         .profile-pic {
-            width: 100px; height: 100px; border-radius: 50%; /* Reduced Size */
+            width: 100px; height: 100px; border-radius: 50%; /* Compact Size */
             background: rgba(255,255,255,0.1); border: 3px solid rgba(255,255,255,0.4);
             object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; 
         }
         .profile-placeholder {
-            width: 100px; height: 100px; border-radius: 50%; /* Reduced Size */
+            width: 100px; height: 100px; border-radius: 50%; /* Compact Size */
             background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center;
             border: 3px dashed rgba(255,255,255,0.3);
         }
         .profile-placeholder svg { width: 45px; height: 45px; fill: rgba(255,255,255,0.6); }
 
-        .profile-info { text-align: center; color: white; margin-bottom: 20px; text-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+        .profile-info { text-align: center; color: white; margin-bottom: 15px; text-shadow: 0 2px 6px rgba(0,0,0,0.4); }
         .display-name { font-size: 22px; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
-        .display-job-company { font-size: 14px; opacity: 0.9; margin: 4px 0 0; font-weight: 500; }
+        .display-job-company { font-size: 13px; opacity: 0.9; margin: 2px 0 0; font-weight: 500; }
 
         .copy-intro-btn {
             background: rgba(255, 255, 255, 0.15); color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 16px;
-            padding: 12px 24px; width: auto; min-width: 160px;
-            font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 14px;
+            padding: 10px 20px; width: auto; min-width: 160px;
+            font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;
             margin-bottom: 20px; cursor: pointer; backdrop-filter: blur(12px);
             transition: all 0.2s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .grid-container {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; /* Tighter Gap */
-            width: 100%; max-width: 400px; padding: 0 20px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; /* Compact Gap */
+            width: 100%; max-width: 380px; padding: 0 20px;
         }
 
         .app-icon {
             background: var(--card-bg);
-            backdrop-filter: blur(25px); border-radius: 20px; padding: 12px;
+            backdrop-filter: blur(25px); border-radius: 18px; padding: 12px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); cursor: pointer;
-            height: 90px; transition: transform 0.1s; /* Reduced Height */
+            gap: 6px; box-shadow: 0 6px 15px rgba(0,0,0,0.12); cursor: pointer;
+            height: 85px; transition: transform 0.1s; /* Compact Height */
         }
         .app-icon:active { transform: scale(0.96); }
 
         .icon-svg { width: 30px; height: 30px; display: block; }
-        .icon-label { font-size: 12px; font-weight: 700; text-align: center; color: #000; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; letter-spacing: -0.2px; }
+        .icon-label { font-size: 11px; font-weight: 700; text-align: center; color: #000; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; letter-spacing: -0.1px; }
 
         .add-qr-block { border: 2px dashed rgba(0,122,255,0.4); background: rgba(255,255,255,0.85); }
-        .add-qr-label { font-size: 14px; font-weight: 700; color: #000; }
-        .mini-icons { display: flex; gap: 4px; margin-top: 4px; }
-        .mini-icons svg { width: 12px; height: 12px; }
+        .add-qr-label { font-size: 13px; font-weight: 700; color: #000; }
+        .mini-icons { display: flex; gap: 4px; margin-top: 2px; }
+        .mini-icons svg { width: 10px; height: 10px; }
 
         /* QR View & Speed View */
         #qr-view { gap: 20px; }
@@ -676,11 +680,15 @@
 
         // Capture Android Install Prompt
         window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing on mobile
             e.preventDefault();
+            // Stash the event so it can be triggered later.
             deferredPrompt = e;
+            // Update UI notify the user they can install the PWA
             const btn = document.getElementById('android-install-btn');
             if(btn) btn.style.display = 'block';
             
+            // Show prompt container if hidden
             const promptContainer = document.getElementById('install-prompt');
             if(promptContainer && !localStorage.getItem('qrme_install_prompt')) {
                 promptContainer.style.display = 'flex';
@@ -694,6 +702,7 @@
             const { outcome } = await deferredPrompt.userChoice;
             if (outcome === 'accepted') {
                 console.log('User accepted the install prompt');
+                // Hide button after acceptance
                 document.getElementById('install-prompt').style.display = 'none';
             }
             deferredPrompt = null;
@@ -712,8 +721,9 @@
         // History State Management
         window.onpopstate = function(event) {
             if (event.state && event.state.view) {
+                // We don't push state here, just switch view
                 const viewName = event.state.view;
-                window.switchView(viewName, false);
+                window.switchView(viewName, false); // false = don't push state
             } else {
                 window.switchView('home', false);
             }
@@ -730,14 +740,20 @@
             Object.values(vs).forEach(v => v ? v.classList.remove('active') : null);
             if(vs[viewName]) vs[viewName].classList.add('active');
             
-            // Only show home header controls on the home view
-            const headerControls = document.querySelector('.header-controls');
-            if(headerControls) headerControls.style.display = (viewName === 'home') ? 'flex' : 'none';
+            const settingsBtn = document.getElementById('settings-btn');
+            if(settingsBtn) settingsBtn.style.display = (viewName === 'home') ? 'block' : 'none';
+            
+            // Speed toggle visibility
+            const speedToggle = document.getElementById('speed-toggle-box');
+            if(speedToggle) speedToggle.style.display = (viewName === 'home') ? 'flex' : 'none';
 
             if (viewName === 'home' || viewName === 'welcome') window.updateBackground('home');
 
+            // History Management
             if (pushState) {
                 const url = new URL(window.location);
+                // We can add a query param or hash for better bookmarking if needed, 
+                // but for now just state is enough for back button.
                 window.history.pushState({ view: viewName }, '', url);
             }
         };
@@ -809,9 +825,11 @@
                     const country = addr.country || '';
                     const locString = `${city}, ${country}`;
                     
+                    // Update Input
                     const locInput = document.getElementById('in-location');
                     if(locInput) locInput.value = locString;
 
+                    // NEW: Automatically save location to storage so it persists immediately
                     const currentDataStr = localStorage.getItem('qrme_data');
                     if (currentDataStr) {
                         const currentData = JSON.parse(currentDataStr);
@@ -823,6 +841,7 @@
             });
         };
 
+        // NEW: Onboarding Completion Logic
         window.finishOnboarding = function() {
             const name = document.getElementById('ob-name').value.trim();
             const job = document.getElementById('ob-job').value.trim();
@@ -832,34 +851,54 @@
 
             if(!name) { alert('Please enter your name'); return; }
 
+            // UI Feedback
             const btn = document.getElementById('btn-setup-qrme');
-            btn.style.backgroundColor = '#25D366'; 
+            btn.style.backgroundColor = '#25D366'; // Green
             btn.innerText = "Done! Let's Go!";
 
+            // TRIGGER CONFETTI HERE
             if (typeof confetti === 'function') {
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, zIndex: 9999 });
-                setTimeout(() => { confetti({ particleCount: 100, spread: 100, origin: { y: 0.6 }, zIndex: 9999 }); }, 400);
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    zIndex: 9999 // Ensure it's on top
+                });
+                
+                // Add a second burst for effect
+                setTimeout(() => {
+                     confetti({
+                        particleCount: 100,
+                        spread: 100,
+                        origin: { y: 0.6 },
+                        zIndex: 9999
+                    });
+                }, 400);
             }
 
             const today = new Date().toISOString().split('T')[0];
             
+            // Build initial data structure
             const data = {
                 theme: window.selectedTheme || '#1c3e7d',
                 name: name,
                 jobTitle: job,
                 company: company,
                 email: email,
-                date: today, 
-                location: '', 
+                date: today, // Auto-set date
+                location: '', // Will fill after fetch
+                // Initialize others empty
                 linkedin:'', 
-                whatsapp: phone, 
+                whatsapp: phone, // Use phone for WhatsApp tile
                 telegram:'', instagram:'', twitter:'', 
                 youtube:'', github:'', discord:'', wifiSSID:'', wifiPass:'', 
                 bitcoin:'', calendly:'', customLabel:'', customUrl:'', photo:''
             };
 
+            // Save
             localStorage.setItem('qrme_data', JSON.stringify(data));
             
+            // Sync to main settings inputs for future edits
             const inputs = window.getInputs();
             if(inputs.name) inputs.name.value = name;
             if(inputs.jobTitle) inputs.jobTitle.value = job;
@@ -868,17 +907,22 @@
             if(inputs.whatsapp) inputs.whatsapp.value = phone;
             if(inputs.date) inputs.date.value = today;
 
+            // Trigger Location and switch with delay
             setTimeout(() => {
                 window.fetchLocation(); 
+                // IMPORTANT FIX: Reload page to clear history stack and reset navigation state
+                // This ensures "Back" button exits app instead of going back to form
                 location.reload();
             }, 1700);
         };
 
+        // NEW: Skip Logic
         window.skipOnboarding = function() {
             const today = new Date().toISOString().split('T')[0];
             const data = {
                 theme: window.selectedTheme || '#1c3e7d',
                 date: today,
+                // Initialize empty
                 name:'', jobTitle:'', company:'', email:'', linkedin:'', whatsapp:'', 
                 telegram:'', instagram:'', twitter:'', youtube:'', github:'', discord:'', 
                 wifiSSID:'', wifiPass:'', bitcoin:'', calendly:'', customLabel:'', customUrl:'', photo:''
@@ -888,12 +932,17 @@
             location.reload();
         };
 
+        // Toggle Speed Mode
         window.toggleSpeedMode = function() {
             const dataStr = localStorage.getItem('qrme_data');
-            if (!dataStr) return;
+            if (!dataStr) return; // Should not happen in home view
             const data = JSON.parse(dataStr);
+            
+            // Toggle State
             data.speedMode = !data.speedMode;
             localStorage.setItem('qrme_data', JSON.stringify(data));
+            
+            // Re-render
             window.renderHomeGrid(data);
         }
 
@@ -904,12 +953,15 @@
             const today = new Date().toISOString().split('T')[0];
             window.inputs.date.value = today;
 
+            // Replace State on Initial Load
             const currentState = window.history.state;
             if (!currentState) {
                  window.history.replaceState({ view: dataStr ? 'home' : 'welcome' }, '', '');
             }
 
             if (!dataStr) {
+                // No data = First time user = Welcome Screen
+                // Don't push state here to avoid back button issues on load, just UI switch
                 window.switchView('welcome', false);
             } else {
                 window.switchView('home', false); 
@@ -938,16 +990,19 @@
                 } catch(e) { window.renderHomeGrid(null); }
             }
             
+            // iOS/Android Prompt Logic - Checks on load for ANY screen
             const prompt = document.getElementById('install-prompt');
             const iosInstructions = document.getElementById('ios-instructions');
             if (prompt) {
                 const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
                 const isStandalone = ('standalone' in window.navigator) && (window.navigator.standalone);
                 
+                // iOS Specific Logic
                 if (isIos && !isStandalone && !localStorage.getItem('qrme_install_prompt')) {
                     iosInstructions.style.display = 'block';
                     setTimeout(() => { prompt.style.display = 'flex'; }, 2000);
                 }
+                // Android logic handled by event listener above
             }
             
             window.updateBackground('home');
@@ -964,11 +1019,14 @@
             const speedContent = document.getElementById('speed-content');
             const toggleBox = document.getElementById('speed-toggle-box');
             
+            // Check Speed Mode
             if (data && data.speedMode) {
+                // 1. Activate UI
                 toggleBox.classList.add('active');
                 standardContent.style.display = 'none';
                 speedContent.style.display = 'flex';
                 
+                // 2. Determine QR Content (Telegram -> vCard -> Share)
                 let type = 'share-app';
                 let url = window.location.href;
                 let title = 'SHARE QRME';
@@ -977,21 +1035,26 @@
                     type = 'telegram';
                     url = `https://t.me/${data.telegram}`;
                     title = 'TELEGRAM';
-                } else if (data.name) { 
+                } else if (data.name) { // Fallback to vCard if name exists
+                    // We need to generate the vCard content here for QR
                     let vCard = `BEGIN:VCARD\nVERSION:3.0\nN:;${data.name};;;\nFN:${data.name}\nTITLE:${data.jobTitle || ''}\nORG:${data.company}\nEMAIL:${data.email}\nTEL;TYPE=CELL:${data.whatsapp}\nURL:${data.website}\nEND:VCARD`;
-                    type = 'vcard'; 
+                    type = 'vcard'; // Just for bg color
                     url = vCard;
                     title = 'CONTACT CARD';
                 }
                 
+                // 3. Render Speed QR
                 document.getElementById('speed-qrcode').innerHTML = '';
                 new QRCode(document.getElementById("speed-qrcode"), { text: url, width: 180, height: 180 });
                 document.getElementById('speed-qr-title').innerText = title;
                 
+                // Update BG for the type
                 window.updateBackground(type);
-                return; 
+                
+                return; // Stop rendering standard grid
             }
 
+            // --- STANDARD MODE RENDER ---
             toggleBox.classList.remove('active');
             standardContent.style.display = 'flex';
             speedContent.style.display = 'none';
@@ -1012,6 +1075,7 @@
                         </div>
                     `;
                 } else {
+                    // Safe SVG rendering
                     const safePath = iconPath || '';
                     div.innerHTML = `<svg class="icon-svg" viewBox="0 0 24 24" style="fill:var(--${id}-color, #333)">${safePath}</svg><span class="icon-label"></span>`;
                     div.querySelector('.icon-label').textContent = label; 
@@ -1020,9 +1084,11 @@
                 return div;
             };
 
+            // Always show "Share QRME" first using the key 'share-app'
             grid.appendChild(createBlock('share-app', 'Share QRME', window.ICON_PATHS['share-app'], () => window.openQR('share-app')));
 
             if (data) {
+                // If data exists, show vCard + any others + Add button at end
                 if (data.name && data.name.trim() !== '') {
                     grid.appendChild(createBlock('vcard', 'vCard', window.ICON_PATHS.vcard, () => window.openQR('vcard')));
                 }
@@ -1039,8 +1105,10 @@
                 if(data.bitcoin) grid.appendChild(createBlock('bitcoin', 'Bitcoin Wallet', window.ICON_PATHS.bitcoin, () => window.openQR('bitcoin')));
                 if(data.customUrl) grid.appendChild(createBlock('custom', data.customLabel || 'Link', window.ICON_PATHS.custom, () => window.openQR('custom')));
                 
+                // Explicit "Add QRME" button at the end
                 grid.appendChild(createBlock('add-qr', '', '', () => window.showSetup(), true));
             } else {
+                // If no data (shouldn't happen with new flow, but safe fallback)
                 grid.appendChild(createBlock('add-qr', '', '', () => window.showSetup(), true));
             }
         };
