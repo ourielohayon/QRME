@@ -18,7 +18,7 @@
     <meta name="twitter:title" content="QRME, Simply Connect IRL">
     <meta name="twitter:description" content="My digital business card. Scan to connect instantly.">
 
-    <!-- Manifest for Android PWA Support (Required for Install Prompt) -->
+    <!-- Manifest for Android PWA Support -->
     <link rel="manifest" href="manifest.json">
     
     <link rel="icon" type="image/png" href="apple-touch-icon.png">
@@ -70,24 +70,39 @@
             background: var(--bg-gradient); z-index: -10; transition: background 0.6s ease;
         }
 
-        #app { width: 100%; height: 100%; position: relative; display: flex; justify-content: center; align-items: center; }
+        #app { width: 100%; height: 100%; position: relative; overflow: hidden; }
 
+        /* HEADER ICONS (Fixed) */
+        .header-controls {
+            position: absolute; top: 0; left: 0; width: 100%; height: 70px;
+            z-index: 100; display: flex; justify-content: space-between; align-items: center;
+            padding: 0 20px; pointer-events: none;
+            /* Gradient to ensure visibility over content */
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
+        }
+        
         .settings-icon {
-            position: absolute; top: 20px; right: 25px; z-index: 100;
-            color: rgba(255,255,255,0.6); padding: 10px; cursor: pointer;
+            pointer-events: auto; color: rgba(255,255,255,0.9); padding: 10px; cursor: pointer;
+            background: rgba(0,0,0,0.2); border-radius: 50%; backdrop-filter: blur(4px);
         }
         .gear-svg { width: 24px; height: 24px; fill: currentColor; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
 
+        .camera-btn-fixed {
+            position: absolute; top: 20px; right: 25px; z-index: 100;
+            color: rgba(255,255,255,0.9); padding: 10px; cursor: pointer;
+        }
+        .camera-svg { width: 28px; height: 28px; fill: currentColor; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+
         /* Speed Toggle Styles */
         .speed-toggle-wrap {
-            position: absolute; top: 20px; left: 20px; z-index: 100;
-            display: flex; align-items: center; gap: 8px;
-            cursor: pointer;
+            pointer-events: auto; display: flex; align-items: center; gap: 8px; cursor: pointer;
+            display: none; /* Hidden by default, shown via JS */
         }
         .speed-toggle {
             width: 44px; height: 24px; background: rgba(255,255,255,0.3);
             border-radius: 20px; position: relative;
             transition: background 0.3s ease; border: 1px solid rgba(255,255,255,0.4);
+            backdrop-filter: blur(4px);
         }
         .speed-knob {
             width: 20px; height: 20px; background: white; border-radius: 50%;
@@ -96,99 +111,110 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .speed-label {
-            font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.8);
+            font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.9);
             text-transform: uppercase; letter-spacing: 0.5px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
         }
         /* Active State */
         .speed-toggle-wrap.active .speed-toggle { background: #25D366; border-color: #25D366; }
         .speed-toggle-wrap.active .speed-knob { transform: translateX(20px); }
-        .speed-toggle-wrap.active .speed-label { color: #fff; }
 
-        .camera-btn-fixed {
-            position: absolute; top: 20px; right: 25px; z-index: 100;
-            color: rgba(255,255,255,0.9); padding: 10px; cursor: pointer;
-        }
-        .camera-svg { width: 28px; height: 28px; fill: currentColor; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
-
+        /* Views */
         .view {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            display: flex; flex-direction: column; align-items: center;
             opacity: 0; pointer-events: none; transform: scale(0.95);
             transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            overflow-y: auto; overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
         }
         .view.active { opacity: 1; pointer-events: all; transform: scale(1); }
 
-        .profile-container { margin-bottom: 5px; position: relative; cursor: pointer; transition: transform 0.2s; }
+        /* Center content views (QR, Setup, Welcome) */
+        #qr-view, #welcome-view, #onboarding-view, #setup-view { justify-content: center; }
+        
+        /* Home View Specifics */
+        #home-view { 
+            display: block; /* Allow flow layout */
+        }
+        #home-standard-content {
+            width: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            padding-top: 120px; /* PUSH CONTENT DOWN */
+            padding-bottom: 100px;
+            min-height: 100%;
+        }
+
+        .profile-container { margin-bottom: 10px; position: relative; cursor: pointer; transition: transform 0.2s; }
         .profile-container:active { transform: scale(0.92); }
         .profile-pic {
-            width: 100px; height: 100px; border-radius: 50%;
-            background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3);
+            width: 110px; height: 110px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); border: 3px solid rgba(255,255,255,0.4);
             object-fit: cover; box-shadow: 0 8px 25px rgba(0,0,0,0.4); display: none; 
         }
         .profile-placeholder {
-            width: 100px; height: 100px; border-radius: 50%;
+            width: 110px; height: 110px; border-radius: 50%;
             background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center;
-            border: 2px dashed rgba(255,255,255,0.3);
+            border: 3px dashed rgba(255,255,255,0.3);
         }
         .profile-placeholder svg { width: 40px; height: 40px; fill: rgba(255,255,255,0.6); }
 
-        .profile-info { text-align: center; color: white; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        .display-name { font-size: 20px; font-weight: 800; margin: 0; }
-        .display-job-company { font-size: 13px; opacity: 0.8; margin: 2px 0 0; font-weight: 500; }
+        .profile-info { text-align: center; color: white; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .display-name { font-size: 22px; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
+        .display-job-company { font-size: 14px; opacity: 0.85; margin: 4px 0 0; font-weight: 500; }
 
         .copy-intro-btn {
             background: rgba(255, 255, 255, 0.2); color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px;
-            padding: 12px 20px; width: 100%; max-width: 360px;
+            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 14px;
+            padding: 12px 24px; width: auto; min-width: 160px;
             font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;
-            margin-bottom: 15px; cursor: pointer; backdrop-filter: blur(10px);
-            transition: all 0.2s ease;
+            margin-bottom: 25px; cursor: pointer; backdrop-filter: blur(10px);
+            transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .grid-container {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-            width: 100%; max-width: 360px; padding: 0 25px;
-            max-height: 55vh; overflow-y: auto;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+            width: 100%; max-width: 380px; padding: 0 25px;
+            /* Removed fixed height/overflow to allow full page scroll */
         }
 
         .app-icon {
             background: var(--card-bg);
-            backdrop-filter: blur(20px); border-radius: 18px; padding: 16px;
+            backdrop-filter: blur(20px); border-radius: 20px; padding: 18px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer;
-            height: 95px; transition: transform 0.1s;
+            gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); cursor: pointer;
+            height: 100px; transition: transform 0.1s;
         }
         .app-icon:active { transform: scale(0.96); }
 
-        .icon-svg { width: 32px; height: 32px; display: block; }
-        .icon-label { font-size: 13px; font-weight: 600; text-align: center; color: #000; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+        .icon-svg { width: 34px; height: 34px; display: block; }
+        .icon-label { font-size: 13px; font-weight: 700; text-align: center; color: #000; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; letter-spacing: -0.3px; }
 
-        .add-qr-block { border: 2px dashed rgba(0,122,255,0.3); background: rgba(255,255,255,0.85); }
+        .add-qr-block { border: 2px dashed rgba(0,122,255,0.4); background: rgba(255,255,255,0.9); }
         .add-qr-label { font-size: 22px; font-weight: 400; color: #000; }
         .mini-icons { display: flex; gap: 6px; margin-top: 4px; }
         .mini-icons svg { width: 14px; height: 14px; }
 
         /* QR View & Speed View */
-        #qr-view, #speed-content { gap: 15px; }
+        #qr-view { gap: 20px; }
         .qr-card {
-            background: rgba(255,255,255,0.95); padding: 25px; border-radius: 24px;
+            background: rgba(255,255,255,0.95); padding: 30px; border-radius: 28px;
             display: flex; flex-direction: column; align-items: center; gap: 15px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5); width: 260px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5); width: 280px;
         }
         /* Speed Mode specific styles */
         #speed-content { 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            width: 100%; height: 100%;
+            width: 100%; height: 100%; position: absolute; top:0; left:0;
         }
         
-        #qrcode, #speed-qrcode { width: 180px; height: 180px; background: white; border-radius: 4px; overflow: hidden; }
+        #qrcode, #speed-qrcode { width: 200px; height: 200px; background: white; border-radius: 8px; overflow: hidden; }
         #qrcode img, #speed-qrcode img { width: 100%; height: 100%; display: block; }
-        .qr-label { font-size: 20px; font-weight: 700; text-align: center; margin: 0; }
+        .qr-label { font-size: 22px; font-weight: 800; text-align: center; margin: 5px 0 0 0; letter-spacing: -0.5px; }
 
         .action-btn {
-            background: #007AFF; color: white; border: none; padding: 12px;
-            font-size: 14px; font-weight: 600; border-radius: 12px; width: 100%;
+            background: #007AFF; color: white; border: none; padding: 14px;
+            font-size: 15px; font-weight: 600; border-radius: 14px; width: 100%;
             display: flex; justify-content: center; align-items: center; gap: 6px;
             cursor: pointer; transition: background 0.2s;
         }
@@ -197,35 +223,34 @@
         .open-app-btn { background: transparent; color: #007AFF; border: 2px solid #007AFF; margin-top: -5px; }
 
         .back-btn {
-            background: rgba(255, 255, 255, 0.15); color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.15); padding: 8px 24px;
-            font-size: 15px; font-weight: 500; border-radius: 50px;
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.2); color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2); padding: 10px 28px;
+            font-size: 16px; font-weight: 600; border-radius: 50px;
+            backdrop-filter: blur(10px); cursor: pointer;
         }
 
         /* Settings Form */
         .setup-form {
-            background: #fff; padding: 20px; border-radius: 20px;
-            width: 95%; max-width: 400px;
-            max-height: 90vh; overflow-y: auto;
+            background: #fff; padding: 25px; border-radius: 24px;
+            width: 95%; max-width: 420px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            padding-bottom: 100px;
+            margin: 20px 0 100px 0; /* Margin for scrolling */
         }
-        .setup-form h2 { margin: 0 0 10px; color: #000; font-size: 20px; text-align: center; font-weight: 800; }
+        .setup-form h2 { margin: 0 0 15px; color: #000; font-size: 22px; text-align: center; font-weight: 800; letter-spacing: -0.5px; }
         
         .settings-section {
             background: linear-gradient(180deg, #f0f9ff 0%, #e0f7fa 100%);
-            border-radius: 12px; padding: 0; border: 1px solid #e0e7ff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 10px; overflow: visible;
+            border-radius: 14px; padding: 0; border: 1px solid #e0e7ff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03); margin-bottom: 12px; overflow: visible;
         }
         
-        .section-header { padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .section-title { font-size: 11px; font-weight: 800; color: #0369a1; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
-        .section-title svg { width: 14px; height: 14px; fill: #0369a1; }
+        .section-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .section-title { font-size: 12px; font-weight: 800; color: #0369a1; text-transform: uppercase; display: flex; align-items: center; gap: 10px; letter-spacing: 0.5px; }
+        .section-title svg { width: 16px; height: 16px; fill: #0369a1; }
         .chevron { transition: transform 0.3s ease; width: 16px; height: 16px; fill: #0369a1; }
         
-        .section-content { display: none; padding: 0 15px 15px 15px; border-top: 1px solid rgba(0,0,0,0.05); margin-top: 0; }
-        .settings-section.open .section-content { display: block; padding-top: 15px; }
+        .section-content { display: none; padding: 0 16px 16px 16px; border-top: 1px solid rgba(0,0,0,0.05); margin-top: 0; }
+        .settings-section.open .section-content { display: block; padding-top: 16px; }
         .settings-section.open .chevron { transform: rotate(180deg); }
 
         .settings-section.static .section-content { display: block; border-top: none; }
@@ -233,20 +258,20 @@
         .settings-section.static .chevron { display: none; }
 
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .input-group label { display: block; font-size: 10px; color: #555; margin-bottom: 4px; font-weight: 700; text-transform: uppercase; }
+        .input-group label { display: block; font-size: 11px; color: #555; margin-bottom: 5px; font-weight: 700; text-transform: uppercase; }
         .input-group input, .input-group select, .input-group textarea {
             width: 100%; padding: 12px; background: #fff; border: 1px solid #ccc; 
-            border-radius: 8px; font-size: 14px;
+            border-radius: 10px; font-size: 15px; -webkit-appearance: none;
         }
         .full-width { grid-column: span 2; }
         
-        .theme-grid { display: flex; gap: 4px; justify-content: space-between; padding: 8px 0; width: 100%; }
-        .theme-swatch, .color-picker-wrapper { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-shrink: 0; }
+        .theme-grid { display: flex; gap: 6px; justify-content: space-between; padding: 8px 0; width: 100%; }
+        .theme-swatch, .color-picker-wrapper { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-shrink: 0; }
         .theme-swatch.active { border-color: #000; transform: scale(1.1); }
         .color-picker-wrapper { overflow: hidden; position: relative; background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); }
         .color-picker-input { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; opacity: 0; cursor: pointer; }
 
-        .save-btn { width: 100%; padding: 14px; background: #000; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; margin-top: 10px; cursor: pointer; }
+        .save-btn { width: 100%; padding: 16px; background: #000; color: white; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; margin-top: 15px; cursor: pointer; }
 
         .data-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 5px; }
         .data-btn { width: 100%; padding: 16px; background: #f2f2f7; color: #000; border: 1px solid #ddd; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; text-align: center; }
@@ -260,14 +285,14 @@
         .legal-links a { text-decoration: none; color: #000; }
 
         .footnote { 
-            position: absolute; bottom: 15px; width: 100%; 
+            position: absolute; bottom: 20px; width: 100%; 
             display: flex; justify-content: center; align-items: center; gap: 8px;
-            color: #ffffff; font-size: 11px; font-weight: 500; pointer-events: auto; 
+            color: #ffffff; font-size: 12px; font-weight: 500; pointer-events: auto; text-shadow: 0 1px 3px rgba(0,0,0,0.5);
         }
         .footnote a { color: white; text-decoration: none; display: flex; align-items: center; }
-        .github-footer-icon { width: 14px; height: 14px; fill: white; opacity: 0.8; transition: opacity 0.2s; }
+        .github-footer-icon { width: 16px; height: 16px; fill: white; opacity: 0.9; transition: opacity 0.2s; }
         .github-footer-icon:hover { opacity: 1; }
-        .file-btn { background: #fff; border: 1px solid #ccc; padding: 12px; border-radius: 8px; font-size: 14px; cursor: pointer; text-align: center; width: 100%; display:block; }
+        .file-btn { background: #fff; border: 1px solid #ccc; padding: 12px; border-radius: 10px; font-size: 14px; cursor: pointer; text-align: center; width: 100%; display:block; font-weight: 600; }
 
         /* Install Prompt */
         .ios-prompt {
@@ -275,16 +300,16 @@
             width: 90%; max-width: 360px;
             background: rgba(30, 30, 30, 0.95); backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 16px; padding: 20px;
+            border-radius: 18px; padding: 25px;
             color: white; z-index: 9999;
             display: none; flex-direction: column; align-items: center; text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.7);
             animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .ios-prompt p { margin: 0 0 12px; font-size: 15px; font-weight: 500; line-height: 1.4; }
-        .ios-prompt span { color: #0A84FF; font-weight: 700; }
-        .ios-prompt-close { position: absolute; top: 10px; right: 15px; color: #888; font-size: 20px; cursor: pointer; padding: 5px; }
-        .ios-share-icon { width: 18px; height: 18px; vertical-align: text-bottom; fill: #0A84FF; margin: 0 4px; display: inline-block; }
+        .ios-prompt p { margin: 0 0 15px; font-size: 16px; font-weight: 500; line-height: 1.4; }
+        .ios-prompt span { color: #0A84FF; font-weight: 800; }
+        .ios-prompt-close { position: absolute; top: 10px; right: 15px; color: #888; font-size: 24px; cursor: pointer; padding: 5px; }
+        .ios-share-icon { width: 20px; height: 20px; vertical-align: text-bottom; fill: #0A84FF; margin: 0 4px; display: inline-block; }
         
         @keyframes slideUp { from { bottom: -150px; opacity: 0; } to { bottom: 30px; opacity: 1; } }
         .ios-prompt::after {
@@ -297,6 +322,21 @@
 <body>
 
     <div class="app-background" id="bg-layer"></div>
+
+    <!-- Header Controls (Fixed) -->
+    <div class="header-controls">
+        <!-- Speed Mode Toggle -->
+        <div id="speed-toggle-box" class="speed-toggle-wrap" onclick="window.toggleSpeedMode()">
+            <div class="speed-toggle">
+                <div class="speed-knob"></div>
+            </div>
+            <span class="speed-label">Speed Mode</span>
+        </div>
+
+        <div id="settings-btn" class="settings-icon" onclick="showSetup()" style="display:none;">
+            <svg class="gear-svg" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+        </div>
+    </div>
 
     <!-- Generic Install Prompt HTML -->
     <div id="install-prompt" class="ios-prompt">
@@ -313,16 +353,12 @@
     </div>
 
     <div id="app">
-        <div id="settings-btn" class="settings-icon" onclick="showSetup()">
-            <svg class="gear-svg" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
-        </div>
-
         <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;" onchange="window.handlePhotoUpload(this)">
         <input type="file" id="library-input" accept="image/*" style="display:none;" onchange="window.handlePhotoUpload(this)">
 
         <!-- Welcome View -->
         <div id="welcome-view" class="view">
-            <div style="text-align:center; padding: 40px; color: white;">
+            <div style="text-align:center; padding: 40px; color: white; display: flex; flex-direction: column; justify-content: center; height: 100%;">
                 <h1 style="font-size: 4.5rem; font-weight: 800; line-height: 0.9; margin-bottom: 20px; letter-spacing: -2px;">Hello<br>There.</h1>
                 <p style="font-size: 1.4rem; opacity: 0.8; margin-bottom: 50px; font-weight: 500;">Nice to meet you 👋</p>
                 <button class="action-btn" onclick="window.startOnboarding()" style="font-size: 1.2rem; padding: 16px 40px; width: auto; margin: 0 auto; background: white; color: #000; border-radius: 50px;">Start</button>
@@ -331,7 +367,7 @@
 
         <!-- Onboarding View -->
         <div id="onboarding-view" class="view">
-            <div class="setup-form" style="display: flex; flex-direction: column; height: auto; max-height: 85vh; justify-content: center; padding-top: 30px; padding-bottom: 30px; position: relative;">
+            <div class="setup-form" style="display: flex; flex-direction: column; min-height: 60vh; justify-content: center; padding-top: 30px; padding-bottom: 30px; position: relative; margin-top: 10vh;">
                 <h2 style="font-size: 1.8rem; margin-bottom: 25px;">Let's get to know you</h2>
                 <div class="input-group"><label>Full Name</label><input type="text" id="ob-name" placeholder="John Doe"></div>
                 <div class="input-group" style="margin-top:15px"><label>Job Title</label><input type="text" id="ob-job" placeholder="Designer"></div>
@@ -536,14 +572,6 @@
         </div>
 
         <div id="home-view" class="view">
-            <!-- Speed Mode Toggle -->
-            <div id="speed-toggle-box" class="speed-toggle-wrap" onclick="window.toggleSpeedMode()">
-                <div class="speed-toggle">
-                    <div class="speed-knob"></div>
-                </div>
-                <span class="speed-label">Speed Mode</span>
-            </div>
-
             <!-- Standard Content -->
             <div id="home-standard-content" style="width:100%; display:flex; flex-direction:column; align-items:center;">
                 <div class="profile-container" onclick="document.getElementById('library-input').click()">
@@ -620,6 +648,13 @@
             twitter: '<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>',
             youtube: '<path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>',
             discord: '<path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z"/>',
+            share: '<path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>',
+            github: '<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>',
+            bitcoin: '<path d="M16.5 10.5C16.5 9.12 15.38 8 14 8H10V6H8V8H6V10H8V16H6V18H8V20H10V18H13.5C15.43 18 17 16.43 17 14.5C17 13.1 16.18 11.9 15 11.3C15.9 10.9 16.5 10.1 16.5 9.25V10.5M10 10H13.5C14.05 10 14.5 10.45 14.5 11C14.5 11.55 14.05 12 13.5 12H10V10M10 16V14H13.5C14.05 14 14.5 14.45 14.5 15C14.5 15.55 14.05 16 13.5 16H10Z" />',
+            calendly: '<path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>',
+            vcard: '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>',
+            wifi: '<path d="M12.01 6c-3.19 0-6.22 1.17-8.66 3.32l1.45 1.76C6.54 9.63 9.17 8.5 12 8.5c2.8 0 5.48 1.1 7.23 2.58l1.43-1.78C18.2 7.15 15.19 6 12.01 6zm0 5c-1.89 0-3.69.73-5.07 2.05L12 19l5.06-5.96C15.68 11.74 13.9 11 12.01 11z"/>',
+            custom: '<path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>',
             'share-app': '<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" style="fill:#4B0082"/>'
         };
 
@@ -688,6 +723,10 @@
             const settingsBtn = document.getElementById('settings-btn');
             if(settingsBtn) settingsBtn.style.display = (viewName === 'home') ? 'block' : 'none';
             
+            // Speed toggle visibility
+            const speedToggle = document.getElementById('speed-toggle-box');
+            if(speedToggle) speedToggle.style.display = (viewName === 'home') ? 'flex' : 'none';
+
             if (viewName === 'home' || viewName === 'welcome') window.updateBackground('home');
 
             // History Management
@@ -1307,7 +1346,8 @@
         // --- SERVICE WORKER REGISTRATION (Offline Capability) ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').then(registration => {
+                // FIXED: Relative path registration
+                navigator.serviceWorker.register('./sw.js').then(registration => {
                     console.log('SW registered: ', registration);
                 }).catch(registrationError => {
                     console.log('SW registration failed: ', registrationError);
